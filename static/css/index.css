@@ -1,0 +1,4 @@
+#bd{}
+#bd .piece{display: table;width:100%;height:100%;position: absolute;top:0;padding:0 20px;-webkit-transition:-webkit-filter 1s ease-in-out;-webkit-filter:blur(4px);opacity: 0;}
+#bd .piece-content{text-align:center;font-size:20px;display:table-cell;vertical-align:middle;color:rgb(63, 52, 42);font-weight:700;}
+#bd .piece-inner{max-width:400px;margin:0 auto;}

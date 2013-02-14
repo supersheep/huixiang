@@ -1,0 +1,24 @@
+$def with (data)
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$config['sitename']</title>
+    <link rel="stylesheet" href="static/css/base.css">
+    <link rel="stylesheet" href="static/css/index.css">
+    <script src="static/js/jquery-1.9.1.min.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body>
+    <div id="hd">
+        <div class="tt">$config['sitename']</div>
+    </div>
+    <div id="bd">
+        <div class="pieces">
+        </div>
+    </div>
+    <div id="ft">大芋制造</div>
+    <script>var pieces = $:data['jsdata']['pieces'];</script>
+    <script src="static/js/index.js"></script>
+</body>
+</html>

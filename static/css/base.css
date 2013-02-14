@@ -1,0 +1,7 @@
+html,body,div,ul{margin:0;padding:0;}
+body{background:rgb(207, 196, 173);font-family: 'Hiragino Sans GB','Verdana','Microsoft Yahei',simsun,serif;}
+ul{list-style-type: none;}
+#hd{padding:20px;}
+#hd .tt{text-align: center;font-size:48px;color:rgb(62, 80, 45);}
+#bd{}
+#ft{text-align: center;width:100%;position: absolute;bottom:15px;color:rgb(156, 147, 130);font-size: 14px}
