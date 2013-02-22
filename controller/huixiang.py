@@ -9,7 +9,12 @@ db = setting.db
 class add:
     def POST(self):
         """ add one """
-        return render.add()
+        ret = {}
+        data = web.input(_method="post")
+        id = db.insert("piece",content=data["content"],addtime=datetime.now(),link=None)
+        ret["code"] = 200
+        ret["msg"] = {"id":id}
+        return json.dumps(ret)
 
     def GET(self):
         """ get nothing """
