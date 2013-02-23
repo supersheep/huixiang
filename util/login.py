@@ -18,12 +18,14 @@ def logged():
     # 1. 去除cookie cu
     hash = web.cookies().get("cu")
     if not hash:
+        logout()
         return False
 
     # 2. login token中找出对应记录，得到userid
     rows=db.select("login",{"hash":hash},where="hash=$hash")
 
     if not rows:
+        logout()
         return False
 
     # 3. 对比sha1(salt+ip+userid)
@@ -33,11 +35,13 @@ def logged():
 
     # 3.1 不匹配则视为未登录
     if not sha1(salt+web.ctx.ip+userid+time) == session["hash"]:
+        logout()
         return False
 
     # 3.2 匹配后寻找用户，未找到视为未登录
     user = db.select("user",{"id":session["userid"]},where="id=$id")
     if not user:
+        logout()
         return False
 
     # 4. 否则返回该用户
@@ -55,8 +59,10 @@ def login(userid):
     
 
 def logout():
-    if web.cookies().get("cu"):
+    hash = web.cookies().get("cu")
+    if hash:
     # 1. login token中找出记录，清除
-        db.delete("login",{"hash":hash},where="hash=$hash")
+        print hash
+        db.delete("login",vars={"hash":hash},where="hash=$hash")
     # 2. 清除cookie
         web.setcookie('cu', hash)

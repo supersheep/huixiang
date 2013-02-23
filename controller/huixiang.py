@@ -44,6 +44,11 @@ class piece:
     def GET(self):
         return render.piece()
 
+class logout:
+    def GET(self):
+        login.logout()
+        web.seeother("/")
+
 class auth:
     def GET(self,name):
         input = web.input()

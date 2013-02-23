@@ -13,15 +13,18 @@ $def with (data)
 <body>
     <div id="hd">
         <div class="tt">$config['sitename']</div>
+        <div class="account">
         $if "user" in data:
             $ user = data["user"]
-            <img src="$user["avatar"]" />
-            $user["name"]
+            <div class="user">
+                <div class="avatar"><img src="$user["avatar"]" class="avatar" /></div>
+                <div class="title">$user["name"]</div>
+            </div>
+            <a href="/logout">退出</a>
         $else:
-            <div class="login">
                 <a href="#" class="login_douban"><img src="http://img3.douban.com/pics/douban-icons/favicon_16x16.png" title="豆瓣" /></a>
                 <div class="weibo">微博</div>
-            </div>
+        </div>
     </div>
     <div id="bd">
         <div class="pieces">
