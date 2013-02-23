@@ -3,15 +3,25 @@ $def with (data)
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$config['sitename']</title>
+    <title>$config['sitename'] - $config['slogan']</title>
     <link rel="stylesheet" href="static/css/base.css">
     <link rel="stylesheet" href="static/css/index.css">
     <script src="static/js/jquery-1.9.1.min.js"></script>
+    <script src="static/js/fennel.js"></script>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 </head>
 <body>
     <div id="hd">
         <div class="tt">$config['sitename']</div>
+        $if "user" in data:
+            $ user = data["user"]
+            <img src="$user["avatar"]" />
+            $user["name"]
+        $else:
+            <div class="login">
+                <a href="#" class="login_douban"><img src="http://img3.douban.com/pics/douban-icons/favicon_16x16.png" title="豆瓣" /></a>
+                <div class="weibo">微博</div>
+            </div>
     </div>
     <div id="bd">
         <div class="pieces">
@@ -20,5 +30,6 @@ $def with (data)
     <div id="ft">大芋制造</div>
     <script>var pieces = $:data['jsdata']['pieces'];</script>
     <script src="static/js/index.js"></script>
+    <script src="static/js/login.js"></script>
 </body>
 </html>

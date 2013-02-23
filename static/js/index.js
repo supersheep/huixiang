@@ -42,18 +42,25 @@
             former.css("-webkit-filter","blur(4px)")
             former.animate({
                 opacity:0
-            },duration,function(){
-                former.remove();
-                done();
+            },{
+                duration:duration,
+                complete:function(){
+                    former.remove();
+                    done();
+                }
             });
         },function(done){
             var newpiece;
             newpiece = create_piece(piece);
             newpiece.appendTo(container);
             newpiece.css("-webkit-filter","blur(0px)");
+            
             newpiece.animate({
                 opacity:1
-            },duration,done);
+            },{
+                duration:duration,
+                complete:done
+            });
         }]);
         count++;
     }
