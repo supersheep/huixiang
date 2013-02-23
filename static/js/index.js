@@ -24,7 +24,14 @@
         var piece_content = $("<div />").addClass("piece-content");
         var piece = $("<div />").addClass('piece');
         var piece_inner = $("<div />").addClass("piece-inner").html(data.content);
+        var like = $("<div />").html("♥");
+        like.on("click",function(){
+            $.post("/fav",{
+                pieceid:data.id
+            })
+        });
         piece_inner.appendTo(piece_content);
+        like.appendTo(piece_content);
         piece_content.appendTo(piece);
         return piece;
     }
