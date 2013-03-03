@@ -105,6 +105,6 @@ class auth:
             if not user.exist_douban_user(user_info):
                 user.new_douban_user(user_info)
             user.login_douban_user(user_info)
-            return "logged"
+            return render.logged(True)
         else:
-            return "wrong"
+            return render.logged(input)

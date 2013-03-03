@@ -1,5 +1,25 @@
-#hd .account{position: relative;z-index: 5;}
+#hd .account{position: relative;z-index: 5;width:80px;margin:0 auto;text-align: center}
+#hd .account .avatar{width:40px;height:40px;border-radius:50%;margin:10px;cursor:pointer;height:40px;width:40px;background-color:#fff; position: relative;z-index: 6;}
+#hd .account .menu{
+    padding-top:60px;
+    position: absolute;
+    top:0;
+    padding: 60px 0 10px 0;
+    position: absolute;
+    top: 0;
+    background-color: rgb(97, 85, 74);
+    width: 100%;
+}
+#hd .account .menu .menu-item{line-height:25px;padding:0 10px;}
+#hd .account .menu .menu-item a{color: #fff;}
 #bd{}
 #bd .piece{display: table;width:100%;height:100%;position: absolute;top:0;padding:0 20px;-webkit-transition:-webkit-filter 1s ease-in-out;-webkit-filter:blur(4px);opacity: 0;}
-#bd .piece-content{text-align:center;font-size:20px;display:table-cell;vertical-align:middle;color:rgb(63, 52, 42);font-weight:700;}
+#bd .piece-content{font-size:20px;display:table-cell;vertical-align:middle;color:rgb(63, 52, 42);font-weight:700;}
 #bd .piece-inner{max-width:400px;margin:0 auto;}
+#bd .piece-inner{}
+#bd .piece-inner .txt{text-align: left;word-wrap: break-word;}
+#bd .piece-inner .via{text-align: right;}
+#bd .piece-inner .func:after{clear:both;content:'\20';display:block;}
+
+#bd .piece-inner .func .like{cursor:pointer; }
+#bd .piece-inner .func .via{cursor:pointer; }

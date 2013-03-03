@@ -21,31 +21,37 @@
     }
 
     function create_piece(data){
-        var piece_content = $("<div />").addClass("piece-content");
-        var piece = $("<div />").addClass('piece');
-        var piece_inner = $("<div />").addClass("piece-inner").html(data.content);
-        var like = $("<div />").html("♥");
-        like.on("click",function(){
+
+        var html = '<div class="piece" style="-webkit-filter: blur(0px); opacity: 1;">'
+            +'<div class="piece-content">'
+                +'<div class="piece-inner">'
+                    +'<div class="piece-main">'
+                        +'<div class="txt">'+data.content+'</div>'
+                        + (data.by ? ('<div class="by">—— '+data.by+'</div>') : '')
+                    +'</div>'
+                    // +'<div class="func">'
+                    //     +'<div class="like">♥</div>'
+                    //     +'<div class="via"><a href="javascript:">via</a></div>'
+                    // +'</div>'
+                +'</div>'
+            +'</div>'
+        +'</div>';
+
+        piece = $(html);
+        piece.one(".like").on("click",function(){
             $.post("/fav",{
                 pieceid:data.id
             })
         });
-        piece_inner.appendTo(piece_content);
-        like.appendTo(piece_content);
-        piece_content.appendTo(piece);
         return piece;
     }
 
     function showone(){
-        var piece = pieces[count%pieces.length];
+        var data = pieces[count%pieces.length];
 
-        // fade out old
-        // former.css("-webkit-filter","blur(4px)");
-        Queue([function(done){
+        function fadeOutOld(done){
             var former = container.find('.piece');
-
             if(!former.length){done();return;}
-
             former.css("-webkit-filter","blur(4px)")
             former.animate({
                 opacity:0
@@ -56,19 +62,22 @@
                     done();
                 }
             });
-        },function(done){
+        }
+
+        function fadeInNew(done){
             var newpiece;
-            newpiece = create_piece(piece);
+            newpiece = create_piece(data);
             newpiece.appendTo(container);
             newpiece.css("-webkit-filter","blur(0px)");
-            
             newpiece.animate({
                 opacity:1
             },{
                 duration:duration,
                 complete:done
             });
-        }]);
+        }
+
+        Queue([fadeOutOld,fadeInNew]);
         count++;
     }
 
@@ -76,5 +85,12 @@
     setInterval(function(){
         showone();
     },duration*5);
+
+    $(".account").on("mouseenter",function(){
+        $(".menu").show();
+    }).on("mouseleave",function(){
+        $(".menu").hide();
+    });
+
 
 })()        

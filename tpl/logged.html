@@ -1,0 +1,18 @@
+$def with (data)
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$config['sitename'] - $config['slogan']</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body>
+    $if data:
+        <script type="text/javascript">
+            window.opener.location.reload();
+            window.close();
+        </script>
+    $else:
+        登录失败
+</body>
+</html>

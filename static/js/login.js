@@ -8,6 +8,10 @@
     });
 
     login_douban.on("click",function(){
-        window.open("https://www.douban.com/service/auth2/auth?"+qs)
+        F.openWin({
+            url:"https://www.douban.com/service/auth2/auth?"+qs,
+            width:500,
+            height:400
+        });
     });
 })(Fennel)

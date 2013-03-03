@@ -14,20 +14,37 @@ $def with (data)
     <div id="hd">
         <div class="tt">$config['sitename']</div>
         <div class="account">
-        $if "user" in data:
-            $ user = data["user"]
-            <div class="user">
-                <div class="avatar"><img src="$user["avatar"]" class="avatar" /></div>
-                <div class="title">$user["name"]</div>
-            </div>
-            <a href="/logout">退出</a>
-        $else:
-                <a href="#" class="login_douban"><img src="http://img3.douban.com/pics/douban-icons/favicon_16x16.png" title="豆瓣" /></a>
-                <div class="weibo">微博</div>
+                $if "user" in data:
+                    $ user = data["user"]
+                    <img src="$user["avatar"]" class="avatar"/>
+                $else:
+                    <img src="" class="avatar"/>
+            <ul class="menu" style="display:none">
+                $if "user" in data:
+                    $ user = data["user"]
+                    <li class="menu-item"><a href="/logout">退出</a></li>
+                $else:
+                    <li class="menu-item"><a href="#" class="login_douban"><img src="http://img3.douban.com/pics/douban-icons/favicon_24x24.png" title="豆瓣登录" /></a></li>
+                    <li class="menu-item"><a href="#" class="login_weibo"><img src="http://www.sinaimg.cn/blog/developer/wiki/LOGO_24x24.png" title="微博登录" /></a></li>
+            </ul>
         </div>
     </div>
     <div id="bd">
         <div class="pieces">
+            <div class="piece" style="-webkit-filter: blur(0px); opacity: 1;">
+                <div class="piece-content">
+                    <div class="piece-inner">
+                        <div class="piece-main">
+                            <div class="txt">asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd</div>
+                            <div class="via">—— sda</div>
+                        </div>
+                        <div class="func">
+                            <div class="like"></div>
+                            <div class="via"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div id="ft">大芋制造</div>
