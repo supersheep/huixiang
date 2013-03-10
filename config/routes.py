@@ -1,12 +1,13 @@
-prefix = "controller.huixiang."
-
+page = "controller.page."
+ajax = "controller.ajax."
 
 #route settings
 urls = (
-    '/', prefix + 'index',
-    '/add', prefix + 'add',
-    '/fav', prefix + 'fav',
-    '/piece', prefix + 'piece',
-    '/logout', prefix +'logout',
-    '/auth/(douban|weibo)', prefix + 'auth'
+    '/', page + 'index',
+    '/piece', page + 'piece',
+    '/logout', page +'logout',
+    '/auth/(douban|weibo)', page + 'auth',
+    '/ajax/add', ajax + 'add',
+    '/ajax/fav', ajax + 'fav',
+    '/ajax/pieces', ajax + 'pieces'
 )
