@@ -34,11 +34,18 @@ define(function(require,exports,module){
 
             piece.data("data",data);
 
-            inner.on("mouseenter",function(){
-                self.showFuncs();
-            }).on("mouseleave",function(){
-                self.hideFuncs();
-            });
+            piece.on("click",function(){
+                self.next();
+            })
+
+            inner.on("click",function(){
+                window.open("/piece/"+data.id);
+            })
+            // inner.on("mouseenter",function(){
+            //     self.showFuncs();
+            // }).on("mouseleave",function(){
+            //     self.hideFuncs();
+            // });
 
             return piece;
         },
