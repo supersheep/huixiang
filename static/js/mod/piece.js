@@ -18,47 +18,108 @@ define(function(require,exports,module){
                             +'<div class="txt">'+data.content+'</div>'
                             + (data.by ? ('<div class="by">—— '+data.by+'</div>') : '')
                         +'</div>'
-                        +'<div class="func">'
-                            +'<div class="like tip"><a href="javascript:">♥</a></div>'
-                            + (data.via ? '<div class="via tip"><a href="javascript:">via</a></div>':'')
-                            +'<div class="next tip"><a href="javascript:">next</a></div>'
-                        +'</div>'
                     +'</div>'
                 +'</div>'
             +'</div>';
             var self = this;
             var piece = $(html);
             var txt = piece.find(".txt");
-            var stat = {faved:false,nexted:false};
+            var inner = piece.find(".piece-inner");
+
 
             container.append(piece);
             if(txt.height() < 50){
                 txt.css("text-align","center");
             }
-            piece.find(".like").on("click",function(){
-                if(!stat.faved){
-                    stat.faved = true;
+
+            piece.data("data",data);
+
+            inner.on("mouseenter",function(){
+                self.showFuncs();
+            }).on("mouseleave",function(){
+                self.hideFuncs();
+            });
+
+            return piece;
+        },
+        showFuncs:function(){
+            var piece = this.container.find('.piece');
+            var piece_main = piece.find('.piece-main');
+            var txt = piece.find('.txt');
+            var self = this;
+            var faved = false;
+            var nexted = false;
+
+            var funcs = $('<div class="func"></div>');
+            var func_inner = $('<div class="func-inner"></div>');
+            var like = $('<div class="like btn"></div>');
+            var next = $('<div class="next btn"></div>');
+
+
+            var txt_width = parseInt(txt.width());
+            var txt_height = parseInt(txt.height());
+
+            if(piece.find(".func").length){
+                return false;
+            }
+
+
+            funcs.css({
+                width:txt_width,
+                height:txt_height
+            });
+
+
+            funcs.append(func_inner);
+            func_inner.append(like);
+            func_inner.append(next);
+            funcs.css("opacity",0);
+            piece_main.append(funcs);
+
+
+            func_inner.css({
+                left: (txt_width - func_inner.width()) / 2,
+                top: (txt_height - func_inner.height()) / 2
+            });
+
+            funcs.animate({
+                opacity:1
+            });
+
+
+            like.on("click",function(){
+                if(!faved){
+                    faved = true;
                     $.post("/ajax/fav",{
-                        pieceid:data.id
+                        pieceid:piece.data("data").id
                     });
                 }
             });
-            piece.find(".next").on("click",function(){
-                 if(!stat.nexted){
-                    stat.nexted = true;
-                    self.showone();
+
+            next.on("click",function(){
+                 if(!nexted){
+                    nexted = true;
+                    self.next();
                 }
             });
-            return piece;
         },
-        showone:function(){
+        hideFuncs:function(){
+            var funcs = this.container.find(".func");
+            funcs.animate({
+                opacity:0
+            },{
+                complete:function(){
+                    funcs.remove();
+                }
+            });
+        },
+        next:function(){
             if(!this.current_data.length){
                 return false;
             }
             var self = this;
             var data = self.current_data.shift();
             var container = self.container;
-
 
             if(this.current_data.length == 1){
                 self.fetch();
@@ -93,6 +154,7 @@ define(function(require,exports,module){
             }
 
             Queue([fadeOutOld,fadeInNew]);
+            return this;
         },
         fetch:function(cb){
             var self = this;
@@ -106,15 +168,16 @@ define(function(require,exports,module){
         play:function(){
             var self = this;
             setTimeout(function(){
-                self.showone();
+                self.next();
             },self.interval);
         },
         start:function(){
             var self = this;
             self.fetch(function(){
-                self.showone();
+                self.next();
                 self.play();
             });
+            return this;
         }
     }
 

@@ -13,12 +13,8 @@ exports.toQueryString = function(obj){
 }
 
 exports.openWin = function(obj){
-    console.log([
-        "height="+obj.height,
-        "width="+obj.width,
-        "top="+($(win).height() - obj.height)/2,
-        "left="+($(win).width() - obj.width)/2].join(","),$(win).height(),obj.height)
-    window.open(obj.url,obj.id,[
+    var win = window;
+    win.open(obj.url,obj.id,[
         "height="+obj.height,
         "width="+obj.width,
         "top="+($(win).height() - obj.height)/2,

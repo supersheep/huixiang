@@ -3,11 +3,16 @@ define(function(require,exports){
     var Piece = require("mod/piece");
     var login = require("mod/login");
 
-    new Piece({
+    var piece = new Piece({
         interval:10000,
-        data:window.pieces,
         container:$(".pieces")
     }).start();
+
+    $(document).on("keyup",function(e){
+        if(e.keyCode==32){
+            piece.next();
+        }
+    });
 
 
     $(".account").on("mouseenter",function(){
