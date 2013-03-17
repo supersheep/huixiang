@@ -29,6 +29,7 @@ def common_check(post=[],get=[]):
 
     return {"post":post_data,"get":get_data,"user":user}
 
+
 class add:
     def POST(self):
         """ add one """
@@ -37,10 +38,18 @@ class add:
         except Exception, e:
             return e
 
-        id = db.insert("piece",content=ctx["post"]["content"],addtime=datetime.now(),link=None)
-        ret["code"] = 200
-        ret["msg"] = {"id":id}
-        return json.dumps(ret)
+        content = ctx["post"]["content"]
+        userid = ctx["user"]["id"]
+        pieces = db.select("piece",where="content=$content",vars={"content":content})
+        if pieces:
+            piece = pieces[0];
+            favrow = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":piece["id"],"userid":userid})
+            if not favrow:
+                db.insert("fav",pieceid=piece["id"],userid=userid)
+            return json.dumps({"code":300,"msg":{"id":piece["id"]}})
+
+        pieceid = db.insert("piece",content=content,user=userid,addtime=datetime.now(),link=None)
+        return json.dumps({"code":200,"msg":{"id":pieceid}})
 
 class fav:
     def POST(self):
@@ -51,9 +60,9 @@ class fav:
             return e
 
         pieceid=ctx["post"]["pieceid"]
-        row = db.select("fav",where="pieceid=$pieceid",vars={"pieceid":pieceid})
+        row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":pieceid,"userid":ctx["user"]["id"]})
         if row:
-            return json.dumps({"code":500,"msg":"you've already fav this piece"})
+            return json.dumps({"code":300,"msg":"you've already fav this piece"})
 
 
         db.insert("fav",pieceid=pieceid,userid=ctx["user"]["id"])
