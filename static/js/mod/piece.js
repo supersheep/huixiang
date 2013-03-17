@@ -35,7 +35,9 @@ define(function(require,exports,module){
             piece.data("data",data);
 
             piece.on("click",function(){
-                self.next();
+                if(self.ready){
+                    self.next();
+                }
             })
 
             inner.on("click",function(){
@@ -49,77 +51,77 @@ define(function(require,exports,module){
 
             return piece;
         },
-        showFuncs:function(){
-            var piece = this.container.find('.piece');
-            var piece_main = piece.find('.piece-main');
-            var txt = piece.find('.txt');
-            var self = this;
-            var faved = false;
-            var nexted = false;
+        // showFuncs:function(){
+        //     var piece = this.container.find('.piece');
+        //     var piece_main = piece.find('.piece-main');
+        //     var txt = piece.find('.txt');
+        //     var self = this;
+        //     var faved = false;
+        //     var nexted = false;
 
-            var funcs = $('<div class="func"></div>');
-            var func_inner = $('<div class="func-inner"></div>');
-            var like = $('<div class="like btn"></div>');
-            var next = $('<div class="next btn"></div>');
-
-
-            var txt_width = parseInt(txt.width());
-            var txt_height = parseInt(txt.height());
-
-            if(piece.find(".func").length){
-                return false;
-            }
+        //     var funcs = $('<div class="func"></div>');
+        //     var func_inner = $('<div class="func-inner"></div>');
+        //     var like = $('<div class="like btn"></div>');
+        //     var next = $('<div class="next btn"></div>');
 
 
-            funcs.css({
-                width:txt_width,
-                height:txt_height
-            });
+        //     var txt_width = parseInt(txt.width());
+        //     var txt_height = parseInt(txt.height());
+
+        //     if(piece.find(".func").length){
+        //         return false;
+        //     }
 
 
-            funcs.append(func_inner);
-            func_inner.append(like);
-            func_inner.append(next);
-            funcs.css("opacity",0);
-            piece_main.append(funcs);
+        //     funcs.css({
+        //         width:txt_width,
+        //         height:txt_height
+        //     });
 
 
-            func_inner.css({
-                left: (txt_width - func_inner.width()) / 2,
-                top: (txt_height - func_inner.height()) / 2
-            });
-
-            funcs.animate({
-                opacity:1
-            });
+        //     funcs.append(func_inner);
+        //     func_inner.append(like);
+        //     func_inner.append(next);
+        //     funcs.css("opacity",0);
+        //     piece_main.append(funcs);
 
 
-            like.on("click",function(){
-                if(!faved){
-                    faved = true;
-                    $.post("/ajax/fav",{
-                        pieceid:piece.data("data").id
-                    });
-                }
-            });
+        //     func_inner.css({
+        //         left: (txt_width - func_inner.width()) / 2,
+        //         top: (txt_height - func_inner.height()) / 2
+        //     });
 
-            next.on("click",function(){
-                 if(!nexted){
-                    nexted = true;
-                    self.next();
-                }
-            });
-        },
-        hideFuncs:function(){
-            var funcs = this.container.find(".func");
-            funcs.animate({
-                opacity:0
-            },{
-                complete:function(){
-                    funcs.remove();
-                }
-            });
-        },
+        //     funcs.animate({
+        //         opacity:1
+        //     });
+
+
+        //     like.on("click",function(){
+        //         if(!faved){
+        //             faved = true;
+        //             $.post("/ajax/fav",{
+        //                 pieceid:piece.data("data").id
+        //             });
+        //         }
+        //     });
+
+        //     next.on("click",function(){
+        //          if(!nexted){
+        //             nexted = true;
+        //             self.next();
+        //         }
+        //     });
+        // },
+        // hideFuncs:function(){
+        //     var funcs = this.container.find(".func");
+        //     funcs.animate({
+        //         opacity:0
+        //     },{
+        //         complete:function(){
+        //             funcs.remove();
+        //         }
+        //     });
+        // },
         next:function(){
             if(!this.current_data.length){
                 return false;
@@ -156,10 +158,14 @@ define(function(require,exports,module){
                     opacity:1
                 },{
                     duration:self.duration,
-                    complete:done
+                    complete:function(){
+                        self.ready = true;
+                    }
                 });
+
             }
 
+            self.ready = false;
             Queue([fadeOutOld,fadeInNew]);
             return this;
         },
