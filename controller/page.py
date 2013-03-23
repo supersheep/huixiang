@@ -11,18 +11,37 @@ config = setting.config
 render = setting.render
 db = setting.db
 
-class index:
+class base:
+    def __init__(self):
+        cur_user = login.logged()
+        self.cur_user = None
+        if cur_user:
+            self.cur_user = cur_user
+            web.template.Template.globals['user'] = cur_user
+
+
+
+class index(base):
     def GET(self):
         """ app index """
-        data = {}
-        cur_user = login.logged()
-        if cur_user:
-            data["user"]=cur_user
-        return render.index(data)
+        return render.index()
 
-class piece:
-    def GET(self):
-        return render.piece()
+class piece(base):
+    def GET(self,id):
+        """ piece """
+        pieces = db.select("piece",where="id=$id",vars={"id":id})
+        if not pieces:
+            return web.notfound("oops")
+
+        piece = pieces[0]
+
+        favs = db.select(["fav","user"], where="fav.userid=user.id and fav.pieceid=$id",vars={"id":id}, limit=5)
+        
+        liked = False
+        if self.cur_user and db.select("fav",where="fav.userid=$id",vars={"id":self.cur_user.id}):
+            liked = True
+
+        return render.piece(piece,favs,liked)
 
 class logout:
     def GET(self):

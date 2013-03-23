@@ -59,4 +59,19 @@
 
 .mbox-content .btn:hover{
     background-color: rgb(105, 93, 82);
-};
+}
+
+.mbox-content .close{
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    border-radius: 10px;
+    width: 20px;
+    height: 20px;
+    background-color: rgb(60, 58, 55);
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.6);
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+}
+

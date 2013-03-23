@@ -1,12 +1,25 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$config['sitename'] - $config['slogan']</title>
-</head>
-<body>
-    
-    hello pieces
+$def with (piece,favs,liked)
+$var title : $config['sitename'] - $config['slogan']
+$var name : piece
+$ liked_str= liked and "liked" or ""
 
-</body>
-</html>
+<div class="piece">
+    <div class="piece-inner"><div class="piece-main">
+    <div class="content">
+        $piece["content"]
+    </div>
+    <div class="by"></div>
+    $if favs:
+        <div class="favs">
+            <div class="bd">
+                <ul>
+                    <li class="like-wrap">
+                        <i class="like $liked_str"></i>
+                    </li>
+                    $for user in favs:
+                        <li><img src="$:user["avatar"]" /></li>
+                </ul>
+            </div>
+        </div>
+    </div></div>
+</div>
