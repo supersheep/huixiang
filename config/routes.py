@@ -9,5 +9,6 @@ urls = (
     '/auth/(douban|weibo)', page + 'auth',
     '/ajax/add', ajax + 'add',
     '/ajax/fav', ajax + 'fav',
+    '/ajax/unfav', ajax + 'unfav',
     '/ajax/pieces', ajax + 'pieces'
 )

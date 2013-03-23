@@ -9,16 +9,19 @@ $ liked_str= liked and "liked" or ""
         $piece["content"]
     </div>
     <div class="by"></div>
-    $if favs:
         <div class="favs">
             <div class="bd">
-                <ul>
-                    <li class="like-wrap">
-                        <i class="like $liked_str"></i>
-                    </li>
-                    $for user in favs:
-                        <li><img src="$:user["avatar"]" /></li>
+                <a class="like-wrap">
+                    <i class="like $liked_str" data-id="$piece["id"]"></i>
+                </a>
+                <div class="people">
+                    <ul class="$liked_str">
+                        <li><img src="$user["avatar"]" /></li>
+                        $for faver in favs:
+                            $if not faver["id"]==user["id"]:
+                                <li><img src="$:faver["avatar"]" /></li>
                 </ul>
+                </div>
             </div>
         </div>
     </div></div>

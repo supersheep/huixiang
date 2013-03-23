@@ -38,9 +38,9 @@ class piece(base):
         favs = db.select(["fav","user"], where="fav.userid=user.id and fav.pieceid=$id",vars={"id":id}, limit=5)
         
         liked = False
-        if self.cur_user and db.select("fav",where="fav.userid=$id",vars={"id":self.cur_user.id}):
+        where = {"id":id,"userid":self.cur_user.id}
+        if self.cur_user and db.select("fav",where="fav.userid=$userid and pieceid=$id",vars=where):
             liked = True
-
         return render.piece(piece,favs,liked)
 
 class logout:

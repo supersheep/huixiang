@@ -19,7 +19,7 @@
     width: 400px;
     padding: 40px 40px 20px 40px;
     background-color: #fff;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.6);
+    box-shadow: 0 0 20px 0 rgba(0,0,0,0.2);
     margin: 0 auto;
 }
 
@@ -30,16 +30,27 @@
 .piece .favs{
 }
 
-.piece .favs ul:after{
+
+.favs .bd:after,.piece .favs .people:after{
     content:"\20";
     clear:both;
     display: block;
+}
+
+.piece .favs .bd{
+    position: relative;
 }
 
 .piece .favs .like-wrap{
     margin-right: 5px;
     padding-right: 5px;
     border-right: 1px dashed #ccc;
+    background: #fff;
+    float:left;
+}
+
+.piece .favs .like-wrap .liked{
+    background-position: -24px 0;
 }
 
 .piece .favs .like{
@@ -51,12 +62,27 @@
     background-position: 0 0;
 }
 
-.piece .favs .liked{
-    background-position: -24px 0;
+.piece .favs .people{
+    overflow: hidden;
+    height: 24px;
+    width: 360px;
+    position: relative;
+    float: left;
+}
+
+.piece .favs .people ul{
+    position:absolute;
+    left: -29px;
+    -webkit-transition:left .25s linear;
+}
+
+.piece .favs .people .liked{
+    left: 0;
 }
 
 .piece .favs li{
     float:left;
+    margin-right: 5px;
 }
 
 .piece .favs img{

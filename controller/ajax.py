@@ -68,6 +68,24 @@ class fav:
         db.insert("fav",pieceid=pieceid,userid=ctx["user"]["id"])
         return json.dumps({"code":200,"msg":"ok"})
 
+class unfav:
+    def POST(self):
+        """ fav a piece """
+        try:
+            ctx = common_check(post=["pieceid"])
+        except Exception, e:
+            return e
+
+        pieceid=ctx["post"]["pieceid"]
+        where={"pieceid":pieceid,"userid":ctx["user"]["id"]}
+        row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars=where)
+        if not row:
+            return json.dumps({"code":300,"msg":"you've not faved this piece"})
+
+
+        db.delete("fav",where="pieceid=$pieceid and userid=$userid",vars=where)
+        return json.dumps({"code":200,"msg":"ok"})
+
 class pieces:
     def GET(self):
         "get pieces"
