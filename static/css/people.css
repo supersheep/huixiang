@@ -1,0 +1,30 @@
+#bd{
+    margin: 0 auto;
+    width: 400px;
+}
+
+#ft{
+    position: static;
+    padding-bottom: 15px;
+}
+
+.favs{
+    margin: 20px;
+}
+
+.favs .content{
+    padding-bottom: 10px;
+    color: #333;
+}
+
+.favs .piece{
+    padding: 20px 20px 15px 20px;
+    margin: 15px;
+    background-color: #fff;
+}
+
+.favs .addtime{
+    color:#666;
+    text-align: right;
+    font-size: 12px;
+}

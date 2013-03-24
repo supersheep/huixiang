@@ -41,14 +41,16 @@ class add:
         content = ctx["post"]["content"]
         userid = ctx["user"]["id"]
         pieces = db.select("piece",where="content=$content",vars={"content":content})
-        if pieces:
-            piece = pieces[0];
-            favrow = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":piece["id"],"userid":userid})
-            if not favrow:
-                db.insert("fav",pieceid=piece["id"],userid=userid)
-            return json.dumps({"code":300,"msg":{"id":piece["id"]}})
+        # 检查是否已有相同内容
+        if not pieces:
+            pieceid = db.insert("piece",content=content,user=userid,addtime=datetime.now(),link=None)
+        else:
+            pieceid = pieces[0]["id"]
 
-        pieceid = db.insert("piece",content=content,user=userid,addtime=datetime.now(),link=None)
+        favrow = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":pieceid,"userid":userid})
+        if not favrow:
+            db.insert("fav",pieceid=pieceid,userid=userid)
+
         return json.dumps({"code":200,"msg":{"id":pieceid}})
 
 class fav:
@@ -64,8 +66,7 @@ class fav:
         if row:
             return json.dumps({"code":300,"msg":"you've already fav this piece"})
 
-
-        db.insert("fav",pieceid=pieceid,userid=ctx["user"]["id"])
+        db.insert("fav",pieceid=pieceid,userid=ctx["user"]["id"],addtime=datetime.now())
         return json.dumps({"code":200,"msg":"ok"})
 
 class unfav:
