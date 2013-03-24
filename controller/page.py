@@ -33,9 +33,9 @@ class people(base):
         """ people """
         super(people,self).GET()
         favs = db.select(["fav","piece","user"],what="avatar,piece.id,piece.content,fav.addtime",where="fav.userid=user.id and fav.pieceid=piece.id and user.id=$id",vars={"id":id},limit=5)
-        print 1
+        
         mine = db.select(["piece","user"],what="piece.id,piece.content,piece.addtime",where="piece.user=user.id and user.id=$id",vars={"id":id},limit=5)
-        print 2
+        
         return render.people(favs,mine)
 
 class piece(base):
