@@ -22,7 +22,7 @@ def logged():
         return False
 
     # 2. login token中找出对应记录，得到userid
-    rows=db.select("login",{"hash":hash},where="hash=$hash")
+    rows=db.select("login",what="userid,time,hash",vars={"hash":hash},where="hash=$hash")
 
     if not rows:
         logout()
@@ -39,7 +39,7 @@ def logged():
         return False
 
     # 3.2 匹配后寻找用户，未找到视为未登录
-    user = db.select("user",{"id":session["userid"]},where="id=$id")
+    user = db.select("user",what="id,avatar",where="id=$id",vars={"id":session["userid"]})
     if not user:
         logout()
         return False

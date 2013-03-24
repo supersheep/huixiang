@@ -32,25 +32,25 @@ class people(base):
     def GET(self,id):
         """ people """
         super(people,self).GET()
-        # favs = db.select("favs")
-        # origin
-        return render.people(1)
+        favs = db.select(["fav","piece","user"],what="avatar,piece.id,piece.content",where="fav.userid=user.id and fav.pieceid=piece.id and user.id=$id",vars={"id":id},limit=5)
+
+        return render.people(favs)
 
 class piece(base):
     def GET(self,id):
         """ piece """
         super(piece,self).GET()
-        pieces = db.select("piece",where="id=$id",vars={"id":id})
+        pieces = db.select("piece",what="id,content",where="id=$id",vars={"id":id})
         if not pieces:
             return web.notfound("oops")
 
         curpiece = pieces[0]
 
-        favs = db.select(["fav","user"], where="fav.userid=user.id and fav.pieceid=$id",vars={"id":id}, limit=5)
+        favs = db.select(["fav","user"],what="avatar,user.id", where="fav.userid=user.id and fav.pieceid=$id",vars={"id":id}, limit=5)
         
         liked = False
         where = {"id":id,"userid":self.cur_user.id}
-        if self.cur_user and db.select("fav",where="fav.userid=$userid and pieceid=$id",vars=where):
+        if self.cur_user and db.select("fav",what="id",where="fav.userid=$userid and pieceid=$id",vars=where):
             liked = True
         return render.piece(curpiece,favs,liked)
 

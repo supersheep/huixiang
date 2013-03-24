@@ -1,4 +1,11 @@
-$def with (people)
+$def with (favs)
 $var name : people
 
-
+<div class="favs">
+    $for piece in favs
+        <div class="piece">
+            <a href="/piece/$piece["id"]">
+                $piece["content"]
+            </a>
+        </div>
+</div>
