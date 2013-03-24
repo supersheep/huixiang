@@ -1,4 +1,5 @@
 define(function(require,exports){
+    require("mod/comm");
     var liked_elems = $(".like,.people ul");
     var likebtn = $(".like");
     var id = likebtn.attr("data-id");

@@ -11,29 +11,40 @@ config = setting.config
 render = setting.render
 db = setting.db
 
-class base:
+class base(object):
     def __init__(self):
+        pass
+    def GET(self):
         cur_user = login.logged()
         self.cur_user = None
-        if cur_user:
-            self.cur_user = cur_user
-            web.template.Template.globals['user'] = cur_user
+        self.cur_user = cur_user
+        web.template.Template.globals['user'] = cur_user
 
 
 
 class index(base):
     def GET(self):
         """ app index """
+        super(index,self).GET()
         return render.index()
+
+class people(base):
+    def GET(self,id):
+        """ people """
+        super(people,self).GET()
+        # favs = db.select("favs")
+        # origin
+        return render.people(1)
 
 class piece(base):
     def GET(self,id):
         """ piece """
+        super(piece,self).GET()
         pieces = db.select("piece",where="id=$id",vars={"id":id})
         if not pieces:
             return web.notfound("oops")
 
-        piece = pieces[0]
+        curpiece = pieces[0]
 
         favs = db.select(["fav","user"], where="fav.userid=user.id and fav.pieceid=$id",vars={"id":id}, limit=5)
         
@@ -41,7 +52,7 @@ class piece(base):
         where = {"id":id,"userid":self.cur_user.id}
         if self.cur_user and db.select("fav",where="fav.userid=$userid and pieceid=$id",vars=where):
             liked = True
-        return render.piece(piece,favs,liked)
+        return render.piece(curpiece,favs,liked)
 
 class logout:
     def GET(self):

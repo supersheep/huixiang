@@ -5,6 +5,7 @@ ajax = "controller.ajax."
 urls = (
     '/', page + 'index',
     '/piece/(\d+)', page + 'piece',
+    '/people/(\d+)', page + 'people',
     '/logout', page +'logout',
     '/auth/(douban|weibo)', page + 'auth',
     '/ajax/add', ajax + 'add',
