@@ -5,7 +5,7 @@ define(function(require,exports){
     exports.popdouban = function(){
         var qs = util.toQueryString({
             client_id:appcfg.douban_apikey,
-            redirect_uri:"http://"+ location.host + ":" + location.port +"/auth/douban",
+            redirect_uri:"http://"+ location.host + (location.port ? (":" + location.port) : "") +"/auth/douban",
             response_type:"code"
         });
         util.openWin({
