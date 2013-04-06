@@ -50,8 +50,9 @@ def logged():
     
 def login(userid):
     # 1. sha1(salt+ip+userid+now)
-    now=datetime.now()
-    hash=sha1(salt+web.ctx.ip+str(userid)+str(now))
+    now=str(datetime.now())
+    userid=str(userid)
+    hash=sha1(salt+web.ctx.ip+userid+now)
     # 2. 储存hash id,userid,hash
     db.insert("login",userid=userid,hash=hash,time=now)
     # 3. write cookie ua:sha1
