@@ -12,6 +12,11 @@ define(function(require,exports){
         Login.popdouban();
     });
 
+
+    $(".login_weibo").on("click",function(){
+        Login.popweibo();
+    });
+
     var html = '<div class="close">×</div><div class="box-text">'
         +'<textarea class="textarea" placeholder="记一句..." maxlength="70"></textarea>'
         +'</div>'

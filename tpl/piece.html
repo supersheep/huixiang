@@ -15,6 +15,7 @@ $ liked_str= liked and "liked" or ""
                 </a>
                 <div class="people">
                     <ul class="$liked_str">
+                        $if user:
                         <li><a href="/people/$user["id"]"><img src="$user["avatar"]" /></a></li>
                         $for faver in favs:
                             $if not faver["id"]==user["id"]:

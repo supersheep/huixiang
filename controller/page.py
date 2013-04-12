@@ -5,6 +5,7 @@ from datetime import datetime
 from config import setting
 from model import user
 from util import login
+from util.weibo import APIClient
 import json
 
 config = setting.config
@@ -51,7 +52,9 @@ class piece(base):
         favs = db.select(["fav","user"],what="avatar,user.id", where="fav.userid=user.id and fav.pieceid=$id",vars={"id":id}, limit=5)
         
         liked = False
-        where = {"id":id,"userid":self.cur_user.id}
+        where = {"id":id}
+        if self.cur_user:
+            where["userid"] = self.cur_user.id;
         if self.cur_user and db.select("fav",what="id",where="fav.userid=$userid and pieceid=$id",vars=where):
             liked = True
         return render.piece(curpiece,favs,liked)
@@ -60,6 +63,21 @@ class logout:
     def GET(self):
         login.logout()
         web.seeother("/")
+
+class auth_redirect:
+    def GET(self,name):
+        print "aaaaaaaa";
+        if not name in ("weibo","douban"):
+            return "invalid sitename"
+        else:
+            if name == "weibo":
+                key = config["auth"][name]["key"]
+                secret = config["auth"][name]["secret"]
+                callback = config["auth"][name]["callback"]
+                client = APIClient(app_key=key, app_secret=secret, redirect_uri=callback)
+                url = client.get_authorize_url()
+        print url
+        web.seeother(url)
 
 class auth:
     def GET(self,name):
