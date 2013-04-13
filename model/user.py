@@ -3,38 +3,53 @@ from util import login
 
 db = setting.db
 
-# 404 no name
-# 405 no avatar
-# 406 no id
-# 407 no access token
-def check(info):
-    for key in ["name","avatar","id","access_token"]:
+
+def check(name,info):
+    for key in ["name","avatar",name+"_id",name+"_access_token"]:
+        # print "key",key
         if not info[key]:
             return "no "+key
     return True
 
-def new_douban_user(info):
-    if check(info):
-        db.insert("user",name=info["name"],avatar=info["avatar"],douban_access_token=info["access_token"],douban_id=info["id"])
+def parse_data(name,info):
+    data = {}
+
+    data[name+"_id"] = str(info["id"])
+    data["name"] = info["name"]
+    data[name+"_access_token"] = info["access_token"]
+    
+    if name == "douban":
+        data["avatar"] = info["avatar"]
+    elif name == "weibo":
+        data["avatar"] = info["profile_image_url"]
+    return data
+
+def new_oauth_user(name,info):
+    data = parse_data(name,info)
+
+    if check(name,data):
+        db.insert("user",**data)
 
 
-def exist_douban_user(info):
-    if not check(info):
+def exist_oauth_user(name,info):
+    data = parse_data(name,info)
+    if not check(name,data):
         return False
 
-    rows = db.select("user",where="douban_id="+info["id"])
+    rows = db.select("user",where=name+"_id="+data[name+"_id"])
     if rows:
         return True
     else:
         return False
 
 
-def login_douban_user(info):
-    if not check(info):
+def login_oauth_user(name,info):
+    data = parse_data(name,info)
+    if not check(name,data):
         print "login arguments error"
         return False
 
-    users = db.select("user",where="douban_id="+info["id"])
+    users = db.select("user",where=name+"_id="+data[name+"_id"])
     if not users:
         print "user not found"
         return False
