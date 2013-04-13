@@ -22,7 +22,7 @@ def logged():
         return False
 
     # 2. login token中找出对应记录，得到userid
-    rows=db.select("login",what="userid,time,hash",vars={"hash":hash},where="hash=$hash")
+    rows=db.select("login",what="userid,time,hash",vars={"hash":hash},where="hash=$hash and discard=0")
 
     if not rows:
         logout()
@@ -54,7 +54,7 @@ def login(userid):
     userid=str(userid)
     hash=sha1(salt+web.ctx.ip+userid+now)
     # 2. 储存hash id,userid,hash
-    db.insert("login",userid=userid,hash=hash,time=now)
+    db.insert("login",userid=userid,hash=hash,time=now,discard=0)
     # 3. write cookie ua:sha1
     web.setcookie('cu', hash, 3600*24*30)
     
@@ -64,6 +64,6 @@ def logout():
     if hash:
     # 1. login token中找出记录，清除
         print hash
-        db.delete("login",vars={"hash":hash},where="hash=$hash")
+        db.update("login",vars={"hash":hash},where="hash=$hash",discard=1)
     # 2. 清除cookie
         web.setcookie('cu', hash)

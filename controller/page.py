@@ -6,7 +6,6 @@ from datetime import datetime
 from config import setting
 from model import user
 from util import login
-from util.weibo import APIClient
 import json
 
 config = setting.config
