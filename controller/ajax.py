@@ -55,15 +55,15 @@ class add:
 
         share = ctx["post"]["share"].split(",")
         for key in share:
+            Client = None
             if key == "douban":
                 Client = oauth.douban
             elif key == "weibo":
                 Client = oauth.weibo
-            print ctx["user"]
-            client = Client(ctx["user"])
-            # content = unicode(content, "utf-8");
-            post_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(pieceid)
-            client.post(post_content)
+            if Client:
+                client = Client(ctx["user"])
+                post_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(pieceid)
+                client.post(post_content)
 
         return json.dumps({"code":200,"msg":{"id":pieceid}})
 
