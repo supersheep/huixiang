@@ -84,7 +84,8 @@ class bookmarklet(base):
         ctx = web.ctx
         input = web.input()
         url = input["url"]
-        data = {"url":url,"title":input["title"]}
+        title = urllib.unquote(input["title"])
+        data = {"url":url,"title":title}
         if len(url) > 36:
             shorturl = url[:36]+"..."
         else:
@@ -93,7 +94,6 @@ class bookmarklet(base):
         data["shorturl"] = shorturl
         # return ctx.home + ctx.fullpath
         if not self.cur_user:
-            print "come here"
             web.seeother("/login?redirect_uri="+urllib.quote_plus(ctx.home + ctx.fullpath))
         return blankrender.bookmarklet(data)
 
