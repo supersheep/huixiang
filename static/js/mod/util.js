@@ -21,5 +21,23 @@ exports.openWin = function(obj){
         "left="+($(win).width() - obj.width)/2].join(","))   
 }
 
+exports.substitute = function(tpl,obj){
+    for(var key in obj){
+        tpl = tpl.replace(new RegExp("{"+key+"}","g"),obj[key])
+    }
+    return tpl;
+}
+
+exports.parseQuery = function(query){
+    var obj = {};
+    var pairs = query.split("&");
+    var splited;
+    for(var i=0,l=pairs.length;i<l;i++){
+        splited = pairs.split("=")
+        obj[splited[0]] = obj[splited[1]]
+    }
+    return obj;
+}
+
 
 });

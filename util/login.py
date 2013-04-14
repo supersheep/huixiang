@@ -39,7 +39,7 @@ def logged():
         return False
 
     # 3.2 匹配后寻找用户，未找到视为未登录
-    user = db.select("user",what="id,avatar",where="id=$id",vars={"id":session["userid"]})
+    user = db.select("user",what="id,avatar,douban_access_token,weibo_access_token",where="id=$id",vars={"id":session["userid"]})
     if not user:
         logout()
         return False

@@ -1,4 +1,4 @@
-html,body,div,ul{margin:0;padding:0;}
+html,body,div,ul,span,a{margin:0;padding:0;}
 body{background:rgb(207, 196, 173);font-family: 'Hiragino Sans GB','Verdana','Microsoft Yahei',simsun,serif;}
 ul{list-style-type: none;}
 a{text-decoration: none;}
@@ -99,17 +99,59 @@ a{text-decoration: none;}
     border-radius: 0 0 3px 3px;
 }
 
+.share{
+    float: right;
+    margin: 5px 10px;
+    position: relative;
+    top: -2px;
+}
+
+.share .lbl{   
+    color:#fff;
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+    display: inline-block;
+}
+
+.share .sharebtn{
+    background-image: url("/static/img/share_icons.png");
+    width: 24px;
+    height: 19px;
+    position: relative;
+    top: 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+#toweibo{
+    background-position: -50px 0;
+}
+
+#toweibo.active{
+    background-position: -50px -20px;
+}
+
+#todouban{
+    background-position: -72px 0;
+}
+
+#todouban.active{
+    background-position: -72px -20px;
+}
+
 .mbox-content .btn:hover{
     background-color: rgb(105, 93, 82);
 }
 
-.mbox-content .close{
+.mbox-win .close{
     position: absolute;
     top: -10px;
     right: -10px;
     border-radius: 10px;
     width: 20px;
     height: 20px;
+    line-height: 20px;
     background-color: rgb(60, 58, 55);
     box-shadow: 0 0 5px 0 rgba(0,0,0,0.6);
     text-align: center;

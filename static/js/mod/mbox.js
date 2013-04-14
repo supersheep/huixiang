@@ -3,7 +3,7 @@ define(function(require,exports,module){
     var body = $("body");
     var win = $(window);
 
-    var wrap_html = '<div class="mbox-win"><div class="close"></div><div class="mbox-content"></div></div>';
+    var wrap_html = '<div class="mbox-win"><div class="close">x</div><div class="mbox-content"></div></div>';
     var instance = null;
 
     function Mbox(opt){
@@ -14,6 +14,9 @@ define(function(require,exports,module){
         var content = $(opt.content);
         var wrap = $(wrap_html);
         wrap.find(".mbox-content").append(content);
+        wrap.find(".close").on("click",function(){
+            instance.close();
+        });
         this._elem = wrap;
         this._offset = opt._offset || {top:0,left:0};
         this._opened = false;
@@ -33,6 +36,9 @@ define(function(require,exports,module){
         instance.position();
     }
 
+    Mbox.close = function(){
+        instance && instance.close();
+    }
 
     Mbox.prototype = {
         opened:function(){

@@ -1,0 +1,55 @@
+$def with (data)
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>茴香</title>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <script src="/static/js/jquery-1.9.1.min.js"></script>
+    <style>
+
+    .linkbox{
+       text-align: right;
+       padding: 5px 20px;
+       font-size: 12px;
+       margin-top: -15px;
+    }
+    .linkbox a{
+       color:#666;
+    }
+    .succ{
+       text-align: center;
+       margin: 10px auto;
+    }
+    .succ a{
+       color:#666;
+       margin: 0 5px;
+       font-size: 13px;
+    }
+    .succ .gnc{
+       color:#333;
+    }
+    </style>
+</head>
+<body>
+    <div id="box" class="mbox-content">
+        <div class="box-text">
+            <textarea class="textarea" placeholder="记一句..." maxlength="70">$data['title']</textarea>
+        </div>
+        <div class="linkbox">
+            来自：
+            <a href="$data['url']" target="_blank" class="link">$data['shorturl']</a>
+        </div>
+        <div class="box-bottom">
+            <div class="hint" style="display:none;">最多只能输入70个字</div>
+            <a class="btn" href="#">摘下</a>
+            <div class="share">
+                <span class="lbl">分享：</span>
+                <a href="#toweibo" id="toweibo" data-type="weibo" class="sharebtn"></a>
+                <a href="#todouban" id="todouban" data-type="douban" class="sharebtn"></a>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/sea.js" data-config="config" data-main="bookmarkpop"></script>
+</body>
+</html>

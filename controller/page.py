@@ -5,18 +5,19 @@ import urllib
 from datetime import datetime
 from config import setting
 from model import user
-from util import login
+from util import login as login_mod
 import json
 
 config = setting.config
 render = setting.render
+blankrender = setting.blankrender
 db = setting.db
 
 class base(object):
     def __init__(self):
         pass
     def GET(self):
-        cur_user = login.logged()
+        cur_user = login_mod.logged()
         self.cur_user = None
         self.cur_user = cur_user
         web.template.Template.globals['user'] = cur_user
@@ -63,8 +64,38 @@ class piece(base):
 
 class logout:
     def GET(self):
-        login.logout()
+        login_mod.logout()
         web.seeother("/")
+
+class login:
+    def GET(self):
+        input = web.input()
+        if login_mod.logged():
+            if "redirect" in input:
+                web.redirect(urllib.unquote_plus(input["redirect"]))
+            else:
+                web.redirect("/")
+
+        return blankrender.login()
+
+class bookmarklet(base):
+    def GET(self):
+        super(bookmarklet,self).GET()
+        ctx = web.ctx
+        input = web.input()
+        url = input["url"]
+        data = {"url":url,"title":input["title"]}
+        if len(url) > 36:
+            shorturl = url[:36]+"..."
+        else:
+            shorturl = url
+
+        data["shorturl"] = shorturl
+        # return ctx.home + ctx.fullpath
+        if not self.cur_user:
+            print "come here"
+            web.seeother("/login?redirect_uri="+urllib.quote_plus(ctx.home + ctx.fullpath))
+        return blankrender.bookmarklet(data)
 
 class auth_redirect:
     def GET(self,name):

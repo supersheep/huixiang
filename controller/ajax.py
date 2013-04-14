@@ -4,7 +4,9 @@ import requests
 from datetime import datetime
 from config import setting
 from model import user
+import urllib
 from util import login
+from util import oauth
 import json
 
 config = setting.config
@@ -51,6 +53,18 @@ class add:
         if not favrow:
             db.insert("fav",pieceid=pieceid,userid=userid)
 
+        share = ctx["post"]["share"].split(",")
+        for key in share:
+            if key == "douban":
+                Client = oauth.douban
+            elif key == "weibo":
+                Client = oauth.weibo
+            print ctx["user"]
+            client = Client(ctx["user"])
+            # content = unicode(content, "utf-8");
+            post_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(pieceid)
+            client.post(post_content)
+
         return json.dumps({"code":200,"msg":{"id":pieceid}})
 
 class fav:
@@ -63,11 +77,12 @@ class fav:
 
         pieceid=ctx["post"]["pieceid"]
         row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":pieceid,"userid":ctx["user"]["id"]})
+
         if row:
             return json.dumps({"code":300,"msg":"you've already fav this piece"})
 
         db.insert("fav",pieceid=pieceid,userid=ctx["user"]["id"],addtime=datetime.now())
-        return json.dumps({"code":200,"msg":"ok"})
+        return json.dumps({"code":200,"msg":{"id":pieceid}})
 
 class unfav:
     def POST(self):

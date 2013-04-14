@@ -38,90 +38,14 @@ define(function(require,exports,module){
                 if(self.ready){
                     self.next();
                 }
-            })
+            });
 
             inner.on("click",function(){
                 window.open("/piece/"+data.id);
-            })
-            // inner.on("mouseenter",function(){
-            //     self.showFuncs();
-            // }).on("mouseleave",function(){
-            //     self.hideFuncs();
-            // });
+            });
 
             return piece;
         },
-        // showFuncs:function(){
-        //     var piece = this.container.find('.piece');
-        //     var piece_main = piece.find('.piece-main');
-        //     var txt = piece.find('.txt');
-        //     var self = this;
-        //     var faved = false;
-        //     var nexted = false;
-
-        //     var funcs = $('<div class="func"></div>');
-        //     var func_inner = $('<div class="func-inner"></div>');
-        //     var like = $('<div class="like btn"></div>');
-        //     var next = $('<div class="next btn"></div>');
-
-
-        //     var txt_width = parseInt(txt.width());
-        //     var txt_height = parseInt(txt.height());
-
-        //     if(piece.find(".func").length){
-        //         return false;
-        //     }
-
-
-        //     funcs.css({
-        //         width:txt_width,
-        //         height:txt_height
-        //     });
-
-
-        //     funcs.append(func_inner);
-        //     func_inner.append(like);
-        //     func_inner.append(next);
-        //     funcs.css("opacity",0);
-        //     piece_main.append(funcs);
-
-
-        //     func_inner.css({
-        //         left: (txt_width - func_inner.width()) / 2,
-        //         top: (txt_height - func_inner.height()) / 2
-        //     });
-
-        //     funcs.animate({
-        //         opacity:1
-        //     });
-
-
-        //     like.on("click",function(){
-        //         if(!faved){
-        //             faved = true;
-        //             $.post("/ajax/fav",{
-        //                 pieceid:piece.data("data").id
-        //             });
-        //         }
-        //     });
-
-        //     next.on("click",function(){
-        //          if(!nexted){
-        //             nexted = true;
-        //             self.next();
-        //         }
-        //     });
-        // },
-        // hideFuncs:function(){
-        //     var funcs = this.container.find(".func");
-        //     funcs.animate({
-        //         opacity:0
-        //     },{
-        //         complete:function(){
-        //             funcs.remove();
-        //         }
-        //     });
-        // },
         next:function(){
             if(!this.current_data.length){
                 return false;
