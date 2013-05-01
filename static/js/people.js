@@ -4,10 +4,10 @@ define(function(require,exports){
 
     $(".piece").each(function(i,e){
         var el = $(e),
+            id = el.attr("data-id"),
             del = el.find(".del"),
             delay;
 
-        id = el.attr("data-id");
         el.on("mouseenter",function(){
             clearTimeout(delay);
             del.animate({
