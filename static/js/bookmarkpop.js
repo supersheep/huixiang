@@ -1,5 +1,6 @@
 define(function(require,exports,module){
     var WriteBox = require("mod/writebox");
+    var Login = require("mod/login");
     var substitute = require("mod/util").substitute;
     var succtpl = '<div class="succ">'
         +'<img src="/static/img/huixiang_48.png" alt="">'
@@ -10,6 +11,16 @@ define(function(require,exports,module){
             +'</p>'
         +'</div>';
 
+    $(".login_douban").on("click",function(){
+        Login.popdouban();
+        return false;
+    });
+
+
+    $(".login_weibo").on("click",function(){
+        Login.popweibo();
+        return false;
+    });
 
     WriteBox.init($("#box"));
     WriteBox.on("add",function(json){

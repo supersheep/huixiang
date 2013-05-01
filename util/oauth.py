@@ -30,7 +30,11 @@ class douban:
     def post(self,content):
         if not self._token:
             return
-        
+        res = requests.post("https://api.douban.com/shuo/v2/statuses/"
+            ,data={"text":content.encode('utf8')}
+            ,headers={"Authorization":"Bearer "+self._token})
+        res_json = res.json()
+        print res_json
 
 
 

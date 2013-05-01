@@ -1,6 +1,6 @@
-$def with (favs,user)
+$def with (favs,page_user)
 $var name : people
-$var title : $user.name
+$var title : $page_user.name
 
 $if len(favs)==0:
     <div class="empty">
@@ -10,7 +10,7 @@ $else:
     <div class="favs">
         $for piece in favs
             <div class="piece" data-id="$piece["id"]">
-                $if user:
+                $if page_user and user and page_user["id"] == user["id"]:
                     <div class="del">x</div>
                 <div class="piece-body">
                     <div class="content">

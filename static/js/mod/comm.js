@@ -11,11 +11,13 @@ define(function(require,exports){
 
     $(".login_douban").on("click",function(){
         Login.popdouban();
+        return false;
     });
 
 
     $(".login_weibo").on("click",function(){
         Login.popweibo();
+        return false;
     });
 
     var html = '<div class="box-text">'
@@ -33,16 +35,16 @@ define(function(require,exports){
             content:content
         }).open();
         WriteBox.init(content);
-        WriteBox.on("add",function(){
+        WriteBox.on("add",function(json){
             Mbox.success("添加成功");
+            location.href="/piece/"+json.msg.id
         });
         WriteBox.on("err",function(){
             Mbox.fail("发送错误");
         });
         WriteBox.on("done",function(id){
             setTimeout(function(){
-                Mbox.close()
-                location.href="/piece/"+id;
+                Mbox.close();
             },1000);
         });
         return false;

@@ -30,15 +30,19 @@ def new_oauth_user(name,info):
     if check(name,data):
         db.insert("user",**data)
 
+def update_access_token(name,id,token):
+    data = {}
+    data[name+"_access_token"] = token
+    db.update("user",where=name+"_id=$id",vars={"id":id},**data)
 
 def exist_oauth_user(name,info):
     data = parse_data(name,info)
     if not check(name,data):
         return False
 
-    rows = db.select("user",where=name+"_id="+data[name+"_id"])
+    rows = db.select("user",where=name+"_id=$id",vars={"id":data[name+"_id"]})
     if rows:
-        return True
+        return rows[0]
     else:
         return False
 
@@ -46,12 +50,10 @@ def exist_oauth_user(name,info):
 def login_oauth_user(name,info):
     data = parse_data(name,info)
     if not check(name,data):
-        print "login arguments error"
-        return False
+        raise Exception("login arguments error")
 
     users = db.select("user",where=name+"_id="+data[name+"_id"])
     if not users:
-        print "user not found"
-        return False
+        raise Exception("user not found")
 
     login.login(users[0]["id"])

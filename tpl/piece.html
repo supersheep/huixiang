@@ -20,7 +20,7 @@ $ liked_str= liked and "liked" or ""
                         $for faver in favs:
                             $if not faver["id"]==user["id"]:
                                 <li><a href="/people/$faver["id"]"><img src="$:faver["avatar"]" /></a></li>
-                </ul>
+                    </ul>
                 </div>
             </div>
         </div>

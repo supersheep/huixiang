@@ -75,6 +75,9 @@
 
     function determine(text){
         if(!text || text.length > 70){
+            if(text.length > 70){
+                showHint("茴香不支持70字以上的句子");
+            }
             return false;
         }else{
             return true;
@@ -86,23 +89,30 @@
         if(determine(text)){
             createPiece(text);  
         }else{
-            showHint();
+            showHint("插件已加载，现在可以选择文字来摘录咯。");
         }
     }
 
-    function showHint(){
-        var hint = document.createElement("div");
-        hint.style.cssText = "background-color:rgb(249, 213, 19);"
-        +"color:#333;"
-        +"padding:8px;"
-        +"position:fixed;"
-        +"top:0;"
-        +"left:0;"
-        +"z-index:99999;"
-        +"font-size:12px;"
+    function showHint(text){
+        var hint,
+            id = "_huixiang_hint";
 
-        hint.innerHTML = "插件已加载，现在可以选择文字来摘录咯。"
-        document.body.appendChild(hint);
+        hint = document.getElementById(id);
+        if(!hint){
+            hint = document.createElement("div");
+            hint.setAttribute("id",id);
+            hint.style.cssText = "background-color:rgb(249, 213, 19);"
+            +"color:#333;"
+            +"padding:8px;"
+            +"position:fixed;"
+            +"top:0;"
+            +"left:0;"
+            +"z-index:99999;"
+            +"font-size:12px;";
+            document.body.appendChild(hint);
+        }
+
+        hint.innerHTML = text;
         setTimeout(function(){
             document.body.removeChild(hint);
         },3000);

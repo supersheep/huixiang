@@ -13,7 +13,7 @@ def sha1(str):
     m.update(str)
     return m.hexdigest()
 
-# 这里的安全性还是稍弱，但也尚可，先用起来吧
+
 def logged():
     # 1. 去除cookie cu
     hash = web.cookies().get("cu")
@@ -39,7 +39,7 @@ def logged():
         return False
 
     # 3.2 匹配后寻找用户，未找到视为未登录
-    user = db.select("user",what="id,avatar,douban_access_token,weibo_access_token",where="id=$id",vars={"id":session["userid"]})
+    user = db.select("user",what="id,avatar,douban_id,weibo_id,douban_access_token,weibo_access_token",where="id=$id",vars={"id":session["userid"]})
     if not user:
         logout()
         return False

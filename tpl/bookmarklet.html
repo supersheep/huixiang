@@ -5,7 +5,7 @@ $def with (data)
     <meta charset="UTF-8">
     <title>茴香</title>
     <link rel="stylesheet" href="/static/css/base.css">
-    <script src="/static/js/jquery-1.9.1.min.js"></script>
+    <script src="/static/js/lib/jquery-1.9.1.min.js"></script>
     <style>
 
     .linkbox{
@@ -29,27 +29,56 @@ $def with (data)
     .succ .gnc{
        color:#333;
     }
+    .box-title{
+      background-color: rgb(60, 58, 55);
+      color:#fff;
+      padding:5px;
+      text-align: center;
+    }
+    .box-login-body{
+      text-align: center;
+    }
+    .login_douban{
+      margin-right: 10px;
+    }
+    .login_weibo{
+      margin-left: 10px;
+    }
     </style>
 </head>
 <body>
-    <div id="box" class="mbox-content">
+    $if user:
+      <div id="box" class="mbox-content">
+          <div class="box-text">
+              <textarea class="textarea" placeholder="记一句..." maxlength="70">$data['title']</textarea>
+          </div>
+          <div class="linkbox">
+              来自：
+              <a href="$data['url']" target="_blank" class="link">$data['shorturl']</a>
+          </div>
+          <div class="box-bottom">
+              <div class="hint" style="display:none;">最多只能输入70个字</div>
+              <a class="btn" href="#">摘下</a>
+              <div class="share">
+                  <span class="lbl">分享：</span>
+                  $if user["weibo_id"]:
+                    <a href="#toweibo" id="toweibo" data-type="weibo" class="sharebtn"></a>
+                  $if user["douban_id"]:
+                    <a href="#todouban" id="todouban" data-type="douban" class="sharebtn"></a>
+              </div>
+          </div>
+      </div>
+    $else:
+      <div class="mbox-content">
+        <div class="box-title">请先登录</div>
         <div class="box-text">
-            <textarea class="textarea" placeholder="记一句..." maxlength="70">$data['title']</textarea>
-        </div>
-        <div class="linkbox">
-            来自：
-            <a href="$data['url']" target="_blank" class="link">$data['shorturl']</a>
-        </div>
-        <div class="box-bottom">
-            <div class="hint" style="display:none;">最多只能输入70个字</div>
-            <a class="btn" href="#">摘下</a>
-            <div class="share">
-                <span class="lbl">分享：</span>
-                <a href="#toweibo" id="toweibo" data-type="weibo" class="sharebtn"></a>
-                <a href="#todouban" id="todouban" data-type="douban" class="sharebtn"></a>
-            </div>
-        </div>
-    </div>
+          <div class="box-login-body">
+            <a href="#" class="login_douban"><img src="http://img3.douban.com/pics/douban-icons/favicon_24x24.png" title="豆瓣登录"></a>
+            <a href="#" class="login_weibo"><img src="http://www.sinaimg.cn/blog/developer/wiki/LOGO_24x24.png" title="微博登录"></a>
+          </div>
+        </div>  
+      </div>
+      
     <script src="/static/js/sea.js" data-config="config" data-main="bookmarkpop"></script>
 </body>
 </html>

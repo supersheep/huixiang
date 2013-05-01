@@ -18,7 +18,6 @@ class base(object):
         pass
     def GET(self):
         cur_user = login_mod.logged()
-        self.cur_user = None
         self.cur_user = cur_user
         web.template.Template.globals['user'] = cur_user
 
@@ -37,7 +36,7 @@ class people(base):
         favs = db.select(["fav","piece","user"],what="avatar,piece.id,piece.content,fav.addtime",where="fav.userid=user.id and fav.pieceid=piece.id and user.id=$id",vars={"id":id},limit=5)
         
         # mine = db.select(["piece","user"],what="piece.id,piece.content,piece.addtime",where="piece.user=user.id and user.id=$id",vars={"id":id},limit=5)
-        rows = db.select(["user"],what="avatar,name",where="id=$id",vars={"id":id})
+        rows = db.select(["user"],what="avatar,name,id",where="id=$id",vars={"id":id})
         user = rows[0]
         return render.people(favs,user)
 
@@ -96,8 +95,7 @@ class bookmarklet(base):
 
         data["shorturl"] = shorturl
         # return ctx.home + ctx.fullpath
-        if not self.cur_user:
-            web.seeother("/login?redirect_uri="+urllib.quote_plus(ctx.home + ctx.fullpath))
+        
         return blankrender.bookmarklet(data)
 
 class auth_redirect:
@@ -173,9 +171,16 @@ class auth:
 
             user_info["access_token"] = access_token
 
-            if not user.exist_oauth_user(name,user_info):
+            oauth_user = user.exist_oauth_user(name,user_info)
+            if not oauth_user:
                 user.new_oauth_user(name,user_info)
-            user.login_oauth_user(name,user_info)
+            else:
+                user.update_access_token(name,oauth_user[name+"_id"],access_token)
+
+            try:
+                user.login_oauth_user(name,user_info)
+            except:
+                return render.logged(e)
             return render.logged(True)
         else:
             return render.logged(input)
