@@ -10,13 +10,16 @@ define(function(require,exports){
 
         el.on("mouseenter",function(){
             clearTimeout(delay);
-            del.animate({
-                right:-20
-            },{
-                duration:200
-            });
+            delay = setTimeout(function(){
+                del.animate({
+                    right:-20
+                },{
+                    duration:200
+                });
+            },200);
         })
         .on("mouseleave",function(){
+            clearTimeout(delay);
             delay = setTimeout(function(){
                 del.animate({
                     right:0

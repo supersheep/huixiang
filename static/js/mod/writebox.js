@@ -47,7 +47,7 @@ define(function(require,exports,module){
                     }else{
                         exports.fire("err");
                     }
-                    exports.fire("done");
+                    exports.fire("done",json.msg.id);
                 });
             }
         });

@@ -39,10 +39,12 @@ define(function(require,exports){
         WriteBox.on("err",function(){
             Mbox.fail("发送错误");
         });
-        WriteBox.on("done",function(){
+        WriteBox.on("done",function(id){
             setTimeout(function(){
                 Mbox.close()
+                location.href="/piece/"+id;
             },1000);
         });
+        return false;
     });
 })

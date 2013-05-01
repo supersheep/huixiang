@@ -46,7 +46,7 @@ def favpiece(pieceid,userid):
     row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":pieceid,"userid":userid})
 
     if row:
-        raise Exception(json.dumps({"code":300,"msg":"you've already fav this piece"}))
+        raise Exception(json.dumps({"code":200,"msg":{"id":row.id}}))
 
     db.insert("fav",pieceid=pieceid,userid=userid,addtime=datetime.now())
 
@@ -60,10 +60,15 @@ class add:
 
         content = ctx["post"]["content"]
         userid = ctx["user"]["id"]
+        if "link" in ctx["post"]:
+            link = ctx["post"]["link"]
+        else:
+            link = None
+
         pieces = db.select("piece",where="content=$content",vars={"content":content})
         # 检查是否已有相同内容
         if not pieces:
-            pieceid = db.insert("piece",content=content,user=userid,addtime=datetime.now(),link=None)
+            pieceid = db.insert("piece",content=content,user=userid,addtime=datetime.now(),link=link)
         else:
             pieceid = pieces[0]["id"]
 
@@ -84,7 +89,7 @@ class add:
             favpiece(pieceid,userid)
         except Exception, e:
             return e
-            
+
         return ok({"id":pieceid})
 
 class fav:
