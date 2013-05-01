@@ -36,9 +36,10 @@ class people(base):
         super(people,self).GET()
         favs = db.select(["fav","piece","user"],what="avatar,piece.id,piece.content,fav.addtime",where="fav.userid=user.id and fav.pieceid=piece.id and user.id=$id",vars={"id":id},limit=5)
         
-        mine = db.select(["piece","user"],what="piece.id,piece.content,piece.addtime",where="piece.user=user.id and user.id=$id",vars={"id":id},limit=5)
-        
-        return render.people(favs,mine)
+        # mine = db.select(["piece","user"],what="piece.id,piece.content,piece.addtime",where="piece.user=user.id and user.id=$id",vars={"id":id},limit=5)
+        rows = db.select(["user"],what="avatar,name",where="id=$id",vars={"id":id})
+        user = rows[0]
+        return render.people(favs,user)
 
 class piece(base):
     def GET(self,id):
@@ -75,6 +76,10 @@ class login:
                 web.redirect("/")
 
         return blankrender.login()
+
+class tools:
+    def GET(self):
+        return render.tools()
 
 class bookmarklet(base):
     def GET(self):

@@ -24,6 +24,7 @@ $ name = ("name" in content) and content["name"] or ""
                 $if user:
                     <li class="menu-item"><a href="#" id="write-note">记一句</a></li>
                     <li class="menu-item"><a href="/people/$user["id"]" id="write-note">我的茴香</a></li>
+                    <li class="menu-item"><a href="/tools">工具盒</a></li>
                     <li class="menu-item"><a href="/logout">退出</a></li>
                 $else:
                     <li class="menu-item"><a href="#" class="login_douban"><img src="http://img3.douban.com/pics/douban-icons/favicon_24x24.png" title="豆瓣登录" /></a></li>

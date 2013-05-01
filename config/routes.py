@@ -9,6 +9,7 @@ urls = (
     '/people/(\d+)', page + 'people',
     '/login', page + 'login',
     '/logout', page +'logout',
+    '/tools', page +'tools',
     '/bookmarklet', page + 'bookmarklet',
     '/auth/(douban|weibo)', page + 'auth',
     '/auth/redirect/(douban|weibo)', page + 'auth_redirect',

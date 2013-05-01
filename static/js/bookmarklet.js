@@ -33,13 +33,14 @@
 
     function getSelectionText() {                                       
         // http://snipplr.com/view/10912/get-html-of-selection/
-        var userSelection = window.getSelection();
+        var userSelection = window.getSelection(),
+            range,cloneSelection,div;
         if (userSelection.isCollapsed) 
             return '';
         else {
-            var range = userSelection.getRangeAt(0);
-            var clonedSelection = range.cloneContents();
-            var div = document.createElement('div');
+            range = userSelection.getRangeAt(0);
+            clonedSelection = range.cloneContents();
+            div = document.createElement('div');
             div.appendChild(clonedSelection);
             return trim(div.innerText);
         }
@@ -87,11 +88,31 @@
         }
     }
 
+    function showHint(){
+        var hint = document.createElement("div");
+        hint.style.cssText = "background-color:rgb(249, 213, 19);"
+        +"color:#333;"
+        +"padding:8px;"
+        +"position:fixed;"
+        +"top:0;"
+        +"left:0;"
+        +"z-index:99999;"
+        +"font-size:12px;"
+
+        hint.innerHTML = "插件已加载，现在你可以选择文字来摘录"
+        document.body.appendChild(hint);
+        setTimeout(function(){
+            document.body.removeChild(hint);
+        },2000);
+    }
 
 
     document.body.appendChild(btn);
+    hideBtn();
     getAndDetermine();
     btn.onclick = getAndDetermine;
+
+    showHint();
 
     document.onmouseup = function(e){
         var text = getSelectionText();
