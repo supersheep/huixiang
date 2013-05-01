@@ -37,6 +37,11 @@ class people(base):
         
         # mine = db.select(["piece","user"],what="piece.id,piece.content,piece.addtime",where="piece.user=user.id and user.id=$id",vars={"id":id},limit=5)
         rows = db.select(["user"],what="avatar,name,id",where="id=$id",vars={"id":id})
+
+        if not rows:
+            web.notfound()
+            return "user not found"
+
         user = rows[0]
         return render.people(favs,user)
 

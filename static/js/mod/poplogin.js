@@ -18,10 +18,12 @@ define(function(require,exports,module){
 
         content.find(".login_douban").on("click",function(){
             Login.popdouban();
+            return false;
         });
 
         content.find(".login_weibo").on("click",function(){
             Login.popweibo();
+            return false;
         });
         
         new Mbox({

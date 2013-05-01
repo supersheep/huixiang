@@ -14,12 +14,14 @@ $ liked_str= liked and "liked" or ""
                     <i class="like $liked_str" data-id="$piece["id"]"></i>
                 </a>
                 <div class="people">
-                    <ul class="$liked_str">
+                    $if not user or liked: 
+                        <ul class="liked">
+                    $else:
+                        <ul>
                         $if user:
-                        <li><a href="/people/$user["id"]"><img src="$user["avatar"]" /></a></li>
-                        $for faver in favs:
-                            $if not faver["id"]==user["id"]:
-                                <li><a href="/people/$faver["id"]"><img src="$:faver["avatar"]" /></a></li>
+                            <li><a href="/people/$user["id"]"><img src="$user["avatar"]" /></a></li>
+                    $for faver in favs:
+                        <li><a href="/people/$faver["id"]"><img src="$:faver["avatar"]" /></a></li>
                     </ul>
                 </div>
             </div>
