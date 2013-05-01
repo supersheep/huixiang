@@ -24,8 +24,6 @@ class base(object):
 
 
 
-
-
 class index(base):
     def GET(self):
         """ app index """

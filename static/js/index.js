@@ -1,7 +1,6 @@
 define(function(require,exports){
     require("mod/comm");
     var Piece = require("mod/piece");
-    var Mbox = require("mod/mbox");
 
 
     var piece = new Piece({

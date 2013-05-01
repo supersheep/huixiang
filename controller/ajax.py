@@ -31,6 +31,24 @@ def common_check(post=[],get=[]):
 
     return {"post":post_data,"get":get_data,"user":user}
 
+def ok(msg="ok"):
+    return json.dumps({"code":200,"msg":msg})
+
+def unfavpiece(pieceid,userid):
+    where={"pieceid":pieceid,"userid":userid}
+    row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars=where)
+    if not row:
+        raise Exception(json.dumps({"code":300,"msg":"you've not faved this piece"}))
+
+    db.delete("fav",where="pieceid=$pieceid and userid=$userid",vars=where)
+
+def favpiece(pieceid,userid):
+    row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":pieceid,"userid":userid})
+
+    if row:
+        raise Exception(json.dumps({"code":300,"msg":"you've already fav this piece"}))
+
+    db.insert("fav",pieceid=pieceid,userid=userid,addtime=datetime.now())
 
 class add:
     def POST(self):
@@ -49,9 +67,6 @@ class add:
         else:
             pieceid = pieces[0]["id"]
 
-        favrow = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":pieceid,"userid":userid})
-        if not favrow:
-            db.insert("fav",pieceid=pieceid,userid=userid)
 
         share = ctx["post"]["share"].split(",")
         for key in share:
@@ -65,42 +80,51 @@ class add:
                 post_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(pieceid)
                 client.post(post_content)
 
-        return json.dumps({"code":200,"msg":{"id":pieceid}})
+        try:
+            favpiece(pieceid,userid)
+        except Exception, e:
+            return e
+            
+        return ok({"id":pieceid})
 
 class fav:
     def POST(self):
         """ fav a piece """
         try:
             ctx = common_check(post=["pieceid"])
+            pieceid=ctx["post"]["pieceid"]
+            favpiece(pieceid,ctx["user"]["id"])
         except Exception, e:
             return e
 
-        pieceid=ctx["post"]["pieceid"]
-        row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":pieceid,"userid":ctx["user"]["id"]})
-
-        if row:
-            return json.dumps({"code":300,"msg":"you've already fav this piece"})
-
-        db.insert("fav",pieceid=pieceid,userid=ctx["user"]["id"],addtime=datetime.now())
-        return json.dumps({"code":200,"msg":{"id":pieceid}})
+        return ok({"id":pieceid})
 
 class unfav:
     def POST(self):
         """ fav a piece """
         try:
             ctx = common_check(post=["pieceid"])
+            unfavpiece(ctx["post"]["pieceid"],ctx["user"]["id"])
         except Exception, e:
             return e
+        
+        return ok()
 
-        pieceid=ctx["post"]["pieceid"]
-        where={"pieceid":pieceid,"userid":ctx["user"]["id"]}
-        row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars=where)
-        if not row:
-            return json.dumps({"code":300,"msg":"you've not faved this piece"})
+# class delete:
+#     def POST(self):
+#         try:
+#             ctx = common_check(post=["pieceid"])
+#             pieceid = ctx["post"]["pieceid"]
+#             userid = ctx["user"]["id"]
+#             unfavpiece(pieceid,userid)
+#             row = db.select("piece",where="id=$id and user=$user",vars={"id":pieceid,"user":userid})
+#             if not row:
+#                 raise Exception(json.dumps({"code":401,"msg":"permission denied"}))
+#             db.delete("piece",where="id=$id and user=$user",vars={"id":pieceid,"user":userid})
+#         except Exception, e:
+#             return e
 
-
-        db.delete("fav",where="pieceid=$pieceid and userid=$userid",vars=where)
-        return json.dumps({"code":200,"msg":"ok"})
+#         return ok()
 
 class pieces:
     def GET(self):

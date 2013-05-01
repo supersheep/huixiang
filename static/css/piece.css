@@ -25,6 +25,7 @@
 
 .piece .content{
     padding-bottom: 20px;
+    word-wrap:break-word;
 }
 
 .piece .favs{
@@ -90,4 +91,25 @@
     width:24px;
     height:24px;
     border-radius: 50%;
+}
+
+.box-title{
+    color:#fff;
+    background-color:rgb(60, 58, 55);
+    padding:10px;
+}
+
+.mbox-win{
+    width:200px;
+}
+
+.box-login-body{
+    text-align: center;
+}
+
+.box-login-body .login_douban{
+    margin-right:10px;
+}
+.box-login-body .login_weibo{
+    margin-left:10px;
 }
