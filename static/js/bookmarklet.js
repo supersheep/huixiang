@@ -85,6 +85,8 @@
         var text = getSelectionText();
         if(determine(text)){
             createPiece(text);  
+        }else{
+            showHint();
         }
     }
 
@@ -99,11 +101,11 @@
         +"z-index:99999;"
         +"font-size:12px;"
 
-        hint.innerHTML = "插件已加载，现在你可以选择文字来摘录"
+        hint.innerHTML = "插件已加载，现在可以选择文字来摘录咯。"
         document.body.appendChild(hint);
         setTimeout(function(){
             document.body.removeChild(hint);
-        },2000);
+        },3000);
     }
 
 
@@ -112,7 +114,6 @@
     getAndDetermine();
     btn.onclick = getAndDetermine;
 
-    showHint();
 
     document.onmouseup = function(e){
         var text = getSelectionText();
