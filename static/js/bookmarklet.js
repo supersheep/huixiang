@@ -1,7 +1,7 @@
 (function(win){
     var btn = document.createElement("img");
 
-    btn.src="http://huixiang.spud.in/static/img/huixiang_48.png";
+    btn.src="http://huixiang.im/static/img/huixiang_48.png";
     btn.style.borderRadius = "4px";
     btn.style.width = "24px";
     btn.style.height = "24px";
@@ -56,7 +56,7 @@
         }
 
         openWin({
-            url:"http://huixiang.spud.in/bookmarklet?"+toQueryString(query),
+            url:"http://huixiang.im/bookmarklet?"+toQueryString(query),
             width:350,
             height:174
         });
