@@ -4,12 +4,12 @@ $ liked_str= liked and "liked" or ""
 
 <div class="piece">
     <div class="piece-inner"><div class="piece-main">
-    <div class="content">
-        $piece["content"]
-    </div>
-    <div class="by"></div>
-        <div class="favs">
-            <div class="bd">
+        <div class="card">
+            <div class="content">
+                $piece["content"]
+            </div>
+            <div class="by"></div>
+            <div class="favs">
                 <a class="like-wrap">
                     <i class="like $liked_str" data-id="$piece["id"]"></i>
                 </a>
@@ -18,13 +18,16 @@ $ liked_str= liked and "liked" or ""
                         <ul class="liked">
                     $else:
                         <ul>
-                        $if user:
-                            <li><a href="/people/$user["id"]"><img src="$user["avatar"]" /></a></li>
+                    $if user:
+                        <li><a href="/people/$user["id"]"><img src="$user["avatar"]" /></a></li>
                     $for faver in favs:
                         <li><a href="/people/$faver["id"]"><img src="$:faver["avatar"]" /></a></li>
                     </ul>
                 </div>
             </div>
         </div>
-    </div></div>
+        $if piece["link"]:
+            <a class="link" target="_blank" href="$piece["link"]"></a>
+    </div>
+    </div>
 </div>

@@ -11,16 +11,20 @@
 .piece .piece-inner{
     display: table-cell;
     vertical-align: middle;
-    position: relative;
-    top: -25px;
 }
 
 .piece .piece-main{
-    width: 400px;
+    position: relative;
+    margin: 0 auto;
+    width: 480px;
+}
+
+.piece .piece-main .card{
+    position: relative;
+    z-index: 5;
     padding: 40px 40px 20px 40px;
     background-color: #fff;
-    box-shadow: 0 0 20px 0 rgba(0,0,0,0.2);
-    margin: 0 auto;
+    box-shadow: 0 0 20px 0 rgba(0,0,0,0.3);
 }
 
 .piece .content{
@@ -28,11 +32,24 @@
     word-wrap:break-word;
 }
 
+.piece .link{
+    background: url('../img/extlink-white.png') no-repeat;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    display: block;
+    top: 0;
+    right: -27px;
+    padding: 3px;
+    background-color: rgb(139, 163, 103);
+    background-position: 10px 8px;
+}
+
 .piece .favs{
 }
 
 
-.favs .bd:after,.piece .favs .people:after{
+.favs:after,.piece .favs .people:after{
     content:"\20";
     clear:both;
     display: block;
