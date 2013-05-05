@@ -24,7 +24,12 @@ define(function(require,exports){
         +'<textarea class="textarea" placeholder="记一句..." maxlength="70"></textarea>'
         +'</div>'
         +'<div class="box-bottom">'
-        +'<div class="hint" style="display:none;">最多只能输入70个字</div><a class="btn" href="#">好了</a></div>';
+        +'<div class="hint" style="display:none;">最多只能输入70个字</div><a class="btn" href="#">好了</a>'
+        +'<div class="share">'
+          +'<span class="lbl">分享：</span>'
+            +'<a href="#toweibo" id="toweibo" data-type="weibo" class="sharebtn"></a>'
+            +'<a href="#todouban" id="todouban" data-type="douban" class="sharebtn"></a>'
+        +'</div></div>';
 
 
 

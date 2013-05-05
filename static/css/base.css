@@ -101,7 +101,7 @@ a{text-decoration: none;}
 
 .share{
     float: right;
-    margin: 5px 10px;
+    margin: 5px 10px 0 0;
     position: relative;
     top: -2px;
 }
