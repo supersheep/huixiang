@@ -6,6 +6,7 @@ from datetime import datetime
 from config import setting
 from model import user
 from util import login as login_mod
+from util import oauth
 import json
 
 config = setting.config
@@ -70,7 +71,8 @@ class piece(base):
 class logout:
     def GET(self):
         login_mod.logout()
-        web.seeother("/")
+        referer = web.ctx.env.get('HTTP_REFERER', '/')
+        web.seeother(referer)
 
 class login:
     def GET(self):
@@ -107,87 +109,30 @@ class bookmarklet(base):
 
 class auth_redirect:
     def GET(self,name):
-        if not name in ("weibo","douban"):
-            return "invalid sitename"
-        else:
-            key = config["auth"][name]["key"]
-            secret = config["auth"][name]["secret"]
-            callback = config["auth"][name]["callback"]
-            base = {
-                "douban":"https://www.douban.com/service/auth2/auth",
-                "weibo":"https://api.weibo.com/oauth2/authorize"
-            }   
-            qs = urllib.urlencode({"redirect_uri":callback,"client_id":key,"response_type":"code"})
-            url = base[name]+"?"+qs
-        web.seeother(url)
+        try:
+            client = oauth.createClientWithName(name)
+            url = client.redirect()
+            web.seeother(url)
+        except Exception,e:
+            return e
 
 class auth:
     def GET(self,name):
         input = web.input()
-        if "code" in input:
-            if not name in ("douban","weibo"):
-                return "invalid sitename"
-
-            data = {
-                "client_id":config["auth"][name]["key"],
-                "client_secret":config["auth"][name]["secret"],
-                "redirect_uri":config["auth"][name]["callback"],
-                "grant_type":"authorization_code",
-                "code":input["code"]
-            }
-
-
-            access_token = {
-                "douban":"https://www.douban.com/service/auth2/token",
-                "weibo":"https://api.weibo.com/oauth2/access_token"
-            }
-
-            user_info_url = {
-                "douban": ("https://api.douban.com/v2/user/~me","Bearer"),
-                "weibo" : ("","OAuth2")
-            }
-
-            res_access_token = requests.post(access_token[name],data=data)
-            res_json = res_access_token.json()
-
-            # douban error
-            if "code" in res_json:
-                return res_json["msg"]
-            if "error_code" in res_json:
-                return res_json["error_description"]
-            access_token = res_json["access_token"]
-
-            # 得到token
-            if name == "douban":
-                res_user_info = requests.get("https://api.douban.com/v2/user/~me",
-                    headers={"Authorization":"Bearer "+access_token})
-                user_info = res_user_info.json()
-            if name == "weibo":
-                res_user_uid_info = requests.get("https://api.weibo.com/2/account/get_uid.json"
-                    ,headers={"Authorization":"OAuth2 "+access_token})
-                user_uid_info = res_user_uid_info.json()
-                res_user_info = requests.get("https://api.weibo.com/2/users/show.json?uid="+str(user_uid_info["uid"])
-                    ,headers={"Authorization":"OAuth2 "+access_token})
-                user_info = res_user_info.json()
-                                
-            if "code" in user_info:
-                return user_info["msg"]
-            if "error_code" in user_info:
-                return user_info["error"]
-
+        try:
+            client = oauth.createClientWithName(name)
+            access_token = client.get_access_token(input["code"])
+            user_info = client.get_current_user_info(access_token)
 
             user_info["access_token"] = access_token
-
             oauth_user = user.exist_oauth_user(name,user_info)
+
             if not oauth_user:
                 user.new_oauth_user(name,user_info)
             else:
                 user.update_access_token(name,oauth_user[name+"_id"],access_token)
-
-            try:
-                user.login_oauth_user(name,user_info)
-            except:
-                return render.logged(e)
+            
+            user.login_oauth_user(name,user_info)
             return render.logged(True)
-        else:
-            return render.logged(input)
+        except Exception, e:
+            return e

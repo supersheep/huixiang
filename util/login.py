@@ -66,4 +66,4 @@ def logout():
         print hash
         db.update("login",vars={"hash":hash},where="hash=$hash",discard=1)
     # 2. 清除cookie
-        web.setcookie('cu', hash)
+        web.setcookie('cu', hash, expires=-1)

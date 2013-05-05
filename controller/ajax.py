@@ -34,6 +34,9 @@ def common_check(post=[],get=[]):
 def ok(msg="ok"):
     return json.dumps({"code":200,"msg":msg})
 
+def fail(msg="fail"):
+    return json.dumbs({"code":500,"msg":msg})
+
 def unfavpiece(pieceid,userid):
     where={"pieceid":pieceid,"userid":userid}
     row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars=where)
@@ -46,7 +49,7 @@ def favpiece(pieceid,userid):
     row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":pieceid,"userid":userid})
 
     if row:
-        raise Exception(json.dumps({"code":200,"msg":{"id":row.id}}))
+        raise Exception(json.dumps({"code":200,"msg":{"id":row[0]["id"]}}))
 
     db.insert("fav",pieceid=pieceid,userid=userid,addtime=datetime.now())
 
@@ -72,23 +75,22 @@ class add:
         else:
             pieceid = pieces[0]["id"]
 
-
         share = ctx["post"]["share"].split(",")
-        for key in share:
-            Client = None
-            if key == "douban":
-                Client = oauth.douban
-            elif key == "weibo":
-                Client = oauth.weibo
-            if Client:
-                client = Client(ctx["user"])
+
+        try:
+            for key in share:
+                if not key: 
+                    continue
+                client = oauth.createClientWithName(key,ctx["user"])
                 post_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(pieceid)
                 client.post(post_content)
+        except Exception, e:
+            return e
 
         try:
             favpiece(pieceid,userid)
         except Exception, e:
-            return e
+            pass
 
         return ok({"id":pieceid})
 
