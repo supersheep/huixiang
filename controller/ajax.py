@@ -136,7 +136,7 @@ class unfav:
 class pieces:
     def GET(self):
         "get pieces"
-        pieces_itr = db.select('piece',what="id,content",offset=0,limit=10)
+        pieces_itr = db.query('select id,content from piece order by rand() limit 10')
         pieces=[]
         for piece in pieces_itr:
             pieces.append(piece)
