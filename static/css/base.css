@@ -31,7 +31,8 @@ a{text-decoration: none;}
 #hd .account .menu .menu-item a{color: #fff;padding:10px 10px;display: block;font-size: 13px;}
 #hd .account .menu .menu-item a:hover{background-color: rgb(60, 58, 55);}
 #bd{}
-#ft{text-align: center;width:100%;position: absolute;bottom:15px;color:rgb(156, 147, 130);font-size: 14px}
+#ft{text-align: center;width:100%;position: absolute;bottom:15px;font-size: 14px}
+#ft a,#ft span{color:rgb(156, 147, 130);text-decoration: none; margin-right: 5px}
 
 /* modules */
 /* mbox */

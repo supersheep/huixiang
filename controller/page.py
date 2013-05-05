@@ -44,6 +44,7 @@ class people(base):
             return "user not found"
 
         user = rows[0]
+        print "user",user
         return render.people(favs,user)
 
 class piece(base):
@@ -85,9 +86,13 @@ class login:
 
         return blankrender.login()
 
-class tools:
+class tools(base):
     def GET(self):
         return render.tools()
+
+class about(base):
+    def GET(self):
+        return render.about()
 
 class bookmarklet(base):
     def GET(self):
