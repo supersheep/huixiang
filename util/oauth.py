@@ -32,6 +32,7 @@ class douban(oauthbase):
     header_str = "Bearer"
 
     def get_current_user_info(self,access_token):
+        self._token = access_token
         return self.signed_get("https://api.douban.com/v2/user/~me")
 
     def post(self,content):
