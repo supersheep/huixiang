@@ -16,7 +16,7 @@ class oauthbase(object):
 
     def signed_request(self,method,url,data={}):
         if not self._token:
-            return
+            return {}
         req = requests.request(method,url,data=data,headers={"Authorization":self.header_str + " "+self._token})
         json = req.json()
         self.check_err(json)
