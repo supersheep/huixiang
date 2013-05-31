@@ -1,4 +1,5 @@
 (function(win){
+    var LIMIT = 100;
     var btn = document.createElement("img");
 
     btn.src="http://huixiang.im/static/img/huixiang_48.png";
@@ -74,9 +75,9 @@
 
 
     function determine(text){
-        if(!text || text.length > 70){
-            if(text.length > 70){
-                showHint("茴香不支持70字以上的句子");
+        if(!text || text.length > LIMIT){
+            if(text.length > LIMIT){
+                showHint("茴香不支持"+LIMIT+"字以上的句子");
             }
             return false;
         }else{

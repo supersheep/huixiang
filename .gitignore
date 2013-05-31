@@ -2,3 +2,4 @@
 config.yml
 *.psd
 *.pyc
+boot.sh

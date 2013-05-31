@@ -21,10 +21,10 @@ define(function(require,exports){
     });
 
     var html = '<div class="box-text">'
-        +'<textarea class="textarea" placeholder="记一句..." maxlength="70"></textarea>'
+        +'<textarea class="textarea" placeholder="记一句..." maxlength="'+WriteBox.LIMIT+'"></textarea>'
         +'</div>'
         +'<div class="box-bottom">'
-        +'<div class="hint" style="display:none;">最多只能输入70个字</div><a class="btn" href="#">好了</a>'
+        +'<div class="hint" style="display:none;">最多只能输入'+WriteBox.LIMIT+'个字</div><a class="btn" href="#">好了</a>'
         +'<div class="share">'
           +'<span class="lbl">分享：</span>'
             +'<a href="#toweibo" id="toweibo" data-type="weibo" class="sharebtn"></a>'
