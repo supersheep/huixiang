@@ -2,6 +2,7 @@ define(function(require,exports,module){
     var Event = require("mod/event");
     var Util = require("mod/util");
 
+    exports.LIMIT = 70;
     Event.mixin(module.exports);
 
     function init(content){
@@ -53,7 +54,7 @@ define(function(require,exports,module){
         });
 
         textarea.on("keyup",function(){
-            if($(this).val().length == 70){
+            if($(this).val().length == exports.LIMIT){
                 hint.show();
             }else{
                 hint.hide();
@@ -62,6 +63,6 @@ define(function(require,exports,module){
 
         textarea.get(0).focus()
     }
-    
+
     exports.init = init;
 });
