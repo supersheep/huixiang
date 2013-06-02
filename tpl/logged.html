@@ -1,4 +1,4 @@
-$def with (data)
+$def with (ok,id)
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,9 +7,12 @@ $def with (data)
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 </head>
 <body>
-    $if data:
+    $if ok:
         <script type="text/javascript">
-            window.opener.location.reload();
+            $if id:
+                window.opener.location.href = "/people/$id";
+            $else:
+                window.opener.location.reload();
             window.close();
         </script>
     $else:

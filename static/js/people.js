@@ -1,5 +1,11 @@
 define(function(require,exports){
     require("mod/comm");
+    var Login = require("mod/login");
+
+    $("#people .share .sharebtn").click(function(){
+        Login["pop" + $(this).attr("data-type")]();
+        return false;
+    });
 
 
     $(".piece").each(function(i,e){
@@ -8,6 +14,10 @@ define(function(require,exports){
             del = el.find(".del"),
             delay;
 
+        if(!id){
+            el.click(function(){return false;})
+            return;
+        }
         el.on("mouseenter",function(){
             clearTimeout(delay);
             delay = setTimeout(function(){

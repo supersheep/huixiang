@@ -1,11 +1,27 @@
 #bd{
     margin: 0 auto;
+    position: relative;
     width: 400px;
 }
 
 #ft{
     position: static;
     padding-bottom: 15px;
+}
+
+#people{
+    position: absolute;
+    text-align: center;
+    top: 12px;
+    left: -50px;    
+}
+#people .share{
+    margin-right: 0;
+}
+#people .avatar img{
+    width:40px;
+    height: 40px;
+    border-radius:20px;
 }
 
 .empty{

@@ -28,7 +28,12 @@ def new_oauth_user(name,info):
     data = parse_data(name,info)
 
     if check(name,data):
-        db.insert("user",**data)
+        return db.insert("user",**data)
+
+def update_oauth_userid(name,id,oauth_id):
+    data = {}
+    data[name+"_id"] = oauth_id
+    db.update("user",where="id=$id",vars={"id":id},**data)
 
 def update_access_token(name,id,token):
     data = {}
@@ -45,7 +50,6 @@ def exist_oauth_user(name,info):
         return rows[0]
     else:
         return False
-
 
 def login_oauth_user(name,info):
     data = parse_data(name,info)
