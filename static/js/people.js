@@ -8,6 +8,10 @@ define(function(require,exports){
             del = el.find(".del"),
             delay;
 
+        if(!id){
+            el.click(function(){return false;})
+            return;
+        }
         el.on("mouseenter",function(){
             clearTimeout(delay);
             delay = setTimeout(function(){

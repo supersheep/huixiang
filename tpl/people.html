@@ -2,26 +2,21 @@ $def with (favs,page_user)
 $var name : people
 $var title : $page_user.name
 
-$if len(favs)==0:
-    <div class="empty">
-        如果有收藏过喜欢的句子，他们会出现在这里。
-    </div>
-$else:
-    <div class="favs">
-        $for piece in favs
-            <div class="piece" data-id="$piece["id"]">
-                $if page_user and user and page_user["id"] == user["id"]:
-                    <div class="del">x</div>
-                <div class="piece-body">
-                    <div class="content">
-                        <a href="/piece/$piece["id"]">
-                            $piece["content"]
-                        </a>
-                    </div>
-                    <div class="addtime">
-                        $if piece["addtime"] != None:
-                            $piece["addtime"].strftime('%Y-%m-%d')
-                    </div>
+<div class="favs">
+    $for piece in favs
+        <div class="piece" data-id="$piece["id"]">
+            $if page_user and user and page_user["id"] == user["id"]:
+                <div class="del">x</div>
+            <div class="piece-body">
+                <div class="content">
+                    <a href="/piece/$piece["id"]">
+                        $piece["content"]
+                    </a>
+                </div>
+                <div class="addtime">
+                    $if "addtime" in piece and piece["addtime"] != None:
+                        $piece["addtime"].strftime('%Y-%m-%d')
                 </div>
             </div>
-    </div>
+        </div>
+</div>

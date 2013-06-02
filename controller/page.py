@@ -44,6 +44,8 @@ class people(base):
             return "user not found"
 
         user = rows[0]
+        if len(favs) == 0:
+            favs = [{"content":"如果有收藏过喜欢的句子，他们会出现在这里。","id":None}]
         print "user",user
         return render.people(favs,user)
 
