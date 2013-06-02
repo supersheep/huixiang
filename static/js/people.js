@@ -1,9 +1,10 @@
 define(function(require,exports){
     require("mod/comm");
-
+    var Login = require("mod/login");
 
     $("#people .share .sharebtn").click(function(){
-
+        Login["pop" + $(this).attr("data-type")]();
+        return false;
     });
 
 

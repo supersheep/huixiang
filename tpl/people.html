@@ -4,17 +4,18 @@ $var title : $page_user.name
 
 <div id="people">
     <div class="avatar">
-        <img src="$user["avatar"]"  alt="$user["name"]">
+        <img src="$page_user["avatar"]"  alt="$page_user["name"]">
     </div>
     <div class="share">
-        $if user["douban_id"]:
-            <a href="#todouban" id="todouban" data-type="douban" class="sharebtn active"></a>
-        $else:
-            <a href="#todouban" id="todouban" data-type="douban" class="sharebtn"></a>
-        $if user["weibo_id"]:
-            <a href="#toweibo" id="toweibo" data-type="weibo" class="sharebtn active"></a>
-        $else:
-            <a href="#toweibo" id="toweibo" data-type="weibo" class="sharebtn"></a>
+        $if user:
+            $if user["douban_id"]:
+                <a href="#todouban" id="todouban" data-type="douban" class="sharebtn active"></a>
+            $else:
+                <a href="#todouban" id="todouban" data-type="douban" class="sharebtn"></a>
+            $if user["weibo_id"]:
+                <a href="#toweibo" id="toweibo" data-type="weibo" class="sharebtn active"></a>
+            $else:
+                <a href="#toweibo" id="toweibo" data-type="weibo" class="sharebtn"></a>
     </div>
 </div>
 

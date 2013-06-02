@@ -46,7 +46,7 @@ class people(base):
         user = rows[0]
         if len(favs) == 0:
             favs = [{"content":"如果有收藏过喜欢的句子，他们会出现在这里。","id":None}]
-        print "user",user
+        
         return render.people(favs,user)
 
 class piece(base):
@@ -116,6 +116,8 @@ class bookmarklet(base):
 
 class auth_redirect:
     def GET(self,name):
+        input = web.input()
+        action = "action" in input and input["action"] or "login"
         try:
             client = oauth.createClientWithName(name)
             url = client.redirect()
@@ -126,20 +128,28 @@ class auth_redirect:
 class auth:
     def GET(self,name):
         input = web.input()
+        new_user = None
+        cur_user = login_mod.logged()
         try:
             client = oauth.createClientWithName(name)
             access_token = client.get_access_token(input["code"])
             user_info = client.get_current_user_info(access_token)
 
             user_info["access_token"] = access_token
-            oauth_user = user.exist_oauth_user(name,user_info)
-
-            if not oauth_user:
-                user.new_oauth_user(name,user_info)
-            else:
-                user.update_access_token(name,oauth_user[name+"_id"],access_token)
             
-            user.login_oauth_user(name,user_info)
-            return render.logged(True)
+
+
+            if cur_user:
+                user.update_oauth_userid(name,cur_user["id"],user_info["id"])
+                user.update_access_token(name,user_info["id"],access_token)
+            if not cur_user:
+                oauth_user = user.exist_oauth_user(name,user_info)
+                if not oauth_user:
+                    new_user = user.new_oauth_user(name,user_info)
+                else:
+                    user.update_access_token(name,oauth_user[name+"_id"],access_token)
+                user.login_oauth_user(name,user_info)
+
+            return blankrender.logged(True,new_user)
         except Exception, e:
             return e

@@ -42,7 +42,7 @@ class oauthbase(object):
         try:
             self.check_err(res_json)
         except Exception,e:
-            return e
+            return str(e)
         return res_json["access_token"]
 
     def set_user(self,user):
