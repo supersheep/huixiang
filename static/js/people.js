@@ -2,6 +2,11 @@ define(function(require,exports){
     require("mod/comm");
 
 
+    $("#people .share .sharebtn").click(function(){
+
+    });
+
+
     $(".piece").each(function(i,e){
         var el = $(e),
             id = el.attr("data-id"),
