@@ -3,3 +3,5 @@ config.yml
 *.psd
 *.pyc
 boot.sh
+static/extension
+static/extension.pem
