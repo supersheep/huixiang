@@ -106,6 +106,19 @@ class fav:
 
         return ok({"id":pieceid})
 
+class userinfo:
+    def GET(self):
+        try:
+            ctx = common_check()
+        except Exception, e:
+            return e
+
+        user = ctx["user"]
+
+        return json.dumps({"name":user["name"],"id":user["id"],"avatar":user["avatar"]})
+
+
+
 class unfav:
     def POST(self):
         """ fav a piece """

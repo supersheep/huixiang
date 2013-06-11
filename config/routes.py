@@ -14,6 +14,7 @@ urls = (
     '/bookmarklet', page + 'bookmarklet',
     '/auth/(douban|weibo)', page + 'auth',
     '/auth/redirect/(douban|weibo)', page + 'auth_redirect',
+    '/ajax/userinfo', ajax + 'userinfo',
     '/ajax/add', ajax + 'add',
     '/ajax/fav', ajax + 'fav',
     '/ajax/unfav', ajax + 'unfav',
