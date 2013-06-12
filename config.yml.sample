@@ -3,6 +3,17 @@ db:
   user: 'user'
   pwd: 'pwd'
   db: 'huixiang'
+auth:
+  douban:
+    key: 'doubankey'
+    secret: 'doubansecret'
+    callback: 'doubancallback'
+  weibo:
+    key: 'weibokey'
+    secret: 'weibosecret'
+    callback: 'weibocallback'
+salt: 'salt'
 debug: True
 sitename: '茴香'
+slogan: '记下值得珍藏的话语'
 tpl: 'tpl/'
