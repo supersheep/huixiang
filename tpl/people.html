@@ -6,8 +6,8 @@ $var title : $page_user.name
     <div class="avatar">
         <img src="$page_user["avatar"]"  alt="$page_user["name"]">
     </div>
-    <div class="share">
-        $if user:
+    $if user:
+        <div class="share">
             $if user["douban_id"]:
                 <a href="#todouban" id="todouban" data-type="douban" class="sharebtn active"></a>
             $else:
@@ -16,7 +16,15 @@ $var title : $page_user.name
                 <a href="#toweibo" id="toweibo" data-type="weibo" class="sharebtn active"></a>
             $else:
                 <a href="#toweibo" id="toweibo" data-type="weibo" class="sharebtn"></a>
-    </div>
+        </div>
+    $if pages > 1:
+        <div class="pages">
+            $if (current - 1) > 0:
+                <a class="prev num" href="?page=$(current-1)">‹</a>
+            <div class="current">$current/$pages</div>
+            $if current < pages:
+                <a class="next num" href="?page=$(current+1)">›</a>
+        </div>
 </div>
 
 <div class="favs">
@@ -36,12 +44,5 @@ $var title : $page_user.name
                 </div>
             </div>
         </div>
-    $if pages > 1:
-    <div class="pages">
-        $if (current - 1) > 0:
-            <a class="prev num" href="?page=$(current-1)">‹</a>
-        <div class="current">$current/$pages</div>
-        $if current < pages:
-            <a class="next num" href="?page=$(current+1)">›</a>
-    </div>
+    
 </div>
