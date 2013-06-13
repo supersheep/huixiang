@@ -14,22 +14,34 @@ render = setting.render
 db = setting.db
 
 def common_check(post=[],get=[]):
-    """ 检查登录与否及参数 """
-    post_data = web.input(_method="post")
-    get_data = web.input(_method="get")
-    user = login.logged()
-    if not user:
-        raise Exception(json.dumps({"code":403,"msg":"access deny"}))
+    """ request decorator """
+    def check(post,get):
+        """ 检查登录与否及参数 """
+        post_data = web.input(_method="post")
+        get_data = web.input(_method="get")
+        user = login.logged()
+        if not user:
+            raise Exception(json.dumps({"code":403,"msg":"access deny"}))
 
-    for k in post:
-        if not k in post_data:
-            raise Exception(json.dumps({"code":500,"msg":str(k)+" is required"}))
+        for k in post:
+            if not k in post_data:
+                raise Exception(json.dumps({"code":500,"msg":str(k)+" is required"}))
 
-    for k in get:
-        if not k in get_data:
-            raise Exception(json.dumps({"code":500,"msg":str(k)+" is required"}))
+        for k in get:
+            if not k in get_data:
+                raise Exception(json.dumps({"code":500,"msg":str(k)+" is required"}))
 
-    return {"post":post_data,"get":get_data,"user":user}
+        return {"post":post_data,"get":get_data,"user":user}
+
+    def checkwrap(fn):
+        def inner(self):
+            try:
+                ctx = check(post,get)
+                return fn(self,ctx)
+            except Exception, e:
+                return e
+        return inner
+    return checkwrap
 
 def ok(msg="ok"):
     return json.dumps({"code":200,"msg":msg})
@@ -54,13 +66,9 @@ def favpiece(pieceid,userid):
     db.insert("fav",pieceid=pieceid,userid=userid,addtime=datetime.now())
 
 class add:
-    def POST(self):
+    @common_check(post=["content"])
+    def POST(self,ctx):
         """ add one """
-        try:
-            ctx = common_check(post=["content"])
-        except Exception, e:
-            return e
-
         content = ctx["post"]["content"]
         userid = ctx["user"]["id"]
         if "link" in ctx["post"]:
@@ -77,57 +85,38 @@ class add:
 
         share = ctx["post"]["share"].split(",")
 
-        try:
-            for key in share:
-                if not key: 
-                    continue
-                client = oauth.createClientWithName(key,ctx["user"])
-                post_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(pieceid)
-                client.post(post_content)
-        except Exception, e:
-            return e
+        for key in share:
+            if not key: 
+                continue
+            client = oauth.createClientWithName(key,ctx["user"])
+            post_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(pieceid)
+            client.post(post_content)
 
-        try:
-            favpiece(pieceid,userid)
-        except Exception, e:
-            pass
+        favpiece(pieceid,userid)
 
         return ok({"id":pieceid})
 
 class fav:
-    def POST(self):
+    @common_check(post=["pieceid"])
+    def POST(self,ctx):
         """ fav a piece """
-        try:
-            ctx = common_check(post=["pieceid"])
-            pieceid=ctx["post"]["pieceid"]
-            favpiece(pieceid,ctx["user"]["id"])
-        except Exception, e:
-            return e
-
+        pieceid=ctx["post"]["pieceid"]
+        favpiece(pieceid,ctx["user"]["id"])
         return ok({"id":pieceid})
 
 class userinfo:
-    def GET(self):
-        try:
-            ctx = common_check()
-        except Exception, e:
-            return e
-
+    @common_check()
+    def GET(self,ctx):
         user = ctx["user"]
-
         return json.dumps({"name":user["name"],"id":user["id"],"avatar":user["avatar"]})
 
 
 
 class unfav:
-    def POST(self):
+    @common_check(post=["pieceid"])
+    def POST(self,ctx):
         """ fav a piece """
-        try:
-            ctx = common_check(post=["pieceid"])
-            unfavpiece(ctx["post"]["pieceid"],ctx["user"]["id"])
-        except Exception, e:
-            return e
-        
+        unfavpiece(ctx["post"]["pieceid"],ctx["user"]["id"])
         return ok()
 
 # class delete:
