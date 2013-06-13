@@ -1,4 +1,4 @@
-$def with (favs,page_user)
+$def with (favs,page_user,pages,current)
 $var name : people
 $var title : $page_user.name
 
@@ -36,4 +36,12 @@ $var title : $page_user.name
                 </div>
             </div>
         </div>
+    $if pages > 1:
+    <div class="pages">
+        $if (current - 1) > 0:
+            <a class="prev num" href="?page=$(current-1)">‹</a>
+        <div class="current">$current/$pages</div>
+        $if current < pages:
+            <a class="next num" href="?page=$(current+1)">›</a>
+    </div>
 </div>

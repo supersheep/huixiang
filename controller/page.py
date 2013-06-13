@@ -1,5 +1,6 @@
 #encoding=utf-8
 import web
+import math
 import requests
 import urllib
 from datetime import datetime
@@ -34,7 +35,25 @@ class people(base):
     def GET(self,id):
         """ people """
         super(people,self).GET()
-        favs = db.select(["fav","piece","user"],what="avatar,piece.id,piece.content,fav.addtime",where="fav.userid=user.id and fav.pieceid=piece.id and user.id=$id",vars={"id":id},limit=5,order="addtime DESC")
+
+        per = 5
+        try:
+            page = int(web.input(page=1)["page"])
+        except Exception, e:
+            page = 1
+
+        if page < 1:
+            page = 1
+
+        where = "fav.userid=user.id and fav.pieceid=piece.id and user.id=$id"
+        vars = {"id":id}
+
+        favs = db.select(["fav","piece","user"]
+            ,what="avatar,piece.id,piece.content,fav.addtime"
+            ,where=where
+            ,vars=vars,limit=per
+            ,offset=(page-1) * per
+            ,order="addtime DESC")
         
         # mine = db.select(["piece","user"],what="piece.id,piece.content,piece.addtime",where="piece.user=user.id and user.id=$id",vars={"id":id},limit=5)
         rows = db.select(["user"],what="avatar,name,id",where="id=$id",vars={"id":id})
@@ -47,7 +66,16 @@ class people(base):
         if len(favs) == 0:
             favs = [{"content":"如果有收藏过喜欢的句子，他们会出现在这里。","id":None}]
         
-        return render.people(favs,user)
+        pages = db.select(["fav","piece","user"]
+            ,what="COUNT(piece.id) as count"
+            ,where=where
+            ,vars=vars
+        )[0]["count"]
+
+        pages = math.ceil(float(pages)/per)
+        pages = int(pages)
+
+        return render.people(favs,user,pages,page)
 
 class piece(base):
     def GET(self,id):

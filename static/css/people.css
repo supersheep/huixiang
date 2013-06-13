@@ -78,3 +78,33 @@
     font-size: 12px;
 }
 
+.pages{
+    position: relative;
+    margin:15px;
+}
+
+.pages .num{
+    top: 0;
+    height: 20px;
+    position: absolute;
+    color:rgb(60, 58, 55);
+    padding:0 10px;
+    font-size: 12px;
+}
+
+.pages .prev{
+    left:0;
+    border-radius: 3px 0 0 3px;
+}
+
+.pages .current{
+    font-size: 12px;
+    color:rgb(156, 147, 130);
+    text-align: center;
+}
+
+.pages .next{
+    right:0;
+    border-radius: 0 3px 3px 0;
+}
+
