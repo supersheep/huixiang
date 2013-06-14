@@ -3,7 +3,9 @@ define(function(require,exports){
     var Login = require("mod/login");
 
     $("#people .share .sharebtn").click(function(){
-        Login["pop" + $(this).attr("data-type")]();
+        if(!$(this).hasClass("active")){
+            Login["pop" + $(this).attr("data-type")]();
+        }
         return false;
     });
 

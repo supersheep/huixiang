@@ -2,6 +2,6 @@
 config.yml
 *.psd
 *.pyc
-boot.sh
+*.sh
 static/extension
 static/extension.pem

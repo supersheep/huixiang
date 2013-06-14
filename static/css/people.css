@@ -17,6 +17,7 @@
 }
 #people .share{
     margin-right: 0;
+    float: none;
 }
 #people .avatar img{
     width:40px;
@@ -80,7 +81,7 @@
 
 .pages{
     position: relative;
-    margin:15px;
+    margin:10px 15px;
 }
 
 .pages .num{
