@@ -1,9 +1,8 @@
 define(function(require,exports,module){
-    var Queue = require("mod/flow").queue;
 
     function Piece(option){
         this.interval = option.interval || 10000;
-        this.duration = 1000;
+        this.duration = 500;
         this.container = option.container;
         this.current_data = [];
         return this;
@@ -26,11 +25,11 @@ define(function(require,exports,module){
             var txt = piece.find(".txt");
             var inner = piece.find(".piece-inner");
 
-
             container.append(piece);
             if(txt.height() < 50){
                 txt.css("text-align","center");
             }
+
 
             piece.data("data",data);
 
@@ -58,26 +57,27 @@ define(function(require,exports,module){
                 self.fetch();
             }
 
-            function fadeOutOld(done){
-                var former = container.find('.piece');
-                if(!former.length){done();return;}
-                former.css("-webkit-filter","blur(4px)")
+            function fadeOutOld(){
+                var former = container.find('.piece').eq(0);
+                if(!former.length){return;}
+                // former.css("-webkit-filter","blur(4px)")
+                former.css("-webkit-transform","scale(.92)");
                 former.animate({
                     opacity:0
                 },{
                     duration:self.duration,
                     complete:function(){
                         former.remove();
-                        done();
                     }
                 });
             }
 
-            function fadeInNew(done){
+            function fadeInNew(){
                 var newpiece;
 
                 newpiece = self.create(data,container);
                 newpiece.css("-webkit-filter","blur(0px)");
+                newpiece.css("-webkit-transform","scale(1)");
                 newpiece.animate({
                     opacity:1
                 },{
@@ -90,7 +90,8 @@ define(function(require,exports,module){
             }
 
             self.ready = false;
-            Queue([fadeOutOld,fadeInNew]);
+            fadeOutOld();
+            setTimeout(fadeInNew,500);
             return this;
         },
         fetch:function(cb){

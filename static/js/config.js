@@ -2,7 +2,7 @@ seajs.config({
   // 加载 shim 插件
   plugins: ['shim'],
   map: [
-    [/^(.*\/mod\/.*\.(?:css|js))(?:.*)$/i, '$1?20130614' ]
+    [/^(.*\/.*\.(?:css|js))(?:.*)$/i, '$1?20130615' ]
   ],
   // 配置 shim 信息，这样我们就可以通过 require('jquery') 来获取 jQuery
   shim: {

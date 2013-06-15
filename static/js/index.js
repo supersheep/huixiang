@@ -4,7 +4,7 @@ define(function(require,exports){
 
 
     var piece = new Piece({
-        interval:10000,
+        interval:30000,
         container:$(".pieces")
     }).start();
 
