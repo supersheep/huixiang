@@ -37,7 +37,7 @@ def common_check(post=[],get=[]):
         def inner(self):
             try:
                 ctx = check(post,get)
-                return fn(self,ctx)
+                return ok(msg=fn(self,ctx))
             except Exception, e:
                 return e
         return inner
@@ -94,7 +94,7 @@ class add:
 
         favpiece(pieceid,userid)
 
-        return ok({"id":pieceid})
+        return {"id":pieceid}
 
 class fav:
     @common_check(post=["pieceid"])
@@ -102,13 +102,13 @@ class fav:
         """ fav a piece """
         pieceid=ctx["post"]["pieceid"]
         favpiece(pieceid,ctx["user"]["id"])
-        return ok({"id":pieceid})
+        return {"id":pieceid}
 
 class userinfo:
     @common_check()
     def GET(self,ctx):
         user = ctx["user"]
-        return json.dumps({"name":user["name"],"id":user["id"],"avatar":user["avatar"]})
+        return {"name":user["name"],"id":user["id"],"avatar":user["avatar"]}
 
 
 
@@ -117,7 +117,7 @@ class unfav:
     def POST(self,ctx):
         """ fav a piece """
         unfavpiece(ctx["post"]["pieceid"],ctx["user"]["id"])
-        return ok()
+        return 
 
 # class delete:
 #     def POST(self):
