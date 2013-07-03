@@ -118,6 +118,41 @@ class userinfo:
         user = ctx["user"]
         return {"name":user["name"],"id":user["id"],"avatar":user["avatar"]}
 
+class myfavs:
+    @common_check()
+    def GET(self,ctx):
+        input = web.input()
+        id = ctx["user"]["id"]
+        if "per" in input:
+            per = input["per"] or 5
+        else:
+            per = 5
+
+        try:
+            page = int(web.input(page=1)["page"])
+        except Exception, e:
+            page = 1
+
+        if page < 1:
+            page = 1
+
+        vars = {"id":id}
+
+        where = "fav.userid=user.id and fav.pieceid=piece.id and user.id=$id"
+
+        favs = db.select(["fav","piece","user"]
+            ,what="avatar,piece.id,piece.content,fav.addtime"
+            ,where=where
+            ,vars=vars,limit=per
+            ,offset=(page-1) * per
+            ,order="addtime DESC")
+
+        favs = list(favs)
+        for item in favs:
+            item["addtime"] = item["addtime"].strftime('%Y-%m-%d')
+
+        return favs
+
 class authuser:
     @common_check(post=["name","access_token"],need_login=False)
     def POST(self,ctx):
@@ -178,7 +213,7 @@ class unfav:
 class pieces:
     def GET(self):
         "get pieces"
-        pieces_itr = db.query('select id,content from piece order by rand() limit 10')
+        pieces_itr = db.query('select id,content from piece order by rand() limit 100')
         pieces=[]
         for piece in pieces_itr:
             pieces.append(piece)

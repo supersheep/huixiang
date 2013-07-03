@@ -15,6 +15,7 @@ urls = (
     '/auth/(douban|weibo)', page + 'auth',
     '/auth/redirect/(douban|weibo)', page + 'auth_redirect',
     '/ajax/userinfo', ajax + 'userinfo',
+    '/ajax/mine/favs', ajax + 'myfavs',
     '/ajax/authuser', ajax + 'authuser',
     '/ajax/add', ajax + 'add',
     '/ajax/fav', ajax + 'fav',
