@@ -1,6 +1,7 @@
 #encoding=utf-8
 import web
 import requests
+import traceback
 from datetime import datetime
 from config import setting
 from model import user
@@ -13,15 +14,17 @@ config = setting.config
 render = setting.render
 db = setting.db
 
-def common_check(post=[],get=[]):
+def common_check(post=[],get=[],need_login=True):
     """ request decorator """
     def check(post,get):
         """ 检查登录与否及参数 """
         post_data = web.input(_method="post")
         get_data = web.input(_method="get")
-        user = login.logged()
-        if not user:
-            raise Exception(json.dumps({"code":403,"msg":"access deny"}))
+        user = None
+        if need_login:
+            user = login.logged()
+            if not user:
+                raise Exception(json.dumps({"code":403,"msg":"access deny"}))
 
         for k in post:
             if not k in post_data:
@@ -39,6 +42,7 @@ def common_check(post=[],get=[]):
                 ctx = check(post,get)
                 return ok(msg=fn(self,ctx))
             except Exception, e:
+                traceback.print_exc()
                 return e
         return inner
     return checkwrap
@@ -62,6 +66,10 @@ def favpiece(pieceid,userid):
 
     if row:
         raise Exception(json.dumps({"code":200,"msg":{"id":row[0]["id"]}}))
+
+    piece = db.select("piece",where="id=$id",vars={"id":pieceid})
+    if not row:
+        raise Exception(json.dumps({"code":500,"msg":"invalid piece id"}))
 
     db.insert("fav",pieceid=pieceid,userid=userid,addtime=datetime.now())
 
@@ -110,6 +118,36 @@ class userinfo:
         user = ctx["user"]
         return {"name":user["name"],"id":user["id"],"avatar":user["avatar"]}
 
+class authuser:
+    @common_check(post=["name","access_token"],need_login=False)
+    def POST(self,ctx):
+        name = ctx["post"]["name"]
+        access_token = ctx["post"]["access_token"]
+
+
+        ret_user = None
+        cur_user = login.logged()
+
+        client = oauth.createClientWithName(name)
+        user_info = client.get_current_user_info(access_token)
+
+        user_info["access_token"] = access_token
+
+        if cur_user:
+            print cur_user
+            user.update_oauth_userid(name,cur_user["id"],user_info["id"])
+            user.update_access_token(name,user_info["id"],access_token)
+        if not cur_user:
+            print "not cur_user"
+            oauth_user = user.exist_oauth_user(name,user_info)
+            if not oauth_user:
+                ret_user = user.new_oauth_user(name,user_info)
+            else:
+                ret_user = oauth_user
+                user.update_access_token(name,oauth_user[name+"_id"],access_token)
+            user.login_oauth_user(name,user_info)
+
+        return ret_user 
 
 
 class unfav:
