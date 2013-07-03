@@ -68,7 +68,7 @@ def favpiece(pieceid,userid):
         raise Exception(json.dumps({"code":200,"msg":{"id":row[0]["id"]}}))
 
     piece = db.select("piece",where="id=$id",vars={"id":pieceid})
-    if not row:
+    if not piece:
         raise Exception(json.dumps({"code":500,"msg":"invalid piece id"}))
 
     db.insert("fav",pieceid=pieceid,userid=userid,addtime=datetime.now())
