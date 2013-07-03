@@ -126,6 +126,7 @@ class authuser:
 
 
         ret_user = None
+        client_token = None
         cur_user = login.logged()
 
         client = oauth.createClientWithName(name)
@@ -145,8 +146,9 @@ class authuser:
             else:
                 ret_user = oauth_user
                 user.update_access_token(name,oauth_user[name+"_id"],access_token)
-            user.login_oauth_user(name,user_info)
+            client_token = user.login_oauth_user(name,user_info)
 
+        ret_user["client_hash"] = client_token
         return ret_user 
 
 

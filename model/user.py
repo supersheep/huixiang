@@ -60,4 +60,4 @@ def login_oauth_user(name,info):
     if not users:
         raise Exception("user not found")
 
-    login.login(users[0]["id"])
+    return login.login(users[0]["id"])

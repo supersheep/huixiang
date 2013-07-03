@@ -57,7 +57,7 @@ def login(userid):
     db.insert("login",userid=userid,hash=hash,time=now,discard=0)
     # 3. write cookie ua:sha1
     web.setcookie('cu', hash, 3600*24*30)
-    
+    return hash
 
 def logout():
     hash = web.cookies().get("cu")
