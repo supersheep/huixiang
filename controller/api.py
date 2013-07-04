@@ -24,15 +24,15 @@ def common_check(post=[],get=[],need_login=True):
         if need_login:
             user = login.logged()
             if not user:
-                raise Exception(json.dumps({"code":403,"msg":"access deny"}))
+                raise Exception(403,"access deny")
 
         for k in post:
             if not k in post_data:
-                raise Exception(json.dumps({"code":500,"msg":str(k)+" is required"}))
+                raise Exception(400,str(k)+" is required")
 
         for k in get:
             if not k in get_data:
-                raise Exception(json.dumps({"code":500,"msg":str(k)+" is required"}))
+                raise Exception(400,str(k)+" is required")
 
         return {"post":post_data,"get":get_data,"user":user}
 
@@ -41,23 +41,26 @@ def common_check(post=[],get=[],need_login=True):
             try:
                 ctx = check(post,get)
                 return ok(msg=fn(self,ctx))
-            except Exception, e:
-                traceback.print_exc()
-                return e
+            except Exception as inst:
+                try:
+                    (code,msg) = inst
+                    web.ctx.status = str(code)
+                    return msg
+                except Exception, e:
+                    traceback.print_exc()
+                    web.ctx.status = "500"
+                    return inst
         return inner
     return checkwrap
 
 def ok(msg="ok"):
-    return json.dumps({"code":200,"msg":msg})
-
-def fail(msg="fail"):
-    return json.dumbs({"code":500,"msg":msg})
+    return json.dumps(msg)
 
 def unfavpiece(pieceid,userid):
     where={"pieceid":pieceid,"userid":userid}
     row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars=where)
     if not row:
-        raise Exception(json.dumps({"code":300,"msg":"you've not faved this piece"}))
+        raise Exception(400,"you've not faved this piece")
 
     db.delete("fav",where="pieceid=$pieceid and userid=$userid",vars=where)
 
@@ -65,11 +68,12 @@ def favpiece(pieceid,userid):
     row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":pieceid,"userid":userid})
 
     if row:
-        raise Exception(json.dumps({"code":200,"msg":{"id":row[0]["id"]}}))
+        pass
+        # raise Exception(json.dumps({"code":200,"msg":{"id":row[0]["id"]}}))
 
     piece = db.select("piece",where="id=$id",vars={"id":pieceid})
     if not piece:
-        raise Exception(json.dumps({"code":500,"msg":"invalid piece id"}))
+        raise Exception(400,"invalid piece id")
 
     db.insert("fav",pieceid=pieceid,userid=userid,addtime=datetime.now())
 
@@ -104,7 +108,7 @@ class add:
 
         favpiece(pieceid,userid)
 
-        return {"id":pieceid}
+        return {"id":int(pieceid)}
 
 class fav:
     @common_check(post=["pieceid"])
@@ -194,7 +198,7 @@ class unfav:
     def POST(self,ctx):
         """ fav a piece """
         unfavpiece(ctx["post"]["pieceid"],ctx["user"]["id"])
-        return 
+        return "ok"
 
 # class delete:
 #     def POST(self):
@@ -213,10 +217,8 @@ class unfav:
 #         return ok()
 
 class pieces:
-    def GET(self):
+    @common_check(need_login=False)
+    def GET(self,ctx):
         "get pieces"
-        pieces_itr = db.query('select id,content from piece order by rand() limit 100')
-        pieces=[]
-        for piece in pieces_itr:
-            pieces.append(piece)
-        return json.dumps(pieces)
+        pieces = db.query('select id,content from piece order by rand() limit 100')
+        return list(pieces)

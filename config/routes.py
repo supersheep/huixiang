@@ -1,5 +1,6 @@
 page = "controller.page."
 ajax = "controller.ajax."
+api = "controller.api."
 
 
 #route settings
@@ -20,5 +21,13 @@ urls = (
     '/ajax/add', ajax + 'add',
     '/ajax/fav', ajax + 'fav',
     '/ajax/unfav', ajax + 'unfav',
-    '/ajax/pieces', ajax + 'pieces'
+    '/ajax/pieces', ajax + 'pieces',
+
+    '/api/userinfo', api + 'userinfo',
+    '/api/mine/favs', api + 'myfavs',
+    '/api/authuser', api + 'authuser',
+    '/api/add', api + 'add',
+    '/api/fav', api + 'fav',
+    '/api/unfav', api + 'unfav',
+    '/api/pieces', api + 'pieces'
 )
