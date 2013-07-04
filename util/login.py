@@ -34,7 +34,7 @@ def logged():
     time=session["time"]
 
     # 3.1 不匹配则视为未登录
-    if not sha1(salt+web.ctx.ip+userid+time) == session["hash"]:
+    if not sha1(salt+userid+time) == session["hash"]:
         logout()
         return False
 
@@ -52,7 +52,7 @@ def login(userid):
     # 1. sha1(salt+ip+userid+now)
     now=str(datetime.now())
     userid=str(userid)
-    hash=sha1(salt+web.ctx.ip+userid+now)
+    hash=sha1(salt+userid+now)
     # 2. 储存hash id,userid,hash
     db.insert("login",userid=userid,hash=hash,time=now,discard=0)
     # 3. write cookie ua:sha1
