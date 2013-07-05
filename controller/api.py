@@ -144,10 +144,10 @@ class myfavs:
 
         vars = {"id":id}
 
-        where = "fav.userid=user.id and fav.pieceid=piece.id and user.id=$id"
+        where = "fav.userid=$id and fav.userid=user.id and fav.pieceid=piece.id"
 
         favs = db.select(["fav","piece","user"]
-            ,what="avatar,piece.id,piece.content,fav.addtime"
+            ,what="piece.id,piece.content,piece.link,fav.addtime"
             ,where=where
             ,vars=vars,limit=per
             ,offset=(page-1) * per
@@ -220,5 +220,5 @@ class pieces:
     @common_check(need_login=False)
     def GET(self,ctx):
         "get pieces"
-        pieces = db.query('select id,content from piece order by rand() limit 100')
+        pieces = db.query('select id,content,link from piece order by rand() limit 100')
         return list(pieces)
