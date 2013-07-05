@@ -68,7 +68,7 @@ def favpiece(pieceid,userid):
     row = db.select("fav",where="pieceid=$pieceid and userid=$userid",vars={"pieceid":pieceid,"userid":userid})
 
     if row:
-        pass
+        return
         # raise Exception(json.dumps({"code":200,"msg":{"id":row[0]["id"]}}))
 
     piece = db.select("piece",where="id=$id",vars={"id":pieceid})
