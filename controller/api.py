@@ -176,11 +176,11 @@ class authuser:
         user_info["access_token"] = access_token
 
         if cur_user:
-            print cur_user
+
+            ret_user = cur_user
             user.update_oauth_userid(name,cur_user["id"],user_info["id"])
             user.update_access_token(name,user_info["id"],access_token)
         if not cur_user:
-            print "not cur_user"
             oauth_user = user.exist_oauth_user(name,user_info)
             if not oauth_user:
                 ret_user = user.new_oauth_user(name,user_info)
