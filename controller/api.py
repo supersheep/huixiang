@@ -187,7 +187,7 @@ class authuser:
             else:
                 ret_user = oauth_user
                 user.update_access_token(name,oauth_user[name+"_id"],access_token)
-            client_token = user.login_oauth_user(name,user_info)
+        client_token = user.login_oauth_user(name,user_info)
 
         ret_user["client_hash"] = client_token
         return ret_user 
