@@ -129,10 +129,15 @@ class myfavs:
     def GET(self,ctx):
         input = web.input()
         id = ctx["user"]["id"]
-        if "per" in input:
-            per = input["per"] or 5
-        else:
+
+        try:
+            per = int(web.input(per=5)["per"])
+        except Exception, e:
             per = 5
+
+        if per < 5:
+            per = 5
+
 
         try:
             page = int(web.input(page=1)["page"])
