@@ -180,4 +180,4 @@ class auth:
 
             return blankrender.logged(True,new_user)
         except Exception, e:
-            return e
+            return blankrender.logged(True,None)

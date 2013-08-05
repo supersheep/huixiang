@@ -1,4 +1,4 @@
-html,body,div,ul,span,a{margin:0;padding:0;}
+html,body,div,ul,span,a,p{margin:0;padding:0;}
 body{background:rgb(207, 196, 173);font-family: 'Hiragino Sans GB','Verdana','Microsoft Yahei',simsun,serif;}
 ul{list-style-type: none;}
 a{text-decoration: none;}

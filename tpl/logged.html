@@ -5,9 +5,26 @@ $def with (ok,id)
     <meta charset="UTF-8">
     <title>$config['sitename'] - $config['slogan']</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <style>
+        html{
+            height: 100%;
+            width: 100%;
+            display: table;
+        }
+        body{
+            display: table-row;
+        }
+        p{
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     $if ok:
+        <p>登录成功</p>
         <script type="text/javascript">
             $if id:
                 window.opener.location.href = "/people/$id";
@@ -16,6 +33,6 @@ $def with (ok,id)
             window.close();
         </script>
     $else:
-        登录失败
+        <p>登录失败</p>
 </body>
 </html>
