@@ -1,4 +1,4 @@
-html,body,div,ul,span,a,p{margin:0;padding:0;}
+html,body,div,ul,span,a,p,textarea,input{margin:0;padding:0;}
 body{background:rgb(207, 196, 173);font-family: 'Hiragino Sans GB','Verdana','Microsoft Yahei',simsun,serif;}
 ul{list-style-type: none;}
 a{text-decoration: none;}
@@ -35,6 +35,25 @@ a{text-decoration: none;}
 #ft a,#ft span{color:rgb(156, 147, 130);text-decoration: none; margin-right: 5px}
 
 /* modules */
+
+/* form */
+input[type=text],textarea{
+    display: block;
+    height:20px;
+    border: 1px solid #999;
+    border-radius: 3px;
+    resize: none;
+    box-shadow: inset 0 2px 2px rgb(218, 218, 218);
+    display: block;
+    font-size: 18px;
+    padding:5px;
+    line-height: 1.5;
+}
+
+input[type=text]{
+    height:28px;
+}
+
 /* mbox */
 .mbox-win{position: fixed;}
 .mbox-overlay{position: fixed;top: 0;left: 0;height: 100%;width: 100%;background-color: rgb(207, 196, 173);z-index: 50;}
@@ -60,6 +79,7 @@ a{text-decoration: none;}
 .mbox-content .box-text{
     padding:20px;
 }
+
 .mbox-content .textarea{
     border: 1px solid #999;
     padding: 5px;
@@ -123,22 +143,6 @@ a{text-decoration: none;}
     top: 5px;
     display: inline-block;
     cursor: pointer;
-}
-
-#toweibo{
-    background-position: -50px 0;
-}
-
-#toweibo.active{
-    background-position: -50px -20px;
-}
-
-#todouban{
-    background-position: -72px 0;
-}
-
-#todouban.active{
-    background-position: -72px -20px;
 }
 
 .mbox-content .btn:hover{

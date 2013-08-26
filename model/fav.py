@@ -10,7 +10,7 @@ def add(user_id,piece_id):
     })
 
     if fav:
-        fav_id = fav["id"]
+        fav_id = fav[0]["id"]
     else:
         fav_id = db.insert("fav",pieceid=piece_id,userid=user_id,addtime=datetime.now())
     

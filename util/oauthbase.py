@@ -1,6 +1,7 @@
 import requests
 import urllib
 from config import setting
+from model import user
 
 config = setting.config
 
@@ -11,8 +12,12 @@ class oauthbase(object):
     def check_err(self,json):
         code = self.str_err_code
         msg = self.str_err_msg
+        name = self.name
         if code in json:
-            raise Exception(json[msg])
+            if name == "douban" and json[msg].startswith("access_token_has_expired"):
+                user.update_access_token(name,self.user[name+"_id"],None)
+            else:
+                raise Exception(json[msg])
 
     def signed_request(self,method,url,data={}):
         if not self._token:
@@ -47,6 +52,7 @@ class oauthbase(object):
 
     def set_user(self,user):
         token_name = self.name + "_access_token"
+        self.user = user
         if user and token_name in user:
             self._token = user[token_name]
 

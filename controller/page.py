@@ -37,16 +37,48 @@ class new(base):
         """ post the piece """
         super(new,self).GET()
         from model import piece
+        from urlparse import urlparse
 
         post = web.input(_method="post",share=[])
 
-        if(self.cur_user):
+        if self.cur_user:
+            # cur_user
+            cur_user = self.cur_user
+
+            # user_id
+            user_id = cur_user["id"]
+
+            # link
+            link = post["link"]
+            url_parsed = urlparse(link)
+            if not url_parsed.netloc:
+                link = None
+
+            # private
+            if "private" in post:
+                private = True
+            else:
+                private = False
+
             # content
-            user_id = self.cur_user["id"]
-            
-            piece.add(user_id=user_id,content=post["content"])
+            content = post["content"]
+
+            # insert
+            piece_id = piece.add(user_id=user_id,content=content,link=link,private=private)
             
             # share
+            if not private:
+                share = post["share"]
+                share_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(piece_id)
+                if "weibo" in share:
+                    client = oauth.createClientWithName("weibo",cur_user)
+                    client.post(share_content)
+
+                if "douban" in share:
+                    client = oauth.createClientWithName("douban",cur_user)
+                    client.post(share_content)
+
+            # redirect
             web.redirect("/people/"+str(user_id))
         else:
             return render.new()
