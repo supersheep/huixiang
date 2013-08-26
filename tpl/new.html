@@ -1,0 +1,20 @@
+$var name : new
+$var title : 记一句
+<form class="new-form" method="post">
+    <div class="box-text">
+        <textarea class="textarea" name="content" placeholder="记一句..." maxlength="100"></textarea>
+    </div>
+    <div class="box-bottom">
+
+        <div class="hint" style="display:none;">最多只能输入100个字</div>
+
+        <input type="submit" class="btn" value="好了" />
+        <div class="share">
+            <span class="lbl">分享：</span>
+            <label for="weibochk" class="sharebtn" id="toweibo"></label>
+            <input type="checkbox" value="weibo" name="share" id="weibochk" />
+            <label for="doubanchk" class="sharebtn" id="todouban"></label>
+            <input type="checkbox" value="douban" name="share" id="doubanchk" />
+        </div>
+    </div>
+</form>

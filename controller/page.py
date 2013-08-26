@@ -1,14 +1,11 @@
 #encoding=utf-8
 import web
 import math
-import requests
 import urllib
-from datetime import datetime
 from config import setting
 from model import user
 from util import login as login_mod
 from util import oauth
-import json
 
 config = setting.config
 render = setting.render
@@ -31,6 +28,31 @@ class index(base):
         super(index,self).GET()
         return render.index()
 
+class new(base):
+    def GET(self):
+        """ write new piece """
+        super(new,self).GET()
+        return render.new()
+    def POST(self):
+        """ post the piece """
+        super(new,self).GET()
+        from model import piece
+
+        post = web.input(_method="post",share=[])
+
+        if(self.cur_user):
+            # content
+            user_id = self.cur_user["id"]
+            
+            piece.add(user_id=user_id,content=post["content"])
+            
+            # share
+            web.redirect("/people/"+str(user_id))
+        else:
+            return render.new()
+
+
+
 class people(base):
     def GET(self,id):
         """ people """
@@ -39,7 +61,7 @@ class people(base):
         per = 5
         try:
             page = int(web.input(page=1)["page"])
-        except Exception, e:
+        except Exception:
             page = 1
 
         if page < 1:
@@ -62,7 +84,7 @@ class people(base):
             web.notfound()
             return "user not found"
 
-        user = rows[0]
+        the_user = rows[0]
         if len(favs) == 0:
             favs = [{"content":"如果有收藏过喜欢的句子，他们会出现在这里。","id":None}]
         
@@ -75,7 +97,7 @@ class people(base):
         pages = math.ceil(float(pages)/per)
         pages = int(pages)
 
-        return render.people(favs,user,pages,page)
+        return render.people(favs,the_user,pages,page)
 
 class piece(base):
     def GET(self,id):
@@ -127,7 +149,6 @@ class about(base):
 class bookmarklet(base):
     def GET(self):
         super(bookmarklet,self).GET()
-        ctx = web.ctx
         input = web.input()
         url = input["url"]
         title = urllib.unquote(input["title"])
@@ -144,8 +165,6 @@ class bookmarklet(base):
 
 class auth_redirect:
     def GET(self,name):
-        input = web.input()
-        action = "action" in input and input["action"] or "login"
         try:
             client = oauth.createClientWithName(name)
             url = client.redirect()
@@ -179,5 +198,5 @@ class auth:
                 user.login_oauth_user(name,user_info)
 
             return blankrender.logged(True,new_user)
-        except Exception, e:
+        except Exception:
             return blankrender.logged(True,None)
