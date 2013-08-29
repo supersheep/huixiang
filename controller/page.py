@@ -42,25 +42,25 @@ class new(base):
         post = web.input(_method="post",share=[])
 
         if self.cur_user:
-            # cur_user
+            # get cur_user
             cur_user = self.cur_user
 
-            # user_id
+            # set user_id
             user_id = cur_user["id"]
 
-            # link
+            # set link
             link = post["link"]
             url_parsed = urlparse(link)
             if not url_parsed.netloc:
                 link = None
 
-            # private
+            # set private
             if "private" in post:
                 private = True
             else:
                 private = False
 
-            # content
+            # set content
             content = post["content"]
 
             # insert
@@ -86,11 +86,27 @@ class new(base):
 
 
 class people(base):
-    def GET(self,id):
+    def GET(self,user_id):
         """ people """
         super(people,self).GET()
 
-        per = 5
+        # get current user
+        cur_user = self.cur_user
+
+        # get page user
+        the_user = user.get_by_id(user_id)
+
+        if not the_user:
+            web.notfound()
+            return "user not found"
+
+        # set private
+        if not cur_user or the_user.id == cur_user.id:
+            show_private = 1
+        else:
+            show_private = 0
+
+        # get page from url
         try:
             page = int(web.input(page=1)["page"])
         except Exception:
@@ -99,34 +115,17 @@ class people(base):
         if page < 1:
             page = 1
 
-        where = "fav.userid=user.id and fav.pieceid=piece.id and user.id=$id"
-        vars = {"id":id}
+        per = 5
 
-        favs = db.select(["fav","piece","user"]
-            ,what="avatar,piece.id,piece.content,fav.addtime"
-            ,where=where
-            ,vars=vars,limit=per
-            ,offset=(page-1) * per
-            ,order="addtime DESC")
+        # get favs
+        favs = user.favs_of_page(page=page,per=per,user_id=user_id,show_private=show_private)
         
-        # mine = db.select(["piece","user"],what="piece.id,piece.content,piece.addtime",where="piece.user=user.id and user.id=$id",vars={"id":id},limit=5)
-        rows = db.select(["user"],what="avatar,name,id",where="id=$id",vars={"id":id})
-
-        if not rows:
-            web.notfound()
-            return "user not found"
-
-        the_user = rows[0]
         if len(favs) == 0:
             favs = [{"content":"如果有收藏过喜欢的句子，他们会出现在这里。","id":None}]
         
-        pages = db.select(["fav","piece","user"]
-            ,what="COUNT(piece.id) as count"
-            ,where=where
-            ,vars=vars
-        )[0]["count"]
+        pages_count = user.fav_pages(user_id=user_id,per=5,show_private=show_private)
 
-        pages = math.ceil(float(pages)/per)
+        pages = math.ceil(float(pages_count)/per)
         pages = int(pages)
 
         return render.people(favs,the_user,pages,page)

@@ -1,3 +1,4 @@
+#encoding=utf-8
 from config import setting
 from util import login
 
@@ -6,11 +7,42 @@ db = setting.db
 
 def check(name,info):
     for key in ["name","avatar",name+"_id",name+"_access_token"]:
-        # print "key",key
         if not info[key]:
             return "no "+key
     return True
 
+def get_by_id(id):
+    rows = db.select(["user"],what="avatar,name,id",where="id=$id",vars={"id":id})
+    if rows:
+        return rows[0]
+    else:
+        return False
+
+def fav_pages(user_id=None,show_private=False,per=5):
+    where = "fav.userid=user.id and fav.pieceid=piece.id and user.id=$user_id"
+    if not show_private:
+        where += " and private=0"
+    pages = db.select(["fav","piece","user"]
+        ,what="COUNT(piece.id) as count"
+        ,where=where
+        ,vars={"user_id":user_id}
+    )[0]["count"]
+    return pages
+
+def favs_of_page(page=1,per=5,user_id=0,show_private=False):
+    where = "fav.userid=user.id and fav.pieceid=piece.id and user.id=$user_id"
+    if not show_private:
+        where += " and private=0"
+    favs = db.select(["fav","piece","user"]
+        ,what="avatar,piece.id,piece.content,fav.addtime"
+        ,where=where
+        ,vars={"user_id":user_id}
+        ,limit=per
+        ,offset=(page-1) * per
+        ,order="addtime DESC")
+    return favs
+
+# 择日移入oauth相关
 def parse_data(name,info):
     data = {}
 
