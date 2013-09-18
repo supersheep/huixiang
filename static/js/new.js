@@ -12,11 +12,13 @@ define(function(require){
 
     private_el.on("click",function(){
         if(!toggle_private){
+            $(".share").hide();
             share_btns.each(function(i,el){
                 el = $(el)
                 el.data("selected",el.hasClass("active")).removeClass("active");   
             });
         }else{
+            $(".share").show();
             share_btns.each(function(i,el){
                 el = $(el)
                 if(el.data("selected")){
