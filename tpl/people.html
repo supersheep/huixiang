@@ -38,9 +38,13 @@ $var title : $page_user.name
                         $piece["content"]
                     </a>
                 </div>
+                <div class="info">
+                $if piece["private"]:
+                    <div class="private">私藏</div>
                 <div class="addtime">
                     $if "addtime" in piece and piece["addtime"] != None:
                         $piece["addtime"].strftime('%Y-%m-%d')
+                </div>
                 </div>
             </div>
         </div>
