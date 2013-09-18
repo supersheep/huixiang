@@ -1,14 +1,11 @@
 #encoding=utf-8
 import web
 import math
-import requests
 import urllib
-from datetime import datetime
 from config import setting
 from model import user
 from util import login as login_mod
 from util import oauth
-import json
 
 config = setting.config
 render = setting.render
@@ -31,51 +28,107 @@ class index(base):
         super(index,self).GET()
         return render.index()
 
+class new(base):
+    def GET(self):
+        """ write new piece """
+        super(new,self).GET()
+        return render.new()
+    def POST(self):
+        """ post the piece """
+        super(new,self).GET()
+        from model import piece
+        from urlparse import urlparse
+
+        post = web.input(_method="post",share=[])
+
+        if self.cur_user:
+            # get cur_user
+            cur_user = self.cur_user
+
+            # set user_id
+            user_id = cur_user["id"]
+
+            # set link
+            link = post["link"]
+            url_parsed = urlparse(link)
+            if not url_parsed.netloc:
+                link = None
+
+            # set private
+            if "private" in post:
+                private = True
+            else:
+                private = False
+
+            # set content
+            content = post["content"]
+
+            # insert
+            piece_id = piece.add(user_id=user_id,content=content,link=link,private=private)
+            
+            # share
+            if not private:
+                share = post["share"]
+                share_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(piece_id)
+                if "weibo" in share:
+                    client = oauth.createClientWithName("weibo",cur_user)
+                    client.post(share_content)
+
+                if "douban" in share:
+                    client = oauth.createClientWithName("douban",cur_user)
+                    client.post(share_content)
+
+            # redirect
+            web.redirect("/people/"+str(user_id))
+        else:
+            return render.new()
+
+
+
 class people(base):
-    def GET(self,id):
+    def GET(self,user_id):
         """ people """
         super(people,self).GET()
 
-        per = 5
+        # get current user
+        cur_user = self.cur_user
+
+        # get page user
+        the_user = user.get_by_id(user_id)
+
+        if not the_user:
+            web.notfound()
+            return "user not found"
+
+        # set private
+        if not cur_user or the_user.id == cur_user.id:
+            show_private = 1
+        else:
+            show_private = 0
+
+        # get page from url
         try:
             page = int(web.input(page=1)["page"])
-        except Exception, e:
+        except Exception:
             page = 1
 
         if page < 1:
             page = 1
 
-        where = "fav.userid=user.id and fav.pieceid=piece.id and user.id=$id"
-        vars = {"id":id}
+        per = 5
 
-        favs = db.select(["fav","piece","user"]
-            ,what="avatar,piece.id,piece.content,fav.addtime"
-            ,where=where
-            ,vars=vars,limit=per
-            ,offset=(page-1) * per
-            ,order="addtime DESC")
+        # get favs
+        favs = user.favs_of_page(page=page,per=per,user_id=user_id,show_private=show_private)
         
-        # mine = db.select(["piece","user"],what="piece.id,piece.content,piece.addtime",where="piece.user=user.id and user.id=$id",vars={"id":id},limit=5)
-        rows = db.select(["user"],what="avatar,name,id",where="id=$id",vars={"id":id})
-
-        if not rows:
-            web.notfound()
-            return "user not found"
-
-        user = rows[0]
         if len(favs) == 0:
             favs = [{"content":"如果有收藏过喜欢的句子，他们会出现在这里。","id":None}]
         
-        pages = db.select(["fav","piece","user"]
-            ,what="COUNT(piece.id) as count"
-            ,where=where
-            ,vars=vars
-        )[0]["count"]
+        pages_count = user.fav_pages(user_id=user_id,per=5,show_private=show_private)
 
-        pages = math.ceil(float(pages)/per)
+        pages = math.ceil(float(pages_count)/per)
         pages = int(pages)
 
-        return render.people(favs,user,pages,page)
+        return render.people(favs,the_user,pages,page)
 
 class piece(base):
     def GET(self,id):
@@ -127,7 +180,6 @@ class about(base):
 class bookmarklet(base):
     def GET(self):
         super(bookmarklet,self).GET()
-        ctx = web.ctx
         input = web.input()
         url = input["url"]
         title = urllib.unquote(input["title"])
@@ -144,8 +196,6 @@ class bookmarklet(base):
 
 class auth_redirect:
     def GET(self,name):
-        input = web.input()
-        action = "action" in input and input["action"] or "login"
         try:
             client = oauth.createClientWithName(name)
             url = client.redirect()
@@ -179,5 +229,5 @@ class auth:
                 user.login_oauth_user(name,user_info)
 
             return blankrender.logged(True,new_user)
-        except Exception, e:
+        except Exception:
             return blankrender.logged(True,None)

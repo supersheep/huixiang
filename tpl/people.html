@@ -8,14 +8,14 @@ $var title : $page_user.name
     </div>
     $if user and user["name"]==page_user["name"]:
         <div class="share">
-            $if user["douban_id"]:
-                <a href="javascript:;" id="todouban" data-type="douban" class="sharebtn active" title="已绑定豆瓣"></a>
+            $if user["douban_access_token"]:
+                <a href="javascript:;" class="sharebtn active todouban" data-type="douban" title="已绑定豆瓣"></a>
             $else:
-                <a href="javascript:;" id="todouban" data-type="douban" class="sharebtn" title="绑定豆瓣"></a>
-            $if user["weibo_id"]:
-                <a href="javascript:;" id="toweibo" data-type="weibo" class="sharebtn active" title="已绑定微博"></a>
+                <a href="javascript:;" class="sharebtn todouban" data-type="douban" title="绑定豆瓣"></a>
+            $if user["weibo_access_token"]:
+                <a href="javascript:;" class="sharebtn active toweibo" data-type="weibo" title="已绑定微博"></a>
             $else:
-                <a href="javascript:;" id="toweibo" data-type="weibo" class="sharebtn" title="绑定微博"></a>
+                <a href="javascript:;" class="sharebtn toweibo" data-type="weibo" title="绑定微博"></a>
         </div>
     $if pages > 1:
         <div class="pages">
@@ -38,9 +38,13 @@ $var title : $page_user.name
                         $piece["content"]
                     </a>
                 </div>
+                <div class="info">
+                $if piece["private"]:
+                    <div class="private">私藏</div>
                 <div class="addtime">
                     $if "addtime" in piece and piece["addtime"] != None:
                         $piece["addtime"].strftime('%Y-%m-%d')
+                </div>
                 </div>
             </div>
         </div>

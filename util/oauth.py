@@ -40,6 +40,7 @@ class douban(oauthbase):
             ,data={"text":content.encode('utf8')})
 
 
+
 def createClientWithName(name,user=None):
     if name == "douban":
         return douban(user)

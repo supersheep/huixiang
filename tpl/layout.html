@@ -30,7 +30,7 @@ $ name = ("name" in content) and content["name"] or ""
                     <img src="/static/img/default-avatar.png" class="avatar"/>
             <ul class="menu" style="display:none">
                 $if user:
-                    <li class="menu-item"><a href="#" id="write-note">记一句</a></li>
+                    <li class="menu-item"><a href="/new" id="write-note">记一句</a></li>
                     <li class="menu-item"><a href="/people/$user["id"]" id="write-note">我的茴香</a></li>
                     <li class="menu-item"><a href="/tools">工具盒</a></li>
                     <li class="menu-item"><a href="/logout">退出</a></li>

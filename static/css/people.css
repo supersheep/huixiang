@@ -73,10 +73,26 @@
     color: #333;
 }
 
+.favs .info{
+    zoom:1;
+}
+
+.favs .info:after{
+    content:"";
+    display:block;
+    clear:both;
+}
+
+.favs .private{
+    color:#999;
+    font-size: 12px;
+    float: left;    
+}
+
 .favs .addtime{
     color:#999;
-    text-align: right;
     font-size: 12px;
+    float: right;
 }
 
 .pages{
@@ -106,5 +122,23 @@
 .pages .next{
     right: -10px;
     border-radius: 0 3px 3px 0;
+}
+
+
+.toweibo{
+    background-position: -50px 0;
+}
+
+.toweibo.active{
+    background-position: -50px -20px;
+}
+
+
+.todouban{
+    background-position: -72px 0;
+}
+
+.todouban.active{
+    background-position: -72px -20px;
 }
 

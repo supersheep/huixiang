@@ -6,6 +6,7 @@ api = "controller.api."
 #route settings
 urls = (
     '/', page + 'index',
+    '/new', page + 'new',
     '/piece/(\d+)', page + 'piece',
     '/people/(\d+)', page + 'people',
     '/login', page + 'login',

@@ -2,7 +2,7 @@ define(function(require,exports,module){
     var Event = require("mod/event");
     var Util = require("mod/util");
 
-    exports.LIMIT = 70;
+    exports.LIMIT = 100;
     Event.mixin(module.exports);
 
     function init(content){
