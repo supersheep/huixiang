@@ -46,6 +46,8 @@ $ name = ("name" in content) and content["name"] or ""
         <a id="tools" href="/tools" target="_blank">小工具</a>
         <a id="about" href="/about" target="_blank">关于</a>
         <a href="https://itunes.apple.com/cn/app/huixiang/id669860898" target="_blank">iOS app</a>
+        $if ENV == "DEV":
+            <a href="javascript:;">DEV</a>
     </div>
     <script src="/static/js/sea.js" data-config="config.js?20130615" data-main="$name"></script>
 </body>

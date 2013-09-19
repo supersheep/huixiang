@@ -2,6 +2,7 @@
 import web
 import math
 import urllib
+import os
 from config import setting
 from model import user
 from util import login as login_mod
@@ -19,6 +20,8 @@ class base(object):
         cur_user = login_mod.logged()
         self.cur_user = cur_user
         web.template.Template.globals['user'] = cur_user
+        web.template.Template.globals['ENV'] = os.environ.get("ENV",None)
+
 
 
 
