@@ -1,4 +1,5 @@
 #encoding=utf-8
+# /login
 import web
 from config import setting
 import hashlib

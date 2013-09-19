@@ -1,9 +1,9 @@
+# /piece/(\d+)
 from config import setting
 from datetime import datetime
 from model import fav
 
 db = setting.db
-
 def add(user_id,content,link=None,private=False):
     pieces = db.select("piece",where="content=$content",vars={"content":content})
     piece_id = None
