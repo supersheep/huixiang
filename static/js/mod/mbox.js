@@ -50,7 +50,7 @@ define(function(require,exports,module){
             this._overlay.css({
                 opacity:0
             }).animate({
-                opacity:.2
+                opacity:0.2
             }).on("click",function(){
                 self.close();
             });

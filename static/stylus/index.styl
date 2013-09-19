@@ -1,0 +1,54 @@
+@import nib
+.pieces
+  width: 100%
+  height: 100%
+  position: absolute
+  top: 0
+
+.piece
+  display: table
+  width: 100%
+  height: 100%
+  -webkit-transition: -webkit-transform .5s ease-in-out
+  -webkit-transform: scale(1.1)
+  opacity: 0
+
+.piece-content
+  font-size: 18px
+  display: table-cell
+  vertical-align: middle
+  color: rgb(63, 52, 42)
+  font-weight: 700
+
+.piece-inner
+  cursor: pointer
+  max-width: 400px
+  margin: 0 auto
+  position: relative
+  padding: 40px
+  background-color: #fff
+  .txt
+    text-align: left
+    word-wrap: break-word
+    cursor: pointer
+  .func
+    clearfix()
+    margin: 0 auto
+    position: absolute
+    top: 0
+    left: 0
+    background: rgba(207, 196, 173, 0.8)
+    .func-inner
+      clearfix()
+      position: absolute
+    .btn
+      float: left
+      width: 24px
+      height: 30px
+      background-position: 2px
+      background-repeat: no-repeat
+    .like
+      background-image: url("../img/heart_icon.png")
+    .next
+      background-image: url("../img/playback_next_icon.png")
+

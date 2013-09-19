@@ -1,0 +1,68 @@
+#bd
+  margin: 0 auto
+  position: relative
+  width: 400px
+
+#ft
+  position: static
+  padding-bottom: 15px
+
+#people
+  position: absolute
+  text-align: center
+  top: 12px
+  left: -50px
+  .share
+    margin-right: 0
+    float: none
+  .avatar img
+    width: 40px
+    height: 40px
+    border-radius: 20px
+
+.empty
+  text-align: center
+  height: 400px
+  line-height: 400px
+
+.favs
+  margin: 20px
+  .piece
+    margin: 15px
+    position: relative
+    background-color: #fff
+  .del
+    position: absolute
+    top: 0
+    right: 0px
+    width: 20px
+    height: 20px
+    line-height: 20px
+    cursor: pointer
+    color: #fff
+    background-color: rgb(160, 0, 0)
+    text-align: center
+    z-index: 0
+  .piece-body
+    padding: 20px 20px 15px 20px
+    position: relative
+    z-index: 5
+    background: #fff
+  .content
+    padding-bottom: 10px
+    word-wrap: break-word
+    a
+      color: #333
+  .info
+    clearfix()
+  .private
+    color: #999
+    font-size: 12px
+    float: left
+  .addtime
+    color: #999
+    font-size: 12px
+    float: right
+
+@import "mod/paginate"
+@import "mod/share"

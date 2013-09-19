@@ -1,0 +1,173 @@
+@import nib
+
+html,body,div,ul,span,a,p,textarea,input
+  margin: 0
+  padding: 0
+
+body
+  background: rgb(207, 196, 173)
+  font-family: 'Hiragino Sans GB','Verdana','Microsoft Yahei',simsun,serif
+
+ul
+  list-style-type: none
+
+a
+  text-decoration: none
+
+input[type=text],textarea
+  display: block
+  height: 20px
+  border: 1px solid #ccc
+  border-radius: 3px
+  resize: none
+  box-shadow: inset 0 2px 2px rgb(218, 218, 218)
+  font-size: 18px
+  padding: 5px
+  line-height: 1.5
+
+input[type=text]
+  height: 28px
+
+
+#hd
+  padding: 5px
+  background-color: rgb(60, 58, 55)
+  position: relative
+  z-index: 5
+  clearfix()
+  .tt
+    text-align: center
+    font-size: 24px
+    color: rgb(235, 235, 235)
+    font-weight: bold
+    a
+      color: rgb(235, 235, 235)
+    .quote
+      color: rgb(139, 163, 103)
+  .account
+    position: absolute
+    right: 10px
+    top: 0px
+    z-index: 5
+    width: 80px
+    margin: 0 auto
+    text-align: center
+    float: right
+    .avatar
+      width: 32px
+      height: 32px
+      border-radius: 50%
+      margin: 5px
+      cursor: pointer
+      background-color: #fff
+      position: relative
+      z-index: 6
+    .menu
+      position: absolute
+      top: 0
+      padding: 45px 0 0px 0
+      background-color: rgb(97, 85, 74)
+      width: 100%
+      .menu-item
+        line-height: 25px
+        a
+          color: #fff
+          padding: 10px 10px
+          display: block
+          font-size: 13px
+          &:hover
+            background-color: rgb(60, 58, 55)
+
+#ft
+  text-align: center
+  width: 100%
+  position: absolute
+  bottom: 15px
+  font-size: 14px
+  a,span
+    color: rgb(156, 147, 130)
+    text-decoration: none
+    margin-right: 5px
+
+.mbox-overlay
+  position: fixed
+  top: 0
+  left: 0
+  height: 100%
+  width: 100%
+  background-color: rgb(207, 196, 173)
+  z-index: 50
+
+
+$mbox_icon
+  width: 16px
+  height: 16px
+  background-image: url("../img/hint-icons.png")
+  background-repeat: no-repeat
+  display: block
+  position: absolute
+  top: 13px
+  left: 10px
+
+.mbox-win 
+  position: fixed
+  box-shadow: 0 0 20px 0 rgba(0,0,0,0.5)
+  background-color: #fff
+  .succ
+    @extend $mbox_icon
+    background-position: 0 0
+  .err
+    @extend $mbox_icon
+    background-position: 0 -32px
+  .msg-box
+    padding: 10px 10px 10px 40px
+    color: rgb(60, 58, 55)
+  .close
+    position: absolute
+    top: -10px
+    right: -10px
+    border-radius: 10px
+    width: 20px
+    height: 20px
+    line-height: 20px
+    background-color: rgb(60, 58, 55)
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.6)
+    text-align: center
+    color: #fff
+    cursor: pointer
+
+.mbox-content 
+  .box-text
+    padding: 20px
+  .textarea
+    border: 1px solid #999
+    padding: 5px
+    border-radius: 3px
+    outline: none
+    resize: none
+    width: 300px
+    height: 65px
+    font-size: 14px
+    box-shadow: inset 0 2px 2px rgb(218, 218, 218)
+    display: block
+  .box-bottom
+    clearfix()
+    padding: 0 20px 15px 20px
+    background-color: rgb(60, 58, 55)
+    .hint
+      float: left
+      padding: 3px
+      font-size: 12px
+      color: rgb(119, 114, 105)
+      position: relative
+      top: 4px
+    .btn
+      border: none
+      color: rgb(235,235,235)
+      background-color: rgb(97, 85, 74)
+      float: right
+      padding: 4px 8px
+      font-size: 14px
+      border-radius: 0 0 3px 3px
+      &:hover
+        background-color: rgb(105, 93, 82)
