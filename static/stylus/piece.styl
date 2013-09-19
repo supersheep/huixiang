@@ -1,0 +1,89 @@
+.piece
+  display: table
+  width: 100%
+  height: 100%
+  position: absolute
+  top: 0
+  .piece-inner
+    display: table-cell
+    vertical-align: middle
+  .piece-main
+    position: relative
+    margin: 0 auto
+    width: 480px
+  .piece-main .card
+    position: relative
+    z-index: 5
+    padding: 40px 40px 20px 40px
+    background-color: #fff
+    box-shadow: 0 0 20px 0 rgba(0,0,0,0.3)
+  .content
+    padding-bottom: 20px
+    word-wrap: break-word
+  .link
+    background: url('../img/extlink-white.png') no-repeat
+    width: 24px
+    height: 24px
+    position: absolute
+    display: block
+    top: 0
+    right: -27px
+    padding: 3px
+    background-color: rgb(139, 163, 103)
+    background-position: 10px 8px
+
+.piece .favs
+  clearfix()
+  .bd
+    position: relative
+  .like-wrap
+    margin-right: 5px
+    padding-right: 5px
+    border-right: 1px dashed #ccc
+    background: #fff
+    float: left
+  .liked
+    background-position: -24px 0
+  .like
+    width: 24px
+    height: 24px
+    display: block
+    cursor: pointer
+    background-image: url('../img/heart.png')
+    background-position: 0 0
+  .people
+    clearfix()
+    overflow: hidden
+    height: 24px
+    width: 360px
+    position: relative
+    float: left
+    ul
+      position: absolute
+      left: -29px
+      transition: left .25s linear
+    .liked
+      left: 0
+  li
+    float: left
+    margin-right: 5px
+  img
+    display: block
+    width: 24px
+    height: 24px
+    border-radius: 50%
+
+.box-title
+  color: #fff
+  background-color: rgb(60, 58, 55)
+  padding: 10px
+
+.box-login-body
+  text-align: center
+
+.box-login-body .login_douban
+  margin-right: 10px
+
+.box-login-body .login_weibo
+  margin-left: 10px
+
