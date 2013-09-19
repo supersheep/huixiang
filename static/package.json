@@ -13,5 +13,8 @@
     "grunt-contrib-jshint": "~0.6.2",
     "grunt-contrib-stylus": "~0.7.0",
     "grunt-contrib-watch": "~0.5.1"
+  },
+  "dependencies": {
+    "grunt-template": "~0.2.0"
   }
 }
