@@ -49,6 +49,5 @@ module.exports = function(grunt){
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-template");
 
-    
-    grunt.registerTask("default",["jshint","stylus"]);
+    grunt.registerTask("default",["jshint","stylus","template"]);
 };

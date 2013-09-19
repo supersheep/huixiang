@@ -3,6 +3,7 @@ config.yml
 *.psd
 *.pyc
 *.sh
+tpl
 static/css
 static/node_modules
 static/extension
