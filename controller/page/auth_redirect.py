@@ -1,4 +1,4 @@
-#$ /auth/redirect/(douban|weibo)
+# /auth/redirect/(douban|weibo)
 import web
 from util import oauth
 class auth_redirect:
