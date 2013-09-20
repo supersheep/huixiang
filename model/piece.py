@@ -15,3 +15,7 @@ def add(user_id,content,link=None,private=False):
     fav.add(user_id=user_id,piece_id=piece_id)
 
     return piece_id
+
+def get_all(limit=100):
+    pieces = db.query('select id,content,link from piece order by rand() limit ' + str(limit)) 
+    return list(pieces)
