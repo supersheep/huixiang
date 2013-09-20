@@ -15,7 +15,7 @@ define(function(require,exports,module){
                     +'<div class="piece-inner">'
                         +'<div class="piece-main">'
                             +'<div class="txt">'+data.content+'</div>'
-                            + (data.by ? ('<div class="by">—— '+data.by+'</div>') : '')
+                            + (data.by ? ('<div class="by">—— ' + data.by + '</div>') : '')
                         +'</div>'
                     +'</div>'
                 +'</div>'
@@ -52,46 +52,42 @@ define(function(require,exports,module){
             var self = this;
             var data = self.current_data.shift();
             var container = self.container;
+            var former = container.find('.piece');
 
             if(this.current_data.length == 1){
                 self.fetch();
             }
 
-            function fadeOutOld(){
-                var former = container.find('.piece').eq(0);
+            function fadeOutOld(cb){
                 if(!former.length){return;}
-                // former.css("-webkit-filter","blur(4px)")
-                former.css("-webkit-transform","scale(.92)");
-                former.animate({
-                    opacity:0
-                },{
-                    duration:self.duration,
-                    complete:function(){
-                        former.remove();
-                    }
-                });
+
+                former.css("-webkit-transform","scale(.9)");
+                former.css("opacity",0);
+                setTimeout(function(){
+                    former.remove();
+                    cb();
+                },self.duration);
             }
 
             function fadeInNew(){
                 var newpiece;
 
                 newpiece = self.create(data,container);
-                newpiece.css("-webkit-filter","blur(0px)");
+
                 newpiece.css("-webkit-transform","scale(1)");
-                newpiece.animate({
-                    opacity:1
-                },{
-                    duration:self.duration,
-                    complete:function(){
-                        self.ready = true;
-                    }
-                });
+                newpiece.css("opacity",1);
+                setTimeout(function(){
+                    self.ready = true;
+                },self.duration);
 
             }
 
             self.ready = false;
-            fadeOutOld();
-            setTimeout(fadeInNew,500);
+            if(former.length){
+                fadeOutOld(fadeInNew);
+            }else{
+                fadeInNew();
+            }
             return this;
         },
         fetch:function(cb){
