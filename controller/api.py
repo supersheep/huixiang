@@ -210,4 +210,4 @@ class pieces:
     def GET(self,ctx):
         "get pieces"
         from model import piece
-        return piece.get_all()
+        return piece.get_random()
