@@ -1,4 +1,4 @@
-#$ /auth/redirect/(douban|weibo)
+# /auth/redirect/(douban|weibo)
 import web
 from util import oauth
 class auth_redirect:
@@ -8,4 +8,5 @@ class auth_redirect:
             url = client.redirect()
             web.seeother(url)
         except Exception,e:
+            print e
             return e

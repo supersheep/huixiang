@@ -61,8 +61,7 @@ define(function(require,exports,module){
             function fadeOutOld(cb){
                 if(!former.length){return;}
 
-                former.css("-webkit-transform","scale(.9)");
-                former.css("opacity",0);
+                former.removeClass("in").addClass("out");
                 setTimeout(function(){
                     former.remove();
                     cb();
@@ -74,8 +73,7 @@ define(function(require,exports,module){
 
                 newpiece = self.create(data,container);
 
-                newpiece.css("-webkit-transform","scale(1)");
-                newpiece.css("opacity",1);
+                newpiece.removeClass("out").addClass("in");
                 setTimeout(function(){
                     self.ready = true;
                 },self.duration);

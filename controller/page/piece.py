@@ -1,27 +1,49 @@
 import web
 from base import base
-from config.setting import db
 from config.setting import render
+from model import fav as fav_model
+from model import piece as piece_model
+from model import author as author_model
+from model import work as work_model
 
 
 class piece(base):
     def GET(self,id):
         """ piece """
         super(piece,self).GET()
-        pieces = db.select("piece",what="id,content,link",where="id=$id",vars={"id":id})
+
+        cur_piece = piece_model.get_by_id(id)
+        if not cur_piece:
+            return web.notfound()
+
+        work_id = cur_piece["work"]
+        work = work_model.get_by_id(work_id)
+        cur_piece["work_title"] = work and work["title"] or None
+
+
+        author_id = cur_piece["author"]
+        print "authorid" + str(author_id)
+        author = author_model.get_by_id(author_id)
+        cur_piece["author_name"] = author and author["name"] or None
+
+
+
+
         cur_user = self.cur_user
         cur_user_id = cur_user and cur_user["id"] or 0
-        if not pieces:
-            return web.notfound("oops")
 
-        curpiece = pieces[0]
+        favs = fav_model.get_by_piece_id(id)
 
-        favs = db.select(["fav","user"],what="avatar,user.id", where="fav.userid=user.id and fav.pieceid=$id and fav.userid<>$cur_user_id",vars={"id":id,"cur_user_id":cur_user_id}, limit=5)
-        
+        favs = list(favs)
+
+        fav_count = len(favs)
+
+        favs = favs[0:8]
+
         liked = False
-        where = {"id":id}
-        if cur_user:
-            where["userid"] = self.cur_user.id;
-        if cur_user and db.select("fav",what="id",where="fav.userid=$userid and pieceid=$id",vars=where):
+        if cur_user and fav_model.is_user_faved(cur_user_id,id):
             liked = True
-        return render.piece(curpiece,favs,liked)
+        else:
+            liked = False
+
+        return render.piece(cur_piece,favs,liked,fav_count)

@@ -205,25 +205,9 @@ class unfav:
         unfavpiece(ctx["post"]["pieceid"],ctx["user"]["id"])
         return "ok"
 
-# class delete:
-#     def POST(self):
-#         try:
-#             ctx = common_check(post=["pieceid"])
-#             pieceid = ctx["post"]["pieceid"]
-#             userid = ctx["user"]["id"]
-#             unfavpiece(pieceid,userid)
-#             row = db.select("piece",where="id=$id and user=$user",vars={"id":pieceid,"user":userid})
-#             if not row:
-#                 raise Exception(json.dumps({"code":401,"msg":"permission denied"}))
-#             db.delete("piece",where="id=$id and user=$user",vars={"id":pieceid,"user":userid})
-#         except Exception, e:
-#             return e
-
-#         return ok()
-
 class pieces:
     @common_check(need_login=False)
     def GET(self,ctx):
         "get pieces"
-        pieces = db.query('select id,content,link from piece order by rand() limit 100')
-        return list(pieces)
+        from model import piece
+        return piece.get_random()
