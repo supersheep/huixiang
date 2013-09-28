@@ -10,11 +10,15 @@ for p in pieces:
     author_name = data["author"]
     work_title = data["work"]
 
-    if data["author"]:
+    if p["author"]:
+        data["author"] = p["author"]
+    elif data["author"]:
         # return author_id
         data["author"] = author.add(author_name)
-
-    if data["work"]:
+    
+    if p["work"]:
+        data["work"] = p["work"]
+    elif data["work"]:
         # return work_id
         data["work"] = work.add(work_title)
 
