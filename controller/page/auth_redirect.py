@@ -8,4 +8,5 @@ class auth_redirect:
             url = client.redirect()
             web.seeother(url)
         except Exception,e:
+            print e
             return e

@@ -19,8 +19,10 @@
     background-color: #fff
     box-shadow: 0 0 20px 0 rgba(0,0,0,0.3)
   .content
-    padding-bottom: 20px
+    padding-bottom: 10px
     word-wrap: break-word
+  .by
+    text-align: right
   .link
     background: url('../img/extlink-white.png') no-repeat
     width: 24px
@@ -35,6 +37,7 @@
 
 .piece .favs
   clearfix()
+  margin-top: 15px
   .bd
     position: relative
   .like-wrap
@@ -65,6 +68,13 @@
       transition: left .25s linear
     .liked
       left: 0
+    .fav-count
+      font-size:13px
+      line-height: 24px
+      color:#999
+      margin-left:8px
+      .count
+        margin: 0 3px
   li
     float: left
     margin-right: 5px

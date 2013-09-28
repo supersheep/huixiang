@@ -64,12 +64,19 @@ def add(user_id,content,link=None,private=False):
 
     return piece_id
 
+def get_by_id(id):
+    row = db.select("piece",what="id,content,link,work,author",where="id=$id",vars={"id":id})
+    if row:
+        return row[0]
+    else:
+        return None
+
 def get_random(limit=100):
     pieces = db.query('select id,content,link from piece order by rand() limit ' + str(limit)) 
     return list(pieces)
 
 def get_all(limit=None):
-    query = 'select id,content,link from piece'
+    query = 'select id,content,link,work,author from piece'
     if limit:
         query += "limit " + str(limit) 
     pieces = db.query(query)
