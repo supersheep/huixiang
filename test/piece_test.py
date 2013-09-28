@@ -8,14 +8,53 @@ class PieceCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testParseContent(self):
-        """ testParseContent """
+    def testNoAuthor(self):
         # 普通句子
         self.assertEqual(piece.parse_content(u"每个人的心里，有多么长的一个清单，这些清单里写着多少美好的事，可是，它们总是被推迟，被搁置，在时间的阁楼上腐烂。为什么勇气的问题总是被误以为是时间的问题，而那些沉重的、抑郁的、不得已的，总是被叫做生活本身。"),{
             "content":u"每个人的心里，有多么长的一个清单，这些清单里写着多少美好的事，可是，它们总是被推迟，被搁置，在时间的阁楼上腐烂。为什么勇气的问题总是被误以为是时间的问题，而那些沉重的、抑郁的、不得已的，总是被叫做生活本身。",
             "author":None,
             "work":None
         })
+
+    def testPureEnglishWithOneWord(self):
+        self.assertEqual(piece.parse_content(u"Mac-talk."),{
+            "content":u"Mac-talk.",
+            "author":None,
+            "work":None
+        })        
+
+    def testTooManySpliter(self):
+        # 过多链接符忽略
+        self.assertEqual(piece.parse_content("https://stacksocial.com/sales/the-mac-freebie-bundle-2-0"),{
+            "content":"https://stacksocial.com/sales/the-mac-freebie-bundle-2-0",
+            "author":None,
+            "work":None
+        })
+
+    def testByIssue(self):
+        
+
+        self.assertEqual(piece.parse_content(u"It's better to fail than to pass by pure luck."),{
+            "content":u"It's better to fail than to pass by pure luck.",
+            "author":None,
+            "work":None
+        })
+
+    def testAuthorSentance(self):
+        self.assertEqual(piece.parse_content(u"我会唱歌我知道\n对于评审给我这样的肯定\n我也给予肯定\n----王菲，金曲獎十五屆最佳女演唱人得獎感言"),{
+            "content":u"我会唱歌我知道\n对于评审给我这样的肯定\n我也给予肯定\n----王菲，金曲獎十五屆最佳女演唱人得獎感言",
+            "author":None,
+            "work":None
+        })
+
+    def testParseContent(self):
+        """ testParseContent """
+        self.assertEqual(piece.parse_content(u"愚蠢的人饱受其愚蠢所带来的疲累之苦。       by 叔本华"),{
+            "content":u"愚蠢的人饱受其愚蠢所带来的疲累之苦。",
+            "author":u"叔本华",
+            "work":None    
+        })
+
         # 带言说者
         self.assertEqual(piece.parse_content(u"我们终将浑然一体，就像水溶于水。 \n——柴静"),{
             "content":u"我们终将浑然一体，就像水溶于水。",
@@ -57,15 +96,4 @@ class PieceCase(unittest.TestCase):
             "content":u"曰：我和我的小伙伴们都惊呆了？\n\n　　\n\n　　问：为什么惊呆了？\n\n　　--这个该怎么回答",
             "author":None,
             "work":None 
-        })
-        self.assertEqual(piece.parse_content(u"我会唱歌我知道\n对于评审给我这样的肯定\n我也给予肯定\n----王菲，金曲獎十五屆最佳女演唱人得獎感言"),{
-            "content":u"我会唱歌我知道\n对于评审给我这样的肯定\n我也给予肯定\n----王菲，金曲獎十五屆最佳女演唱人得獎感言",
-            "author":None,
-            "work":None
-        })
-        # 过多链接符忽略
-        self.assertEqual(piece.parse_content("https://stacksocial.com/sales/the-mac-freebie-bundle-2-0"),{
-            "content":"https://stacksocial.com/sales/the-mac-freebie-bundle-2-0",
-            "author":None,
-            "work":None
         })

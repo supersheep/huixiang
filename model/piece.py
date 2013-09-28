@@ -11,32 +11,40 @@ def parse_content(content):
     pattern = re.compile(u"\s*(?:\-+|——|by|BY)\s*")
     match = re.split(pattern,content)
     default_result = {"content":content,"author":None,"work":None}
+
     if not match:
         return default_result
-    # to many spliter
+    # too many spliter
     if len(match) > 2:
+        print "too many spliter: "+content
         return default_result
+
     # no author
     if len(match) == 1:
+        print "no author: " + content
         return default_result
 
     # pure english content but just one word
     if re.compile(u"\w+").findall(match[0]) and len(match[0].split(" ")) == 1:
+        print "pure english content but just one word: "+content
         return default_result
 
-    if "by" in content or "BY" in content and not re.search(r"\s{2,}$",match[0]):
+    if ("by" in content or "BY" in content) and not re.search(r"\s{2,}by",content):
+        print "`by` issue: "+content
         return default_result
 
     # chinese author name or sentance larger than 5
     author = match[1]
+    pattern_work = re.compile(u"([《<＜]([\u4e00-\u9fa5\w\s，]+)[》>＞])")
 
     # sentance
-    if re.search(u"[，,。、“”？！]",author) or len(author.split(" ")) > 2:
+    if re.search(u"[，,。、“”？！]",author) or (len(author.split(" ")) > 2 and not re.findall(pattern_work,author)):
+        print "author is sentance: " + content
         return default_result
+
     if re.match(u"^[\u4e00-\u9fa5\w]+$",author) and len(author) > 5:
         return default_result
 
-    pattern_work = re.compile(u"([《<＜]([\u4e00-\u9fa5\w\s，]+)[》>＞])")
     author = match[1]
 
     if author:
