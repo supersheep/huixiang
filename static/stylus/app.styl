@@ -1,0 +1,105 @@
+@import single
+
+$app_type
+	padding:20px
+	height:600px
+	// transition:background-color .5s linear
+	.single
+		background-color:transparent
+		position:relative
+	.market
+		position:absolute
+		display:block
+		text-indent:-999px
+		width:200px
+		height:75px
+		bottom:20px
+		background-image:url("img/app-market.png")
+		background-repeat:no-repeat
+	.app-store
+		right:230px
+		background-position:-205px 0
+		&:hover
+			background-position:0 0
+	.google-play
+		right:20px
+		background-position:-205px -114px
+		&:hover
+			background-position:0 -114px
+	.intro
+		background-color: rgba(0,0,0,0.1)
+		position: absolute
+		top: 85px
+		left: 20px
+		padding: 30px
+		height: 260px
+		width: 520px
+		color: #f8f8f8
+		.title
+			font-size: 32px
+			font-weight: bold
+		.feature
+			margin-top: 25px
+			font-size: 16px
+			li
+				line-height:32px
+	.phone
+		// transition:opacity .5s linear
+		position:absolute
+		top:20px
+		right:20px
+		.shell
+			width:270px
+			height:515px
+			background-image:url("img/smartphone.png")
+		.slide
+			position:absolute
+			overflow:hidden
+			ul
+				width:999px
+				li
+					float:left
+
+
+.ios
+	@extend $app_type
+	// background-color:#A4DA80
+	// background-color:#91B879
+	background-color:#79A6B8
+	.shell
+		background-position: -270px 0
+	.slide
+		width: 213px
+		height: 381px
+		top: 65px
+		left: 23px
+		img
+			width:213px
+	.iphone
+		opacity:1
+	.galaxy
+		opacity:0
+
+
+
+.android
+	@extend $app_type
+	// background-color:#B9755E
+	background-color:#87A868
+	.slide
+		width: 213px
+		height: 381px
+		top: 65px
+		left: 23px
+		img
+			width:213px
+	.iphone
+		opacity:0
+	.galaxy
+		opacity:1
+
+#ft
+	width:auto
+	padding:20px
+	background-color:#3c3a37
+	position:static

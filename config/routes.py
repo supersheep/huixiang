@@ -8,6 +8,7 @@ rule_map = {
         '/logout': 'logout',
         '/tools': 'tools',
         '/about': 'about',
+        '/app': 'app',
         '/bookmarklet': 'bookmarklet',
         '/auth/(douban|weibo)': 'auth',
         '/auth/redirect/(douban|weibo)': 'auth_redirect',

@@ -9,3 +9,4 @@ from new import new
 from people import people
 from piece import piece
 from tools import tools
+from app import app

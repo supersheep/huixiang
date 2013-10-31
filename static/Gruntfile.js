@@ -34,8 +34,12 @@ module.exports = function(grunt){
         },
         watch:{
             styl: {
-              files: ['stylus/**/*.styl'],
-              tasks: ['stylus']
+                files: ['stylus/**/*.styl'],
+                tasks: ['stylus']
+            },
+            template: {
+                files: ['tpl/**/*.html'],
+                tasks: ['template']
             },
             options: {
               nospawn: true

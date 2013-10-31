@@ -4,6 +4,7 @@ config.yml
 *.psd
 *.pyc
 *.sh
+nohup.out
 tpl
 static/css
 static/node_modules
