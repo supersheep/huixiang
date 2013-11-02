@@ -6,7 +6,7 @@ config.yml
 *.sh
 nohup.out
 /tpl
-static/css
+static/css/*.css
 static/node_modules
 static/extension
 static/extension.pem
