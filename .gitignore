@@ -5,7 +5,7 @@ config.yml
 *.pyc
 *.sh
 nohup.out
-tpl
+/tpl
 static/css
 static/node_modules
 static/extension
