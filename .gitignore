@@ -4,6 +4,7 @@ config.yml
 *.psd
 *.pyc
 *.sh
+venv
 nohup.out
 static/css/*.css
 static/node_modules
