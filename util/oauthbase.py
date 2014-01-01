@@ -36,9 +36,9 @@ class oauthbase(object):
     def get_access_token(self,code):
         name = self.name
         data = {
-            "client_id":config["auth"][name]["key"],
-            "client_secret":config["auth"][name]["secret"],
-            "redirect_uri":config["auth"][name]["callback"],
+            "client_id":config["auth_"+name+"_key"],
+            "client_secret":config["auth_"+name+"_secret"],
+            "redirect_uri":config["auth_"+name+"_callback"],
             "grant_type":"authorization_code",
             "code":code
         }
@@ -60,9 +60,9 @@ class oauthbase(object):
         name = self.name
         base = self.authorize_url
 
-        key = config["auth"][name]["key"]
-        secret = config["auth"][name]["secret"]
-        callback = config["auth"][name]["callback"]
+        key = config["auth_"+name+"_key"]
+        secret = config["auth_"+name+"_secret"]
+        callback = config["auth_"+name+"_callback"]
         qs = urllib.urlencode({"redirect_uri":callback,"client_id":key,"response_type":"code"})
         url = base+"?"+qs
         return url
