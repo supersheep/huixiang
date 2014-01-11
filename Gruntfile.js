@@ -39,4 +39,5 @@ module.exports = function(grunt){
     grunt.loadNpmTasks("grunt-contrib-watch");
 
     grunt.registerTask("default",["jshint","stylus"]);
+    grunt.registerTask('heroku:production', 'jshint stylus');
 };
