@@ -12,34 +12,20 @@ module.exports = function(grunt){
                 laxcomma:true,
                 expr:true
             },
-            all: ['Gruntfile.js','js/mod/*.js']
+            all: ['static/Gruntfile.js','static/js/mod/*.js']
         },
         stylus:{
             options:{
                 compress:false
             },
             compile: {
-                files:[{expand: true, flatten:true, src:["stylus/*.styl"], dest:"css/",ext:".css"}]
-            }
-        },
-        template:{
-            options: {
-                data:{
-                    today: "<%= grunt.template.today('yyyymmdd') %>"
-                }
-            },
-            tpl:{
-                files: [{expand: true, flatten:true, src:["tpl/*.html"], dest:"../tpl/",ext:".html"}]
+                files:[{expand: true, flatten:true, src:["static/stylus/*.styl"], dest:"static/css/",ext:".css"}]
             }
         },
         watch:{
             styl: {
-                files: ['stylus/**/*.styl'],
+                files: ['static/stylus/**/*.styl'],
                 tasks: ['stylus']
-            },
-            template: {
-                files: ['tpl/**/*.html'],
-                tasks: ['template']
             },
             options: {
               nospawn: true
@@ -51,7 +37,6 @@ module.exports = function(grunt){
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-stylus");
     grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks("grunt-template");
 
     grunt.registerTask("default",["jshint","stylus"]);
 };
