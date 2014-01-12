@@ -20,20 +20,19 @@ $ liked_str= liked and "liked" or ""
                     <i class="like $liked_str" data-id="$piece["id"]"></i>
                 </a>
                 <div class="people">
-                    $if not user or liked: 
+                    $if not user or liked:
                         <ul class="liked">
                     $else:
                         <ul>
                     $if user:
                         <li><a href="/people/$user["id"]"><img src="$user["avatar"]" /></a></li>
-                    
+
                     $for faver in favs:
                         $if not user or user["id"]!=faver["id"]:
                             <li><a href="/people/$faver["id"]"><img src="$:faver["avatar"]" /></a></li>
-                    
-                    $if fav_count > 8:
-                        <li class="fav-count">等<span class="count">$fav_count</span>人喜欢</li>
                     </ul>
+                    $if fav_count > 8:
+                        <div class="fav-count">等<span class="count">$fav_count</span>人喜欢</div>
                 </div>
             </div>
         </div>

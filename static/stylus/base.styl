@@ -1,4 +1,5 @@
-@import nib
+html,body
+  height:100%
 
 html,body,div,ul,span,a,p,textarea,input
   margin: 0
@@ -30,10 +31,12 @@ input[type=text]
 
 
 #hd
-  padding: 5px
+  padding: 5px 0
   background-color: rgb(60, 58, 55)
-  position: relative
-  z-index: 5
+  position: fixed
+  width: 100%
+  top:0
+  z-index: 10
   clearfix()
   .tt
     text-align: center
@@ -78,16 +81,22 @@ input[type=text]
           &:hover
             background-color: rgb(60, 58, 55)
 
+#bd
+  min-height: 100%
+  margin: 0 auto -60px
+  padding-top: 46px
+  box-sizing: border-box
+
 #ft
   text-align: center
-  width: 100%
-  position: absolute
-  bottom: 15px
   font-size: 14px
   a,span
     color: rgb(156, 147, 130)
     text-decoration: none
     margin-right: 5px
+    height: 60px
+    line-height: 60px
+    display: inline-block
 
 .mbox-overlay
   position: fixed
@@ -109,7 +118,7 @@ $mbox_icon
   top: 13px
   left: 10px
 
-.mbox-win 
+.mbox-win
   position: fixed
   box-shadow: 0 0 20px 0 rgba(0,0,0,0.5)
   background-color: #fff
@@ -136,7 +145,7 @@ $mbox_icon
     color: #fff
     cursor: pointer
 
-.mbox-content 
+.mbox-content
   .box-text
     padding: 20px
   .textarea
@@ -171,3 +180,9 @@ $mbox_icon
       border-radius: 0 0 3px 3px
       &:hover
         background-color: rgb(105, 93, 82)
+
+
+/* for iphone */
+@media (max-width: 480px)
+  #ft
+    display: none

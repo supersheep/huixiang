@@ -1,18 +1,13 @@
-@import nib
 #bd
-  margin: 0 auto
   position: relative
   width: 400px
 
-#ft
-  position: static
-  padding-bottom: 15px
-
 #people
-  position: absolute
+  position: fixed
   text-align: center
-  top: 12px
-  left: -50px
+  top: 75px
+  left: 50%
+  margin-left: -280px
   .share
     margin-right: 0
     float: none
@@ -27,9 +22,8 @@
   line-height: 400px
 
 .favs
-  margin: 20px
   .piece
-    margin: 15px
+    margin: 15px 0
     position: relative
     background-color: #fff
   .del
@@ -67,3 +61,9 @@
 
 @import "mod/paginate"
 @import "mod/share"
+
+
+/* for iphone */
+@media (max-width: 480px)
+  .favs
+    margin: 0 10px

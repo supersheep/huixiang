@@ -1,4 +1,3 @@
-@import nib
 .piece
   display: table
   width: 100%
@@ -59,20 +58,20 @@
     clearfix()
     overflow: hidden
     height: 24px
-    width: 360px
     position: relative
     float: left
     ul
-      position: absolute
-      left: -29px
-      transition: left .25s linear
+      float:left
+      margin-left: -29px
+      transition: margin .25s linear
     .liked
-      left: 0
+      margin-left: 0
     .fav-count
       font-size:13px
       line-height: 24px
       color:#999
       margin-left:8px
+      float:left
       .count
         margin: 0 3px
   li
@@ -98,3 +97,16 @@
 .box-login-body .login_weibo
   margin-left: 10px
 
+
+/* for iphone */
+@media (max-width: 480px)
+  .piece
+    .piece-main
+      width: auto
+      box-sizing: border-box
+      margin: 0 10px
+    .link
+      top: -27px
+      right: 0
+  .people ul
+    width:29px * 3
