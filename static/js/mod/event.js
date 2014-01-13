@@ -1,16 +1,26 @@
 define(function(require,exports,module){
 
-    function on(name,func){
-        var events = this.events = this.events || {};
-        var thisEvent = events[name] = events[name] || [];
-        thisEvent.push(func);
+    function on(){
+        var args = arguments;
+        if(typeof name == "object"){
+            var obj = args[0];
+            for(var key in obj){
+                this.on(key, obj[key]);
+            }
+        }else{
+            var name = args[0];
+            var func = args[1];
+            var events = this.events = this.events || {};
+            var thisEvent = events[name] = events[name] || [];
+            thisEvent.push(func);
+        }
     }
 
     function off(name){
         if(!name){
             delete this.events;
         }
-        
+
         if(this.events && this.events[name]){
             delete this.events[name];
         }

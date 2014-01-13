@@ -23,16 +23,17 @@
   .by
     text-align: right
   .link
-    background: url('../img/extlink-white.png') no-repeat
+    color: #fff
+    font-size: 20px
     width: 24px
     height: 24px
     position: absolute
     display: block
+    text-align: center
     top: 0
-    right: -27px
+    right: -30px
     padding: 3px
     background-color: rgb(139, 163, 103)
-    background-position: 10px 8px
 
 .piece .favs
   clearfix()
@@ -45,15 +46,13 @@
     border-right: 1px dashed #ccc
     background: #fff
     float: left
-  .liked
-    background-position: -24px 0
-  .like
-    width: 24px
-    height: 24px
+  .icon-heart
+    font-size: 24px
     display: block
     cursor: pointer
-    background-image: url('../img/heart.png')
-    background-position: 0 0
+    transition: color .25s linear
+    &.liked
+      color: rgb(248,93,88)
   .people
     clearfix()
     overflow: hidden
@@ -64,8 +63,8 @@
       float:left
       margin-left: -29px
       transition: margin .25s linear
-    .liked
-      margin-left: 0
+      &.liked
+        margin-left: 0;
     .fav-count
       font-size:13px
       line-height: 24px

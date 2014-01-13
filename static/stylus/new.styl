@@ -1,18 +1,32 @@
+box_padding = 20px
+textarea_height = 110px
+
 .new-form
   margin: 0 auto
   margin-top: 15px
   width: 500px
   .box-text
-    padding: 20px
+    position: relative
+    padding: box_padding
     background-color: #fff
     .textarea
       box-sizing: border-box
       width: 100%
-      height: 110px
+      height: textarea_height
       margin-bottom: 10px
     .input
       box-sizing: border-box
       width: 100%
+    .funcs
+      clearfix()
+      position: absolute
+      top: textarea_height + box_padding - 27
+      left: box_padding + 5
+      cursor: pointer
+      li
+        float:left
+        color: #999
+        font-size: 24px
   .box-bottom
     clearfix()
     background-color: rgb(60, 58, 55)
