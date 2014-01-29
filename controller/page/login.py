@@ -1,7 +1,7 @@
 import web
 import urllib
 from util import login as login_mod
-from config.setting import blankrender
+from config.setting import blankrender,render
 
 class login:
     def GET(self):
@@ -12,4 +12,4 @@ class login:
             else:
                 web.redirect("/")
 
-        return blankrender.login()
+        return render.login()
