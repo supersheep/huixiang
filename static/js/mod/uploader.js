@@ -2,16 +2,20 @@ define(function(require){
     require("lib/swfupload.js");
 	var Event = require("mod/event");
 
-	var Uploader = function(holder_id){
+	var Uploader = function(holder_id, options){
+		options = options || {};
 		var self = this;
-
+		var limit = options.limit || 0;
+		self.file_removed = 0;
 		function uploadFile(swfu){
+			var file = swfu.getFile();
 			$.ajax({
 				url:"/api/upload/token",
-				success:function(token){
-					swfu.addPostParam("token",token);
+				dataType:"json",
+				success:function(json){
+					swfu.addPostParam("token", json.token);
 					// filename
-					swfu.addPostParam("key", "", +new Date() + ".png");
+					swfu.addPostParam("key", "pic/" + json.fileName + file.type);
 					swfu.startUpload();
 				}
 			});
@@ -20,24 +24,36 @@ define(function(require){
 		var handlers = {
 			fileDialogComplete:function(count,file_count){
 				// number of files selected, number of files queued
+				var swfu = this;
+				var stats = swfu.getStats();
 				if(file_count <= 0){return;}
-				uploadFile(this);
+				if(stats.files_queued + stats.successful_uploads - self.file_removed <= limit){
+					uploadFile(this);
+				}
 			},
 			uploadStart:function(file){
 				var swfu = this;
-
 				self.fire("start",{
 					file:file
 				});
 			},
 			fileQueued:function(file){
 				var swfu = this;
-				self.fire("queued",{
-					file:file
-				})
+				var stats = swfu.getStats();
+				if(stats.files_queued + stats.successful_uploads - self.file_removed > limit){
+					self.fire("error",{
+						code:-100, // 与默认超出数量限制的错误码保持一致
+						file:file
+					});
+				}else{
+					self.fire("queued",{
+						file:file
+					});
+				}
+
 			},
 			fileQueueError:function(file,code,message){
-				self.fire("queueError",{
+				self.fire("error",{
 					file:file,
 					code:code,
 					message:message
@@ -91,8 +107,8 @@ define(function(require){
 			file_types : "*.jpg;*.png;*.bmp",
 			file_types_description : "All Files",
 			file_post_name: "file",
-			file_upload_limit : 100,
-			file_queue_limit : 0,
+			file_upload_limit : 0,
+			file_queue_limit : limit,
 			custom_settings : {
 				progressTarget : "fsUploadProgress",
 				cancelButtonId : "btnCancel"
@@ -128,7 +144,7 @@ define(function(require){
 
 	Event.mixin(Uploader);
 
-	function init(selector){
+	function init(selector,options){
 		var holder = $("<div id='swfu_wrapper'><div id='swfu_holder' /></div>");
 		var offset = $(selector).offset();
 		holder.appendTo($("body"));
@@ -139,7 +155,7 @@ define(function(require){
 			height: 24,
 			width: 24
 		})
-		return new Uploader("swfu_holder");
+		return new Uploader("swfu_holder",options);
 	}
 
 	return {

@@ -2,7 +2,7 @@ define(function(require,exports,module){
 
     function on(){
         var args = arguments;
-        if(typeof name == "object"){
+        if(typeof args[0] == "object"){
             var obj = args[0];
             for(var key in obj){
                 this.on(key, obj[key]);

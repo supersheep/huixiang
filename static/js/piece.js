@@ -1,9 +1,26 @@
 define(function(require,exports){
     require("mod/comm");
     var poplogin = require("mod/poplogin");
-    var liked_elems = $(".like,.people ul");
-    var likebtn = $(".like");
+    var liked_elems = $(".icon-heart,.people ul");
+    var likebtn = $(".icon-heart");
     var id = likebtn.attr("data-id");
+
+    var picCount = $(".pics li").length;
+    var next = $(".pics .next");
+    var last = $(".pics .last");
+    if(picCount > 1){
+        last.show();
+        next.show();
+    }
+
+    last.on("click",function(){
+
+    });
+
+    next.on("click",function(){
+
+    });
+
     likebtn.on("click",function(){
         var LIKED = "liked";
         if(likebtn.hasClass(LIKED)){
@@ -33,5 +50,5 @@ define(function(require,exports){
                 }
             });
         }
-    })    
+    })
 });

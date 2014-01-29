@@ -2,7 +2,7 @@ $def with (piece,favs,liked,fav_count)
 $var name : piece
 $ liked_str= liked and "liked" or ""
 
-<div class="piece">
+<div class="piece $piece["withpic"]">
     <div class="piece-inner"><div class="piece-main">
         <div class="card">
             <div class="content">
@@ -15,9 +15,24 @@ $ liked_str= liked and "liked" or ""
                     $if piece["work_title"]:
                         《$piece["work_title"]》
                 </div>
+            $if piece["pics"]:
+                <div class="pics">
+                    <a href="javascript:;" class="last">
+                        <i class="icon-chevron-left"></i>
+                    </a>
+                    <ul>
+                    $for pic in piece["pics"]:
+                        <li><a href="http://huixiang.qiniudn.com/$pic" target="_blank" title="查看全图"><img src="http://huixiang.qiniudn.com/$pic"></a>
+                        </li>
+                    </ul>
+                    <a href="javascript:;" class="next">
+                        <i class="icon-chevron-right"></i>
+                    </a>
+
+                </div>
             <div class="favs">
                 <a class="like-wrap">
-                    <i class="like $liked_str" data-id="$piece["id"]"></i>
+                    <i class="icon-heart $liked_str" data-id="$piece["id"]"></i>
                 </a>
                 <div class="people">
                     $if not user or liked:
@@ -37,7 +52,7 @@ $ liked_str= liked and "liked" or ""
             </div>
         </div>
         $if piece["link"]:
-            <a class="link" target="_blank" href="$piece["link"]"></a>
+            <a class="link icon-export" target="_blank" href="$piece["link"]"></a>
     </div>
     </div>
 </div>

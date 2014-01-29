@@ -52,6 +52,36 @@ textarea_height = 110px
     font-size: 12px
     cursor: pointer
 
+.pic-row
+  clearfix()
+  .pic-wrapper
+    position: relative
+    float: left
+    margin-right: 15px
+    margin-bottom: 15px
+    .icon-delete
+      display:none
+      cursor: pointer
+      top: -8px
+      right: -8px
+      position: absolute
+      color: #8ba367
+      font-size: 20px
+    .pic
+      background-color: #F1ECE2
+      background-image: url(img/loading.gif)
+      background-position: center center
+      background-repeat: no-repeat
+      width: 90px
+      height: 90px
+      overflow: hidden
+      .percent
+        line-height: 90px
+        text-align: center
+      img
+        display: block
+    &:hover .icon-delete
+      display: block
 
 @import "mod/share"
 
