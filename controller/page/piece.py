@@ -26,8 +26,11 @@ class piece(base):
         author = author_model.get_by_id(author_id)
         cur_piece["author_name"] = author and author["name"] or None
 
-
-
+        cur_piece["pics"] = cur_piece["pics"] and cur_piece["pics"].split(",") or None
+        if cur_piece["pics"]:
+            cur_piece["withpic"] = "withpic"
+        else:
+            cur_piece["withpic"] = None
 
         cur_user = self.cur_user
         cur_user_id = cur_user and cur_user["id"] or 0
