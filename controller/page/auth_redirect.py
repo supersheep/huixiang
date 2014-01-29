@@ -1,5 +1,6 @@
 # /auth/redirect/(douban|weibo)
 import web
+import traceback
 from util import oauth
 class auth_redirect:
     def GET(self,name):
@@ -7,6 +8,5 @@ class auth_redirect:
             client = oauth.createClientWithName(name)
             url = client.redirect()
             web.seeother(url)
-        except Exception,e:
-            print e
-            return e
+        except Exception:
+            return traceback.format_exc()
