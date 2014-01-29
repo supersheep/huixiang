@@ -7,7 +7,8 @@ $ name = ("name" in content) and content["name"] or ""
     <meta charset="UTF-8">
     <title>$title</title>
     <link rel="stylesheet" href="/static/css/base.css" />
-    <link rel="stylesheet" href="/static/css/${name}.css" />
+    $if name:
+        <link rel="stylesheet" href="/static/css/${name}.css" />
     <link rel="shortcut icon" href="/static/favicon.ico" />
     <meta name="apple-itunes-app" content="app-id=669860898">
     <script src="/static/js/lib/jquery-1.9.1.min.js"></script>
@@ -50,6 +51,10 @@ $ name = ("name" in content) and content["name"] or ""
         $if ENV == "DEV":
             <a href="javascript:;">DEV</a>
     </div>
-    <script src="/static/js/lib/sea.js" data-config="/static/js/config.js?20131103" data-main="$name"></script>
+    $if "js" in content:
+        $for f in content.js.split():
+            <script src="/static/js/${f}"></script>
+    $if name:
+        <script src="/static/js/lib/sea.js" data-config="/static/js/config.js?20131103" data-main="$name"></script>
 </body>
 </html>
