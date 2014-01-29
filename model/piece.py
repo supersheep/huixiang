@@ -60,11 +60,11 @@ def parse_content(content):
 
     return {"content":match[0].strip(),"author":author and author.strip() or None,"work":work and work.strip() or None}
 
-def add(user_id,content,link=None,private=False):
+def add(user_id,content,link=None,private=False,pics=None):
     pieces = db.select("piece",where="content=$content",vars={"content":content})
     piece_id = None
     if not pieces:
-        piece_id = db.insert("piece",content=content,user=user_id,addtime=datetime.now(),link=link,private=private)
+        piece_id = db.insert("piece",content=content,user=user_id,addtime=datetime.now(),link=link,private=private,pics=pics)
     else:
         piece_id = pieces[0]["id"]
 
@@ -73,19 +73,19 @@ def add(user_id,content,link=None,private=False):
     return piece_id
 
 def get_by_id(id):
-    row = db.select("piece",what="id,content,link,work,author",where="id=$id",vars={"id":id})
+    row = db.select("piece",what="id,content,link,work,author,pics",where="id=$id",vars={"id":id})
     if row:
         return row[0]
     else:
         return None
 
 def get_random(limit=100):
-    pieces = db.query('select id,content,link from piece order by rand() limit ' + str(limit)) 
+    pieces = db.query('select id,content,link from piece order by rand() limit ' + str(limit))
     return list(pieces)
 
 def get_all(limit=None):
     query = 'select id,content,link,work,author from piece'
     if limit:
-        query += "limit " + str(limit) 
+        query += "limit " + str(limit)
     pieces = db.query(query)
     return pieces
