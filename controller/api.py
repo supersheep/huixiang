@@ -14,7 +14,7 @@ config = setting.config
 render = setting.render
 db = setting.db
 
-def common_check(post=[],get=[],need_login=True):
+def common_check(post=[],get=[],need_login=True,wrap_to_json=True):
     """ request decorator """
     def check(post,get):
         """ 检查登录与否及参数 """
@@ -40,7 +40,7 @@ def common_check(post=[],get=[],need_login=True):
         def inner(self):
             try:
                 ctx = check(post,get)
-                return ok(msg=fn(self,ctx))
+                return ok(msg=fn(self,ctx),wrap_to_json=wrap_to_json)
             except Exception as inst:
                 try:
                     (code,msg) = inst
@@ -53,8 +53,11 @@ def common_check(post=[],get=[],need_login=True):
         return inner
     return checkwrap
 
-def ok(msg="ok"):
-    return json.dumps(msg)
+def ok(msg="ok",wrap_to_json=True):
+    if wrap_to_json:
+        return json.dumps(msg)
+    else:
+        return msg
 
 def unfavpiece(pieceid,userid):
     where={"pieceid":pieceid,"userid":userid}
@@ -76,6 +79,12 @@ def favpiece(pieceid,userid):
         raise Exception(400,"invalid piece id")
 
     db.insert("fav",pieceid=pieceid,userid=userid,addtime=datetime.now())
+
+def md5(str):
+    import hashlib
+    m = hashlib.md5()
+    m.update(str)
+    return m.hexdigest()
 
 class add:
     @common_check(post=["content"])
@@ -100,7 +109,7 @@ class add:
             share = ctx["post"]["share"].split(",")
 
         for key in share:
-            if not key: 
+            if not key:
                 continue
             client = oauth.createClientWithName(key,ctx["user"])
             post_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(pieceid)
@@ -195,7 +204,7 @@ class authuser:
         client_token = user.login_oauth_user(name,user_info)
 
         ret_user["client_hash"] = client_token
-        return ret_user 
+        return ret_user
 
 
 class unfav:
@@ -211,3 +220,24 @@ class pieces:
         "get pieces"
         from model import piece
         return piece.get_random()
+
+class uploadtoken:
+    @common_check()
+    def GET(self,ctx):
+        from config.setting import config
+        import qiniu
+        import qiniu.rs
+        qiniu.conf.ACCESS_KEY = config["qiniu_key"]
+        qiniu.conf.SECRET_KEY = config["qiniu_secret"]
+        policy = qiniu.rs.PutPolicy("huixiang")
+        policy.expires = 30
+        policy.returnUrl = config["qiniu_upload_callback"]
+        uptoken = policy.token()
+        fileName = md5("_".join([str(ctx["user"]["id"]),str(datetime.now())]))[:8];
+        return {"token":uptoken,"fileName":fileName}
+
+class uploadcallback:
+    @common_check(wrap_to_json=False)
+    def GET(self,ctx):
+        import base64
+        return base64.decodestring(ctx["get"]["upload_ret"])
