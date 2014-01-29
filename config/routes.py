@@ -29,7 +29,9 @@ rule_map = {
         '/add':'add',
         '/fav':'fav',
         '/unfav':'unfav',
-        '/pieces':'pieces'
+        '/pieces':'pieces',
+        '/upload/token':'uploadtoken',
+        '/upload/callback':'uploadcallback'
     }
 }
 
