@@ -1,3 +1,4 @@
+#encoding=utf-8
 rule_map = {
     "page":{
         "/": "index",
@@ -13,6 +14,7 @@ rule_map = {
         '/auth/(douban|weibo)': 'auth',
         '/auth/redirect/(douban|weibo)': 'auth_redirect',
     },
+    # 慢慢废掉
     "ajax":{
         '/userinfo':'userinfo',
         '/mine/favs':'myfavs',
@@ -29,6 +31,7 @@ rule_map = {
         '/add':'add',
         '/fav':'fav',
         '/unfav':'unfav',
+        '/remove':'remove',
         '/pieces':'pieces',
         '/upload/token':'uploadtoken',
         '/upload/callback':'uploadcallback'

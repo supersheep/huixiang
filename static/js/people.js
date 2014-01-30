@@ -45,12 +45,11 @@ define(function(require,exports){
             if(!confirm("确认删除？")){return}
 
             $.ajax({
-                url:"/ajax/unfav",
+                url:"/api/remove",
                 type:"post",
                 data:{pieceid:id},
                 dataType:"json"
             }).success(function(json){
-                if(json.code!=200)return;
                 el.css("overflow","hidden");
                 el.animate({
                     height:0,
@@ -66,5 +65,5 @@ define(function(require,exports){
     });
 
 
-    
+
 });

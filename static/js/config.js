@@ -8,7 +8,7 @@
   plugins: ['shim'],
   base: '/static/js',
   map: [
-    [/^(.*\/.*\.(?:css|js))(?:.*)$/i, '$1?20130919' ]
+    [/^(.*\/.*\.(?:css|js))(?:.*)$/i, '$1?20140130' ]
   ],
   // 配置 shim 信息，这样我们就可以通过 require('jquery') 来获取 jQuery
   shim: {

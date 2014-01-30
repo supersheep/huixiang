@@ -210,9 +210,22 @@ class authuser:
 class unfav:
     @common_check(post=["pieceid"])
     def POST(self,ctx):
-        """ fav a piece """
+        """ unfav a piece """
         unfavpiece(ctx["post"]["pieceid"],ctx["user"]["id"])
         return "ok"
+
+class remove:
+    @common_check(post=["pieceid"])
+    def POST(self,ctx):
+        """ fav a piece """
+        pieceid = ctx["post"]["pieceid"]
+        favcount = db.query("select COUNT(id) as count from fav where pieceid=$pieceid",vars={"pieceid":pieceid})[0]["count"]
+        print favcount
+        unfavpiece(pieceid,ctx["user"]["id"])
+        if favcount == 1:
+            db.delete("piece",where="id=$pieceid",vars={"pieceid":pieceid})
+        return "ok"
+
 
 class pieces:
     @common_check(need_login=False)
