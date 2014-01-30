@@ -9,7 +9,7 @@ $else:
 <div class="piece-inner"><div class="piece-main">
     <div class="card">
         <div class="content">
-            $piece["content"]
+            $:piece["content"].replace('\n', '<br />')
         </div>
         $if piece["author_name"] or piece["work_title"]:
             <div class="by">

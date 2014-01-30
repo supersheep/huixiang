@@ -6,6 +6,12 @@ from base import base
 import web
 
 
+def sliceContent(content):
+    if len(content) > 120:
+        return content[:120] + "..."
+    else:
+        return content
+
 class new(base):
     def GET(self):
         """ write new piece """
@@ -61,6 +67,7 @@ class new(base):
             # share
             if not private:
                 share = post["share"]
+                content = sliceContent(content)
                 share_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(piece_id)
                 if "weibo" in share:
                     client = oauth.createClientWithName("weibo",cur_user)

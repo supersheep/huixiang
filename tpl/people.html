@@ -35,7 +35,7 @@ $var title : $page_user.name
             <div class="piece-body">
                 <div class="content">
                     <a href="/piece/$piece["id"]" target="_blank">
-                        $piece["content"]
+                        $:piece["content"].replace('\n', '<br />')
                     </a>
                 </div>
                 <div class="by">

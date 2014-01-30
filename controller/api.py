@@ -86,6 +86,13 @@ def md5(str):
     m.update(str)
     return m.hexdigest()
 
+def sliceContent(content):
+    if len(content) > 120:
+        return content[:120] + "..."
+    else:
+        return content
+
+
 class add:
     @common_check(post=["content"])
     def POST(self,ctx):
@@ -112,6 +119,7 @@ class add:
             if not key:
                 continue
             client = oauth.createClientWithName(key,ctx["user"])
+            content = sliceContent(content)
             post_content = u"「" + content + u"」" + " http://" + web.ctx.host + "/piece/" + str(pieceid)
             client.post(post_content)
 
