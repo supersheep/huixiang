@@ -8,10 +8,9 @@ db = setting.db
 def parse_content(content):
     """ get author from content """
     import re
-    pattern = re.compile(u"\s*(?:\-+|——|by|BY)\s*")
+    pattern = re.compile(u"\s*(?:\-+|\—+|——|by|BY)\s*")
     match = re.split(pattern,content)
     default_result = {"content":content,"author":None,"work":None}
-
     if not match:
         return default_result
     # too many spliter
@@ -23,7 +22,6 @@ def parse_content(content):
     if len(match) == 1:
         print "no author: " + content
         return default_result
-
     # pure english content but just one word
     if re.compile(u"\w+").findall(match[0]) and len(match[0].split(" ")) == 1:
         print "pure english content but just one word: "+content
