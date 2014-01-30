@@ -34,7 +34,7 @@ def favs_of_page(page=1,per=5,user_id=0,show_private=False):
     if not show_private:
         where += " and private=0"
     favs = db.select(["fav","piece","user"]
-        ,what="avatar,piece.id,piece.content,fav.addtime,private"
+        ,what="avatar,piece.id,piece.content,fav.addtime,private,pics"
         ,where=where
         ,vars={"user_id":user_id}
         ,limit=per
@@ -49,7 +49,7 @@ def parse_data(name,info):
     data[name+"_id"] = str(info["id"])
     data["name"] = info["name"]
     data[name+"_access_token"] = info["access_token"]
-    
+
     if name == "douban":
         data["avatar"] = info["avatar"]
     elif name == "weibo":

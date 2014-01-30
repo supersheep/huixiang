@@ -40,7 +40,9 @@ $var title : $page_user.name
                 </div>
                 <div class="info">
                 $if piece["private"]:
-                    <div class="private">私藏</div>
+                    <div class="private"><i class="icon-lock-closed"></i></div>
+                $if piece["pics"]:
+                    <div class="image"><i class="icon-image"></i></div>
                 <div class="addtime">
                     $if "addtime" in piece and piece["addtime"] != None:
                         $piece["addtime"].strftime('%Y-%m-%d')

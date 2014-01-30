@@ -2,57 +2,60 @@ $def with (piece,favs,liked,fav_count)
 $var name : piece
 $ liked_str= liked and "liked" or ""
 
-<div class="piece $piece["withpic"]">
-    <div class="piece-inner"><div class="piece-main">
-        <div class="card">
-            <div class="content">
-                $piece["content"]
+$if piece["pics"]:
+    <div class="piece withpic">
+$else:
+    <div class="piece">
+<div class="piece-inner"><div class="piece-main">
+    <div class="card">
+        <div class="content">
+            $piece["content"]
+        </div>
+        $if piece["author_name"] or piece["work_title"]:
+            <div class="by">
+                $if piece["author_name"]:
+                    —— $piece["author_name"]
+                $if piece["work_title"]:
+                    《$piece["work_title"]》
             </div>
-            $if piece["author_name"] or piece["work_title"]:
-                <div class="by">
-                    $if piece["author_name"]:
-                        —— $piece["author_name"]
-                    $if piece["work_title"]:
-                        《$piece["work_title"]》
-                </div>
-            $if piece["pics"]:
-                <div class="pics">
-                    <a href="javascript:;" class="last">
-                        <i class="icon-chevron-left"></i>
-                    </a>
-                    <ul>
-                    $for pic in piece["pics"]:
-                        <li><a href="http://huixiang.qiniudn.com/$pic" target="_blank" title="查看全图"><img src="http://huixiang.qiniudn.com/$pic"></a>
-                        </li>
-                    </ul>
-                    <a href="javascript:;" class="next">
-                        <i class="icon-chevron-right"></i>
-                    </a>
-
-                </div>
-            <div class="favs">
-                <a class="like-wrap">
-                    <i class="icon-heart $liked_str" data-id="$piece["id"]"></i>
+        $if piece["pics"]:
+            <div class="pics">
+                <a href="javascript:;" class="last">
+                    <i class="icon-chevron-left"></i>
                 </a>
-                <div class="people">
-                    $if not user or liked:
-                        <ul class="liked">
-                    $else:
-                        <ul>
-                    $if user:
-                        <li><a href="/people/$user["id"]"><img src="$user["avatar"]" /></a></li>
+                <ul>
+                $for pic in piece["pics"]:
+                    <li><a href="http://huixiang.qiniudn.com/$pic" target="_blank" title="查看全图"><img src="http://huixiang.qiniudn.com/$pic"></a>
+                    </li>
+                </ul>
+                <a href="javascript:;" class="next">
+                    <i class="icon-chevron-right"></i>
+                </a>
 
-                    $for faver in favs:
-                        $if not user or user["id"]!=faver["id"]:
-                            <li><a href="/people/$faver["id"]"><img src="$:faver["avatar"]" /></a></li>
-                    </ul>
-                    $if fav_count > 8:
-                        <div class="fav-count">等<span class="count">$fav_count</span>人喜欢</div>
-                </div>
+            </div>
+        <div class="favs">
+            <a class="like-wrap">
+                <i class="icon-heart $liked_str" data-id="$piece["id"]"></i>
+            </a>
+            <div class="people">
+                $if not user or liked:
+                    <ul class="liked">
+                $else:
+                    <ul>
+                $if user:
+                    <li><a href="/people/$user["id"]"><img src="$user["avatar"]" /></a></li>
+
+                $for faver in favs:
+                    $if not user or user["id"]!=faver["id"]:
+                        <li><a href="/people/$faver["id"]"><img src="$:faver["avatar"]" /></a></li>
+                </ul>
+                $if fav_count > 8:
+                    <div class="fav-count">等<span class="count">$fav_count</span>人喜欢</div>
             </div>
         </div>
-        $if piece["link"]:
-            <a class="link icon-export" target="_blank" href="$piece["link"]"></a>
     </div>
+    $if piece["link"]:
+        <a class="link icon-export" target="_blank" href="$piece["link"]"></a>
+</div>
     </div>
 </div>
