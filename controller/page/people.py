@@ -40,10 +40,10 @@ class people(base):
 
         # get favs
         favs = user.favs_of_page(page=page,per=per,user_id=user_id,show_private=show_private)
-        
+
         if len(favs) == 0:
-            favs = [{"content":"如果有收藏过喜欢的句子，他们会出现在这里。","id":None}]
-        
+            favs = [{"content":"如果有收藏过喜欢的句子，他们会出现在这里。","pics":None,"private":None,"author_name":None,"work_title":None,"id":None}]
+
         pages_count = user.fav_pages(user_id=user_id,per=5,show_private=show_private)
 
         pages = math.ceil(float(pages_count)/per)

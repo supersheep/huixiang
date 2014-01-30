@@ -70,6 +70,7 @@ def add(user_id,content,link=None,private=False,pics=None):
     author_name = infos["author"]
     work_title = infos["work"]
 
+    private = private and 1 or 0
 
     piece_id = None
     if not pieces:
