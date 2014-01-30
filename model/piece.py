@@ -42,11 +42,11 @@ def parse_content(content):
         print "author is sentance: " + content
         return default_result
 
-    if re.match(u"^[\u4e00-\u9fa5\w]+$",author) and len(author) > 5:
+    if re.match(u"^[\u4e00-\u9fa5]+$",author) and len(author) > 5:
+        print "chinese author name too long" + content
         return default_result
 
     author = match[1]
-
     if author:
         work = pattern_work.findall(author)
         work = work and work[0] or None
@@ -61,10 +61,27 @@ def parse_content(content):
     return {"content":match[0].strip(),"author":author and author.strip() or None,"work":work and work.strip() or None}
 
 def add(user_id,content,link=None,private=False,pics=None):
-    pieces = db.select("piece",where="content=$content",vars={"content":content})
+    from model import work
+    from model import author
+    infos = parse_content(content)
+    pieces = db.select("piece",where="content=$content",vars={
+        "content":infos["content"]
+    })
+
+    author_name = infos["author"]
+    work_title = infos["work"]
+
+
     piece_id = None
     if not pieces:
-        piece_id = db.insert("piece",content=content,user=user_id,addtime=datetime.now(),link=link,private=private,pics=pics)
+        if infos["author"]:
+            # return author_id
+            infos["author"] = author.add(author_name)
+
+        if infos["work"]:
+            # return work_id
+            infos["work"] = work.add(work_title)
+        piece_id = db.insert("piece",content=infos["content"],author=infos["author"],work=infos["work"],user=user_id,addtime=datetime.now(),link=link,private=private,pics=pics)
     else:
         piece_id = pieces[0]["id"]
 

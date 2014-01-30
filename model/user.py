@@ -30,16 +30,30 @@ def fav_pages(user_id=None,show_private=False,per=5):
     return pages
 
 def favs_of_page(page=1,per=5,user_id=0,show_private=False):
-    where = "fav.userid=user.id and fav.pieceid=piece.id and user.id=$user_id"
+
+    sql = """
+    select piece.id, piece.private, piece.addtime, piece.id, piece.content,piece.pics,
+    author.name as author_name, work.title as work_title
+    from fav
+    join piece on piece.id=fav.pieceid
+    join user on user.id=fav.userid
+    left join work on work.id=piece.work
+    left join author on author.id=piece.author
+    where user.id=$user_id
+    """
+
     if not show_private:
-        where += " and private=0"
-    favs = db.select(["fav","piece","user"]
-        ,what="avatar,piece.id,piece.content,fav.addtime,private,pics"
-        ,where=where
-        ,vars={"user_id":user_id}
-        ,limit=per
-        ,offset=(page-1) * per
-        ,order="addtime DESC")
+        sql += " and private=0 "
+    sql += "order by piece.addtime DESC "
+    sql += "limit $per "
+    sql += "offset $offset"
+
+    print sql
+    favs = db.query(sql,vars={
+        "user_id":user_id,
+        "offset": (page-1) * per,
+        "per": per
+    })
     return favs
 
 # 择日移入oauth相关

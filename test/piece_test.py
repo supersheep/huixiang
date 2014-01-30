@@ -21,7 +21,7 @@ class PieceCase(unittest.TestCase):
             "content":u"Mac-talk.",
             "author":None,
             "work":None
-        })        
+        })
 
     def testTooManySpliter(self):
         # 过多链接符忽略
@@ -32,7 +32,7 @@ class PieceCase(unittest.TestCase):
         })
 
     def testByIssue(self):
-        
+
 
         self.assertEqual(piece.parse_content(u"It's better to fail than to pass by pure luck."),{
             "content":u"It's better to fail than to pass by pure luck.",
@@ -52,7 +52,7 @@ class PieceCase(unittest.TestCase):
         self.assertEqual(piece.parse_content(u"愚蠢的人饱受其愚蠢所带来的疲累之苦。       by 叔本华"),{
             "content":u"愚蠢的人饱受其愚蠢所带来的疲累之苦。",
             "author":u"叔本华",
-            "work":None    
+            "work":None
         })
 
         # 带言说者
@@ -86,14 +86,20 @@ class PieceCase(unittest.TestCase):
             "work":u"许愿树"
         })
         # 英文人名书名
-        self.assertEqual(piece.parse_content(u"To choose doubt as a philosophy of life is akin to choosing immobility as a means of transportation. —— Yann Martel 《Life of Pi》"),{ 
+        self.assertEqual(piece.parse_content(u"To choose doubt as a philosophy of life is akin to choosing immobility as a means of transportation. —— Yann Martel 《Life of Pi》"),{
             "content":u"To choose doubt as a philosophy of life is akin to choosing immobility as a means of transportation.",
             "author":u"Yann Martel",
             "work":u"Life of Pi"
+        })
+        # 英文人名
+        self.assertEqual(piece.parse_content(u"qweqweq qwe q we qw eqw ew —— qweqwe"),{
+            "content":u"qweqweq qwe q we qw eqw ew",
+            "author":u"qweqwe",
+            "work":None
         })
         # 过长中文认为非人名
         self.assertEqual(piece.parse_content(u"曰：我和我的小伙伴们都惊呆了？\n\n　　\n\n　　问：为什么惊呆了？\n\n　　--这个该怎么回答"),{
             "content":u"曰：我和我的小伙伴们都惊呆了？\n\n　　\n\n　　问：为什么惊呆了？\n\n　　--这个该怎么回答",
             "author":None,
-            "work":None 
+            "work":None
         })

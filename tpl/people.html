@@ -34,9 +34,15 @@ $var title : $page_user.name
                 <div class="del">x</div>
             <div class="piece-body">
                 <div class="content">
-                    <a href="/piece/$piece["id"]">
+                    <a href="/piece/$piece["id"]" target="_blank">
                         $piece["content"]
                     </a>
+                </div>
+                <div class="by">
+                    $if piece["author_name"]:
+                        —— $piece["author_name"]
+                    $if piece["work_title"]:
+                        《$piece["work_title"]》
                 </div>
                 <div class="info">
                 $if piece["private"]:
