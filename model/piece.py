@@ -47,6 +47,7 @@ def parse_content(content):
         return default_result
 
     author = match[1]
+    work = None
     if author:
         work = pattern_work.findall(author)
         work = work and work[0] or None
