@@ -85,6 +85,11 @@ class PieceCase(unittest.TestCase):
             "author":u"约翰·肖尔斯",
             "work":u"许愿树"
         })
+        self.assertEqual(piece.parse_content(u"永远不要忘记，直至上帝向人揭示出未来之日，人类全部智慧就包含在两个词中：等待和希望。 —《基督山伯爵》"),{
+            "content":u"永远不要忘记，直至上帝向人揭示出未来之日，人类全部智慧就包含在两个词中：等待和希望。",
+            "author": None,
+            "work": u"基督山伯爵"
+        })
         # 英文人名书名
         self.assertEqual(piece.parse_content(u"To choose doubt as a philosophy of life is akin to choosing immobility as a means of transportation. —— Yann Martel 《Life of Pi》"),{
             "content":u"To choose doubt as a philosophy of life is akin to choosing immobility as a means of transportation.",
