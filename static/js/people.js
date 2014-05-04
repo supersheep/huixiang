@@ -20,6 +20,8 @@ define(function(require,exports){
             el.click(function(){return false;})
             return;
         }
+
+        if($(window).width() > 480 ){ 
         el.on("mouseenter",function(){
             clearTimeout(delay);
             delay = setTimeout(function(){
@@ -40,6 +42,7 @@ define(function(require,exports){
                 });
             },300);
         });
+        }
 
         del.on("click",function(){
             if(!confirm("确认删除？")){return}

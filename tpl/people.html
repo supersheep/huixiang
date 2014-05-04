@@ -31,7 +31,7 @@ $var title : $page_user.name
     $for piece in favs
         <div class="piece" data-id="$piece["id"]">
             $if page_user and user and page_user["id"] == user["id"]:
-                <div class="del">x</div>
+                <div class="del icon-times"></div>
             <div class="piece-body">
                 <div class="content">
                     <a href="/piece/$piece["id"]" target="_blank">
