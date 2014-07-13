@@ -1,0 +1,49 @@
+{
+  "devDependencies": {
+    "neuron": "~5.1.0",
+    "assert": "~1.0.1"
+  },
+  "asyncDependencies": {},
+  "scripts": {},
+  "dependencies": {
+    "jquery": "~1.9.1",
+    "request": "~0.2.4",
+    "events": "~1.0.5",
+    "util": "~1.0.4",
+    "swfuploader": "~0.1.0",
+    "underscore": "~1.5.2",
+    "attributes": "~1.4.0",
+    "json": "~1.0.1"
+  },
+  "directories": {},
+  "engines": {},
+  "name": "uploader",
+  "description": "文件上传组件",
+  "version": "0.1.0",
+  "homepage": "https://github.com/supersheep/uploader",
+  "author": {
+    "name": "supersheep",
+    "email": "supersheepxjy@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/supersheep/uploader.git"
+  },
+  "main": "./src/index.js",
+  "bugs": {
+    "url": "https://github.com/supersheep/uploader/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/supersheep/uploader/blob/master/LICENSE-MIT"
+    }
+  ],
+  "keywords": [],
+  "readme": "# uploader\n\n> 文件上传组件\n\n\n###APIs\n\n####Uploader(elem,config)\n\nconstruct an uploader with the passing elemement\n\n####config\n\n- `config.action` url to upload\n- `config.blah` blah blah\n\n####.upload(index)\n\nupload file in `index` of the queue\n\n####.cancel(index)\n\ncancel file in `index` of the queue, or the current uploading file\n\n####.remove(index)\n\nremove file in `index` of the queue\n\n####.stop\n\nstop uploading\n\n\n###Events\n\n#### select\n\n选择完文件后触发\n\n- `ev.files` 文件完文件后返回的文件数据\n\n#### add\n\n向队列添加文件后触发\n\n- `ev.index` 文件在队列中的索引值\n- `ev.file` 文件数据\n\n#### start\n\n开始上传后触发\n\n- `ev.index` 要上传的文件在队列中的索引值\n- `ev.file` 文件数据\n\n#### progress\n\n正在上传中时触发，这个事件在iframe上传方式中不存在\n\n- `ev.file` 文件数据\n- `ev.loaded`  已经加载完成的字节数\n- `ev.total`  文件总字节数\n\n#### complete\n\n上传成功后触发\n\n- `ev.index` 上传中的文件在队列中的索引值\n- `ev.file` 文件数据\n- `ev.result` 服务器返回的数据\n\n#### success\n\n上传成功后触发\n\n- `ev.index` 上传中的文件在队列中的索引值\n- `ev.file` 文件数据\n- `ev.result` 服务器返回的数据\n\n### cancel\n\n取消上传后触发\n\n- `ev.index` 上传中的文件在队列中的索引值\n\n#### error\n    \n发生错误时触发\n\n- `ev.index` 上传中的文件在队列中的索引值\n- `ev.file` 文件数据\n- `ev.result` 服务器端返回的数据\n- `ev.status` 服务器端返回的状态码，status如果是-1，说明是前端验证返回的失败\n\n#### queueComplete\n\n批量上传成功后触发\n\n#### remove\n\n从队列中删除文件后触发\n\n- `ev.index` 文件在队列中的索引值\n- `ev.file` 文件数据",
+  "readmeFilename": "README.md",
+  "gitHead": "55a3bcd56085d496dc5dfd3122ce3d3bdefa1b3b",
+  "_id": "uploader@0.1.0",
+  "css": [],
+  "entries": []
+}

@@ -1,0 +1,17 @@
+{
+  "name": "huixiang",
+  "version": "0.1.0",
+  "dependencies": {
+    "jquery": "^1.9.1",
+    "uploader": "^0.1.0",
+    "swfuploader": "^0.1.0"
+  },
+  "asyncDependencies": {},
+  "devDependencies": {},
+  "directories": {},
+  "engines": {},
+  "scripts": {},
+  "entries": [
+    "entries/**/*.js"
+  ]
+}

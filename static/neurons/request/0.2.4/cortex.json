@@ -1,0 +1,49 @@
+{
+  "dependencies": {
+    "class": "~2.0.0",
+    "json": "~1.0.0",
+    "lang": "~1.0.0",
+    "asset": "~1.0.0"
+  },
+  "asyncDependencies": {},
+  "devDependencies": {},
+  "scripts": {},
+  "name": "request",
+  "description": "Send ajax or jsonp request to server",
+  "version": "0.2.4",
+  "homepage": "https://github.com/kaelzhang/neuro-ajax",
+  "author": {
+    "name": "supersheep",
+    "email": "supersheepxjy@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaelzhang/request"
+  },
+  "bugs": {
+    "url": "https://github.com/kaelzhang/request/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/kaelzhang/request/blob/master/LICENSE-MIT"
+    }
+  ],
+  "readmeFilename": "README.md",
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "keywords": [
+    "ajax",
+    "jsonp",
+    "request",
+    "send"
+  ],
+  "main": "./lib/index.js",
+  "gitHead": "44d6cac7b2cb7164737b2e52370821015a02c671",
+  "readme": "# request\n\nSend ajax or jsonp request to server\n\n## Installation\n\n``` bash\ncortex install request --save\n```\n\n## Synopsis\n\n``` js\nvar request = require('request');\nvar Ajax = request.Ajax;\n\nnew Ajax({\n    url: http://example.com/data.json',\n    method: 'post',\n    dataType: 'json'\n}).on(\"success\",succ_cb)\n.on(\"cacnel\", cancel_cb)\n.send(data);\n\nnew Ajax({\n    url: http://example.com/data.txt',\n    dataType: 'text',\n    parse: function(data) {\n       return data.obj;\n    },\n    data: {}\n}).on(\"success\", succ_cb)\n.on(\"error\", err_cb)\n.send();\n\n\nvar JSONP = require.JSONP;\n\nnew JSONP({\n    url: '/blah-blah-blah.jsonp',\n    data: {\n        uid: 123\n    }\n}).on(\"success\", succ_cb)\n.on(\"error\", err_cb)\n.send();\n```\n\n\n## API Documentation\n\n### Ajax\n\n#### Constructor: new Ajax(options)\n\nCreate Ajax object.\n\n##### Regular Options\n\n* url `string` request address\n* method `string=` The way to send request, can be either 'GET' or 'POST', case-insensitive\n* data `object=` The data send in request body\n\n##### Advanced Options\n\n* parser `function(data)=` The method will be called after 'JSON.parse' but before the 'success' event, it will try to transform the data.\n* santitizer `function(responseText)=` Handle the original response object, it will return original response by default.\n* isXHRSuccess `function(xhr)=` Return a boolean value indicates whether the request succeed or fail. Default it will treat any status code between 200 and 300 as success.\n* isSuccess `function(response)` Accept response as arguments and return whether the request succeed or fail. By default it will always return true. Take ajax service in DP for example: most of time, we treat response as success only when `data.code` is 200, but the ajax request actually runs well, so the error callback won't be get called. So we add function like: ```function(res) { return !!res && res.code === 200; }```, the any response whose code is not equal to 200 will be treated as `error`.\n\n##### Other Options\n\n* dataType `string=` Default return dataType, default is ='json'=. It will affect the `Content-Type` in header.\n* async `boolean=true` Whether is an async request，Default set to `true`\n* timeout `number=` Timeout for the request, in millisecond, when setting to 0, it will never timeout. Default is 0.\n* headers `Object=` Custom headers, the final header may be overwritten by other options.\n* cache `boolean=false` Set to false by default, which prevents browser to cache the 'GET\" Ajax request.\n\n#### Method: ajax.cancel()\n\nCancel ajax request, will trigger 'cancel' event. Return ajax object itself for chaining.\n\n#### Method: ajax.send([data])\n\nSend the ajax request with or without data. Return ajax object itself for chaining.\n\n#### Event: ajax#success\n\nTriggered when ajax request succeed.\n\n##### callback(response, xhr)\n\n* resposne `object|string` response body.\n* xhr `object` XMLHttpRequest Object.\n\n#### Event: ajax#error\n\nTriggered when ajax request failed or timeout.\n\n##### callback(response, xhr)\n\nThe same as ajax#success.\n\n\n#### Event: ajax#cancel\n\nTriggered when ajax request get canceled. =callback= has no argument.\n\n\n\n### JSONP\n\n#### Constructor: new JSONP(options)\n\nCreate a JOSONP object.\n\n\n##### options\n\n* url `string`  Address requested\n* data `(Object|string)=` Query that send with JSONP，can be querystring or object\n* callbackKey `string=` Name of parameter that tells server the callback function name, default is 'callback'\n* timeout `number=` Timeout for the request, in millisecond, when setting to 0, it will never timeout. Default is 0.\n* cache `boolean=false` Set to false by default, which prevents browser to cache the jsonp request.\n\n\n#### Method: jsonp.concal()\n\nCancel jsonp request, will trigger 'cancel' event. Return jsonp object itself for chaining.\n\n#### Method: jsonp.send([data])\n\nSend the jsonp request with or without data. Return jsonp object itself for chaining.\n\n#### Event: jsonp#success\n\nTriggered when jsonp request succeed.\n\n##### callback(response, xhr)\n\n* resposne `object|string` response body.\n* xhr `object` XMLHttpRequest Object.\n\n#### Event: jsonp#error\n\nTriggered when jsonprequest failed or timeout.\n\n##### callback(response, xhr)\n\nThe same as jsonp#success.\n\n\n#### Event: jsonp#cancel\n\nTriggered when jsonp request get canceled. =callback= has no argument.\n",
+  "_id": "request@0.2.4",
+  "styles": [],
+  "css": [],
+  "entries": []
+}

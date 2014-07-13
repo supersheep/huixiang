@@ -1,0 +1,50 @@
+{
+  "name": "attributes",
+  "dependencies": {
+    "util": "~1.0.0",
+    "clone": "~0.1.11"
+  },
+  "asyncDependencies": {},
+  "devDependencies": {},
+  "scripts": {},
+  "description": "Apply flavored getter and setter to objects.",
+  "version": "1.4.0",
+  "homepage": "https://github.com/kaelzhang/attributes",
+  "author": {
+    "name": "Kael",
+    "email": "i@kael.me"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kaelzhang/attributes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kaelzhang/attributes/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/kaelzhang/attributes/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "keywords": [
+    "getter",
+    "setter",
+    "validation",
+    "validator",
+    "hashmap",
+    "object",
+    "attributes"
+  ],
+  "readme": "# attributes\n\n`attributes` provides mechanisms for validation, setter and getter to objects or constructors.\n\n\n## API Documentation\n\n### attributes.patch(ctor, attrs)\n\nPatches the attibutes and utility methods to the constructor `ctor`.\n    \n#### ctor\n\ntype `Function | Object`\n\n#### attrs\n\ntype `Object`\n\nAll keys are **optional**.\n\nkey       | type          | description\n--------- | ------------- | -------------------------\nvalue     | mixed         | the default value (optional)\nsetter    | function(v)   | the return value will be the real value to be set. `v` is the original value by user.\ngetter    | function(v)   | the return value will be the return value of `ins.get(key)` method. `v` is the saved value.\nvalidator | function(v)   | if returns false, the value will not be saved.\nreadOnly  | boolean       | if `readOnly` is set to `true`, the value will not be able to change.\nwriteOnce | boolean       | could be changed only once.\n\n#### Examples\n\nTo realize how `attributes` works, you might as well read the example below.\n\n```js\nfunction A(){}\n\nattributes.patch(A, {\n\ta: {\n\t\tvalue: 'AAA',\n\t\tsetter: function(v){\n\t\t\treturn v + '-new';\n\t\t},\n\t\tvalidator: function(v){\n\t\t\treturn typeof v === 'string';\n\t\t},\n\t\tgetter: function(v){\n\t\t\treturn v;\n\t\t}\n\t}\n});\n```\n\nThen, the instances which created by `new A` will have **FOUR** methods:\n\n### .get(key)\n\nGets a value by key.\n\n- key `String` the name of a key.\n\n#### returns\n\nIf the specified key has a `getter`, the saved value will be passed to the getter as the first parameter, then the returnValue of the getter will be returned by `instance.get(key)`.\n\nFor the example above:\n\n```js\nnew A().get('a'); // returns 'AAA'\n```\n\n### .get()\n\nGets values of all keys.\n\n#### returns\n\n`Object`\n\nNotice that, changing the returned value will not affect the real value.\n\n### .set(key, value)\n### .set(keyMap)\n\nSets a value or a bunch of values.\n\n#### returns\n\n`Boolean` whether the value(s) has been set successfully.\n\n```js\nvar ins = new A();\nins.set('a', 1); // false, should be a string\nins.set('a', 'B');\nins.get('a'); // 'B-new', cooked by the setter\n```\n\n\n### .addAttr(key, attr=, override=false)\n\nAdds a new key.\n\n- attr `Object` the attribute definition of the key\n- override `Boolean` whether should override existing attribute.\n\n### .removeAttr(key)\n\nRemoves a key. After this, it will be no longer able to set or get the key.\n\n```js\nvar ins = new A;\nins.removeAttr('a');\nins.get('a'); // undefined\nins.set('a', 'foo'); // false\n```\n\n## Installation\n\nBefore anything taking its part, you should install [node](http://nodejs.org) and \"cortex\".\n\n### Install Cortex\n\n```sh\n# maybe you should use `sudo`\nnpm install -g cortex\n```\n\n### Using attributes In Your Project\n\nFirst, install 'attributes' directly with `cortex install`\n    \n    cortex install attributes --save\n    \nThen, use `require` method in your module\n    \n    var attributes = require('attributes');",
+  "readmeFilename": "README.md",
+  "gitHead": "013ea640d063eaa313dcf345b98417ed85258640",
+  "_id": "attributes@1.4.0",
+  "styles": [],
+  "css": [],
+  "main": "./index.js",
+  "entries": []
+}

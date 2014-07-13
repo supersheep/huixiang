@@ -1,0 +1,40 @@
+{
+  "dependencies": {
+    "json": "~1.0.0"
+  },
+  "asyncDependencies": {},
+  "devDependencies": {},
+  "scripts": {},
+  "name": "util",
+  "version": "1.0.4",
+  "description": "A port of 'util' for cortex from node.js, make your node code run in browsers.",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cortexjs/browser-util.git"
+  },
+  "keywords": [
+    "checker",
+    "validator",
+    "validate",
+    "setter"
+  ],
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "author": {
+    "name": "kael"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cortexjs/browser-util/issues"
+  },
+  "gitHead": "b68bc3acfb52ec23dd48180bc2beed948347449c",
+  "readme": "# util [![Build Status](https://travis-ci.org/cortexjs/browser-util.png?branch=master)](https://travis-ci.org/cortexjs/browser-util)\n\nA port of 'util' for cortex from node.js, make your node code run in browsers.\n\n## Usage\n\n[Node.js Utilities](http://nodejs.org/api/util.html)\n\n## Removed APIs\n\nNotice that the following APIs has been removed:\n\n- util.debug(string)\n- util.error([...])\n- util.puts([...])\n- util.print([...])\n- util.pump(readableStream, writableStream, [callback])",
+  "readmeFilename": "README.md",
+  "homepage": "https://github.com/cortexjs/browser-util",
+  "_id": "util@1.0.4",
+  "styles": [],
+  "css": [],
+  "entries": []
+}

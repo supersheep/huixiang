@@ -1,0 +1,38 @@
+{
+  "dependencies": {},
+  "asyncDependencies": {},
+  "devDependencies": {},
+  "scripts": {},
+  "name": "json",
+  "version": "1.0.1",
+  "description": "json2 for cortex",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cortexjs/json.git"
+  },
+  "keywords": [
+    "checker",
+    "validator",
+    "validate",
+    "setter"
+  ],
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "author": {
+    "name": "kael"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cortexjs/json/issues"
+  },
+  "gitHead": "7e6cf50fdc3cb9f76aa78d692e19b3cc1193f48d",
+  "readme": "# JSON\n\nJSON is a light-weight, language independent, data interchange format.\nSee http://www.JSON.org/\n\n## Author\n\nDouglas Crockford\ndouglas@crockford.com\n\n## Usage\n\n### JSON.stringify\n\n[mdn](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)\n\n### JSON.parse\n\n[mdn](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)\n",
+  "readmeFilename": "README.md",
+  "homepage": "https://github.com/cortexjs/json",
+  "_id": "json@1.0.1",
+  "styles": [],
+  "css": [],
+  "entries": []
+}

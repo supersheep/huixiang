@@ -1,0 +1,45 @@
+{
+  "dependencies": {},
+  "asyncDependencies": {},
+  "devDependencies": {},
+  "scripts": {},
+  "name": "asset",
+  "description": "Methods to dynamically load JavaScript, CSS, and Images.",
+  "version": "1.0.2",
+  "homepage": "http://github.com/kaelzhang/asset",
+  "author": {
+    "name": "Kael",
+    "email": "i@kael.me"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kaelzhang/asset.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "keywords": [
+    "asset",
+    "assets",
+    "load",
+    "javascript",
+    "css",
+    "image",
+    "images",
+    "onload"
+  ],
+  "main": "./index.js",
+  "readme": "# asset\n\nMethods to dynamically load JavaScript, CSS, and Images.\n\n## Getting Started\nBefore anything taking its part, you should install [node](http://nodejs.org) and \"cortex\".\n\n#### Install Node\n\nVisit [http://nodejs.org](http://nodejs.org), download and install the proper version of nodejs.\n\n## Synopsis\n\n```js\nvar asset = require('asset');\nasset[type](src, callback);\n```\n\n## asset.image(src, callback)\n\nPreloads an image. **NOTICE** that, `asset.image` will not inject the image into the document.\n\nReturns `HTMLImageElement` the image element.\n\n```js\nvar img = asset.image('http://domain.com/icon.png', function(){\n    div.appendChild(img);\n});\n```\n\n## asset.js(src, callback)\n\n- src `String` The location of the JavaScript file to load.\n- callback `function()` A function that will be invoke when loaded.\n\nInjects a script tag into the head section of the document, pointing to the src specified.\n\nReturns `HTMLScriptElement` the script node of the JavaScript which is tried to load into the document.\n\n\n## asset.css(src, callback) \n\nInjects a link node of stylesheet in the page.\n\nReturns `HTMLLinkElement` the link node.\n\n\n",
+  "readmeFilename": "README.md",
+  "gitHead": "a89dc033423333375350cfbe3b3786c76300a2eb",
+  "_id": "asset@1.0.2",
+  "styles": [],
+  "css": [],
+  "entries": []
+}
