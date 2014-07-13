@@ -8,8 +8,9 @@ var _4 = "huixiang@0.1.0/entries/people.js";
 var _5 = "huixiang@0.1.0/entries/piece.js";
 var _6 = "jquery@^1.9.1";
 var _7 = "huixiang@0.1.0/mod/uploader.js";
-var _8 = "swfuploader@^0.1.0";
-var _9 = "huixiang@0.1.0/mod/event.js";
+var _8 = "uploader@^0.1.0";
+var _9 = "events@^1.0.5";
+var _10 = "util@^1.0.4";
 var entries = [_0,_1,_2,_3,_4,_5];
 var asyncDepsToMix = {};
 var globalMap = asyncDepsToMix;
@@ -123,12 +124,15 @@ $(".new-form").on("submit",function(){
     map:mix(globalMap,{"../mod/uploader":_7})
 });
 
-define(_7, [_8,_6,_9], function(require, exports, module, __filename, __dirname) {
-var SWFUpload = require('swfuploader');
+define(_7, [_8,_9,_10,_6], function(require, exports, module, __filename, __dirname) {
+var uploader = require('uploader');
+var events = require('events');
+var util = require('util');
 var $ = require('jquery');
-var Event = require("./event");
 
-var Uploader = function(holder_id, options){
+util.inherits(Uploader, events.EventEmitter);
+
+function Uploader(holder_id, options){
 	options = options || {};
 	var self = this;
 	var limit = options.limit || 0;
@@ -147,128 +151,7 @@ var Uploader = function(holder_id, options){
 		});
 	}
 
-	var handlers = {
-		fileDialogComplete:function(count,file_count){
-			// number of files selected, number of files queued
-			var swfu = this;
-			var stats = swfu.getStats();
-			if(file_count <= 0){return;}
-			if(stats.files_queued + stats.successful_uploads - self.file_removed <= limit){
-				uploadFile(this);
-			}
-		},
-		uploadStart:function(file){
-			var swfu = this;
-			self.fire("start",{
-				file:file
-			});
-		},
-		fileQueued:function(file){
-			var swfu = this;
-			var stats = swfu.getStats();
-			if(stats.files_queued + stats.successful_uploads - self.file_removed > limit){
-				self.fire("error",{
-					code:-100, // 与默认超出数量限制的错误码保持一致
-					file:file
-				});
-			}else{
-				self.fire("queued",{
-					file:file
-				});
-			}
-
-		},
-		fileQueueError:function(file,code,message){
-			self.fire("error",{
-				file:file,
-				code:code,
-				message:message
-			});
-		},
-		uploadProgress:function(file,uploaded,total){
-			self.fire("progress",{
-				file:file,
-				uploaded:uploaded,
-				total:total
-			});
-		},
-		uploadError:function(file,code,message){
-			self.fire("error",{
-				file:file,
-				code:code,
-				message:message
-			});
-		},
-		// file:
-		// The file object that was successfully uploaded
-		// data:
-		// The data that was returned by the server-side script (anything that was echoed by the file)
-		// response:
-		// The response returned by the server—true on success or false if no response.
-		// If false is returned, after the successTimeout option expires, a response of true is assumed.
-		uploadSuccess:function(file,data,response){
-			self.fire("success",{
-				file:file,
-				data:JSON.parse(data),
-				res:response
-			});
-		},
-		uploadComplete:function(file){
-			self.fire("complete",{
-				file:file
-			});
-			var state = this.getStats();
-			if(state.files_queued){
-				uploadFile(this);
-			}else{
-				self.fire("queueComplete",state);
-			}
-		}
-	};
-	var settings = {
-		flash_url : "/static/swfupload/swfupload.swf",
-		upload_url: "http://up.qiniu.com",
-		post_params: {},
-		file_size_limit : "100 MB",
-		file_types : "*.jpg;*.png;*.bmp",
-		file_types_description : "All Files",
-		file_post_name: "file",
-		file_upload_limit : 0,
-		file_queue_limit : limit,
-		custom_settings : {
-			progressTarget : "fsUploadProgress",
-			cancelButtonId : "btnCancel"
-		},
-		debug: false,
-
-		// Button settings
-		// button_image_url: "images/TestImageNoText_65x29.png",
-		button_width: "24",
-		button_height: "24",
-		button_placeholder_id: holder_id,
-		button_cursor : SWFUpload.CURSOR.HAND,
-		button_window_mode : SWFUpload.WINDOW_MODE.TRANSPARENT,
-		// button_text: '<span class="theFont">Hello</span>',
-		// button_text_style: ".theFont { font-size: 16; }",
-		button_text_left_padding: 12,
-		button_text_top_padding: 3,
-
-		// The event handler functions are defined in handlers.js
-		file_queued_handler : handlers.fileQueued,
-		file_queue_error_handler : handlers.fileQueueError,
-		file_dialog_complete_handler : handlers.fileDialogComplete,
-		upload_start_handler : handlers.uploadStart,
-		upload_progress_handler : handlers.uploadProgress,
-		upload_error_handler : handlers.uploadError,
-		upload_success_handler : handlers.uploadSuccess,
-		upload_complete_handler : handlers.uploadComplete,
-		queue_complete_handler : handlers.queueComplete	// Queue plugin event
-	};
-
-	self.swfu = new SWFUpload(settings);
 };
-
-Event.mixin(Uploader);
 
 function init(selector,options){
 	var holder = $("<div id='swfu_wrapper'><div id='swfu_holder' /></div>");
@@ -287,66 +170,6 @@ function init(selector,options){
 module.exports = {
 	init:init
 }
-}, {
-    entries:entries,
-    map:mix(globalMap,{"./event":_9})
-});
-
-define(_9, [], function(require, exports, module, __filename, __dirname) {
-function on(){
-    var args = arguments;
-    if(typeof args[0] == "object"){
-        var obj = args[0];
-        for(var key in obj){
-            this.on(key, obj[key]);
-        }
-    }else{
-        var name = args[0];
-        var func = args[1];
-        var events = this.events = this.events || {};
-        var thisEvent = events[name] = events[name] || [];
-        thisEvent.push(func);
-    }
-}
-
-function off(name){
-    if(!name){
-        delete this.events;
-    }
-
-    if(this.events && this.events[name]){
-        delete this.events[name];
-    }
-}
-
-function fire(name,eventArgs){
-    var self = this;
-    var events = (this.events && this.events[name]) || [];
-    events.forEach(function(func){
-        func.call(self,eventArgs);
-    });
-}
-
-
-
-function mixin(target){
-    if(typeof target == "function"){
-        target.prototype.on = on;
-        target.prototype.off = off;
-        target.prototype.fire = fire;
-    }else{
-        target.on = on;
-        target.off = off;
-        target.fire = fire;
-    }
-}
-
-module.exports = {
-    fire:fire,
-    mixin:mixin,
-    on:on,
-    off:off
-};
 }, {
     entries:entries,
     map:globalMap

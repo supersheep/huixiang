@@ -4,8 +4,11 @@
   "dependencies": {
     "jquery": "^1.9.1",
     "uploader": "^0.1.0",
-    "swfuploader": "^0.1.0"
+    "swfuploader": "^0.1.0",
+    "util": "^1.0.4",
+    "events": "^1.0.5"
   },
+  "main": "js/index.js",
   "asyncDependencies": {},
   "devDependencies": {},
   "directories": {},
