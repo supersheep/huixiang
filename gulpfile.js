@@ -2,6 +2,16 @@ var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var stylus = require('gulp-stylus');
 var nib = require('nib');
+var map = require('map-stream');
+
+var errorReporter = function () {
+  return map(function (file, cb) {
+    if (!file.jshint.success) {
+      process.exit(1);
+    }
+    cb(null, file);
+  });
+};
 
 gulp.task('jshint', function() {
   return gulp.src(['./static/js/**/*.js'])
@@ -11,7 +21,7 @@ gulp.task('jshint', function() {
           expr:true
       }))
       .pipe(jshint.reporter('default'))
-      .pipe(jshint.reporter('fail'))
+      .pipe(errorReporter());
 });
 
 gulp.task('stylus', function() {
