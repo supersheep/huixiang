@@ -9,10 +9,9 @@
   "author": "",
   "license": "BSD",
   "dependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.6.2",
-    "grunt-contrib-stylus": "~0.7.0",
-    "grunt-contrib-watch": "~0.5.1",
-    "grunt-template": "~0.2.0"
+    "gulp-jshint": "~1.7.1",
+    "gulp-stylus": "~1.0.5",
+    "gulp": "~3.8.6",
+    "nib": "~1.0.3"
   }
 }
