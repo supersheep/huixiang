@@ -3,18 +3,21 @@ var events = require('events');
 var util = require('util');
 var $ = require('jquery');
 
-function uploadFile(file){
+
+function beforeUpload(file, done){
   var uploader = this;
   $.ajax({
     url:"/api/upload/token",
     dataType:"json",
     success:function(json){
-      var fileName = json.fileName // random file name generated
+      var fileName = json.fileName; // random file name generated
+      var token = json.token;
+      var type = file.type;
       uploader.set('data',{
-        token:json.token,
-        key:"pic/" + json.fileName + file.type
+        token: token,
+        key:"pic/" + fileName + type
       });
-      uploader.upload();
+      done();
     }
   });
 }
@@ -26,25 +29,13 @@ function init(selector){
     name:"file",
     queueTarget:".pic-row",
     theme:require('./uploader-template'),
-    autoUpload:false,
+    beforeUpload: beforeUpload,
     swf_config:{
     	flash_url : "/static/swfupload/swfupload.swf"
     }
-	}).on("select",function(e){
-    uploadFile.call(this,e.files[0]);
-	}).on("success",function(e){
-	    console.log("success",e);
-	}).on("error",function(e){
-	    console.log("error",e);
-	}).on("complete",function(e){
-	    console.log("complete",e);
-      uploadFile.call(this,e.file);
-	}).on("remove",function(e){
-	    console.log("remove",e);
 	}).on("load",function(){
 	    $("#uploader_wrap .text").text("上传");
 	});
-
 
 	return u;
 }
