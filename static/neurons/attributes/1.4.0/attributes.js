@@ -47,7 +47,7 @@ attrs._mix = mix;
  * @private
  * @param {boolean} ghost inner use
      if true, setValue will ignore all flags or validators and force to writing the new value
-     
+
  * @return {boolean} whether the new value has been successfully set
  */
 function setValue(host, attr, value){
@@ -62,31 +62,31 @@ function setValue(host, attr, value){
 
     if(attr[READ_ONLY]){
         pass = false;
-        
+
     }else{
         validator = getMethod(host, attr, VALIDATOR);
-        
+
         pass = !validator || validator.call(host, value);
     }
-    
+
     if(pass && attr[WRITE_ONCE]){
         delete attr[WRITE_ONCE];
         attr[READ_ONLY] = true;
     }
-    
+
     if(pass){
         setter = getMethod(host, attr, SETTER);
-        
+
         if(setter){
             // if setter is defined, always set the return value of setter to attr.value
             attr.value = setter.call(host, value);
         }else{
-        
+
             // mix object values
             attr.value = value;
         }
     }
-    
+
     return pass;
 };
 
@@ -97,9 +97,9 @@ function setValue(host, attr, value){
 function getValue(host, attr){
     var getter = getMethod(host, attr, GETTER),
         v = attr.value;
-    
+
     return getter ?
-    
+
           // getter could based on the value of the current value
           getter.call(host, v)
         : v;
@@ -108,7 +108,7 @@ function getValue(host, attr){
 
 function getMethod(host, attr, name){
     var method = attr[name];
-    
+
     return typeof method === 'string' ? host[method] : method;
 };
 
@@ -124,58 +124,58 @@ function createGetterSetter(host, sandbox){
 
     function _get (host, key) {
         var attr = sandbox[key];
-        
+
         return attr ? getValue(host, attr) : undef;
     }
-    
+
     function _getAll (host) {
         var s = sandbox,
             key,
             ret = {};
-            
+
         for(key in s){
             ret[key] = _get(host, key, s);
         }
-        
+
         return ret;
     }
 
     function _addAttr (key, setting){
-        sandbox[key] || (sandbox[key] = util.isObject(setting) ? 
-                            
+        sandbox[key] || (sandbox[key] = util.isObject(setting) ?
+
                             // it's important to clone the setting before mixing into the sandbox,
                             // or host.set method will ruin all references
-                            clone(setting) : 
+                            clone(setting) :
                             {}
                         );
     }
 
     host.set = function(key, value){
-        var 
-        
+        var
+
         attr, obj,
         pass = true;
-        
+
         if(util.isObject(key)){
             obj = key;
-            
+
             for(key in obj){
-                
+
                 // even if fail to pass, we should continue setting
                 pass = !!setValue(this, sandbox[key], obj[key]) && pass;
             }
-            
+
         }else{
             pass = !!setValue(this, sandbox[key], value);
         }
 
         return pass;
     };
-    
+
     host.get = function(key){
         return arguments.length ? _get(this, key) : _getAll(this);
     };
-    
+
     host.addAttr = function (key, setting) {
         if ( util.isObject(key) ) {
             var k;
@@ -188,7 +188,7 @@ function createGetterSetter(host, sandbox){
             _addAttr(key, setting);
         }
     };
-    
+
     host.removeAttr = function(key){
         delete sandbox[key];
     };
@@ -200,25 +200,18 @@ function createPublicMethod(name){
         // @private
         // sandbox
         var sandbox = createSandBox(this);
-        
+
         // .set and .get methods won't be initialized util the first .set method excuted
         createGetterSetter(this, sandbox);
-        
+
         return this[name].apply(this, arguments);
     };
 };
 
 
-function getMethod(host, attr, name){
-    var method = attr[name];
-    
-    return typeof method === 'string' ? host[method] : method;
-};
-
-
 function createSandBox(host){
     var attributes = host[attrs.KEY];
-    
+
     return attributes ? clone(attributes) : {};
 };
 
@@ -273,7 +266,7 @@ attrs.set = function (host, attributes) {
  2011-10-18  Kael:
  TODO:
  - ? A. optimize setAttrs method, lazily initialize presets after they are called
- 
+
  2011-09-20  Kael:
  - attr setter will return true or false to tell whether the new value has been successfully set
 
@@ -283,7 +276,7 @@ attrs.set = function (host, attributes) {
  2011-09-15  Kael:
  - privatize attributes
  - create .get and .set method
- 
+
  TODO:
  - ? A. ATTRs inheritance
 

@@ -11,24 +11,22 @@ var _7 = "huixiang@0.1.0/mod/uploader.js";
 var _8 = "uploader@^0.1.0";
 var _9 = "events@^1.0.5";
 var _10 = "util@^1.0.4";
+var _11 = "huixiang@0.1.0/mod/uploader-template.js";
+var _12 = "underscore@^1.6.0";
+var _13 = "attributes@^1.4.0";
 var entries = [_0,_1,_2,_3,_4,_5];
 var asyncDepsToMix = {};
 var globalMap = asyncDepsToMix;
 define(_3, [_6,_7], function(require, exports, module, __filename, __dirname) {
 var $ = require('jquery');
 var uploader = require('../mod/uploader');
-
 var share_btns = $(".toweibo,.todouban");
 var private_el = $("#private");
 var toggle_private = false;
 
-var uploadInstance = uploader.init(".icon-image",{
-    limit:2
-});
+var uploadInstance = uploader.init(".icon-image");
 var uploading = {};
-uploadInstance.on({
-    "start":function(e){
-    },
+var handlers = {
     "success":function(e){
         var self = this;
         var imgSrc = "http://huixiang.qiniudn.com/" + e.data.key + "?imageView/1/w/90/h/90";
@@ -44,42 +42,17 @@ uploadInstance.on({
             img.fadeIn();
         });
     },
-    "progress":function(e){
-        var percent = (e.uploaded/e.total * 100).toFixed(0);
-        var block = uploading[e.file.id] && uploading[e.file.id].block;
-    },
-    "queued":function(e){
-        uploading[e.file.id] = {};
-        $(".pic-row").show();
-        var block = uploading[e.file.id].block = $('<div class="pic-wrapper"><div class="pic"><div class="percent"></div></div></div>');
-        block.appendTo($(".pic-row"));
-        var close = $("<div class='icon-delete' />");
-        close.on("click",function(){
-            if(!uploading[e.file.id]){
-                uploadInstance.file_removed++;
-            }
-            uploadInstance.swfu.cancelUpload(e.file.id);
-            block.remove();
-        });
-        block.append(close);
-    },
     "error":function(e){
         var errors = {
             "-100":"一次最多上传四张"
         }
-        e.file && uploadInstance.swfu.cancelUpload(e.file.id);
         errors[e.code] && alert(errors[e.code]);
-    },
-    "complete":function(e){
-        delete uploading[e.file.id];
-    },
-    "queueError":function(e){
-        console && console.error("queueError",e);
-    },
-    "queueComplete":function(e){
-        console && console.log("queueComplete",e);
     }
-});
+};
+
+for(var k in handlers){
+    uploadInstance.on(k,handlers[k]);
+}
 
 share_btns.on("click",function(e){
     if(private_el.prop("checked")){return;}
@@ -124,51 +97,144 @@ $(".new-form").on("submit",function(){
     map:mix(globalMap,{"../mod/uploader":_7})
 });
 
-define(_7, [_8,_9,_10,_6], function(require, exports, module, __filename, __dirname) {
-var uploader = require('uploader');
+define(_7, [_8,_9,_10,_6,_11], function(require, exports, module, __filename, __dirname) {
+var Uploader = require('uploader');
 var events = require('events');
 var util = require('util');
 var $ = require('jquery');
 
-util.inherits(Uploader, events.EventEmitter);
+function uploadFile(file){
+  var uploader = this;
+  $.ajax({
+    url:"/api/upload/token",
+    dataType:"json",
+    success:function(json){
+      var fileName = json.fileName // random file name generated
+      uploader.set('data',{
+        token:json.token,
+        key:"pic/" + json.fileName + file.type
+      });
+      uploader.upload();
+    }
+  });
+}
 
-function Uploader(holder_id, options){
-	options = options || {};
-	var self = this;
-	var limit = options.limit || 0;
-	self.file_removed = 0;
-	function uploadFile(swfu){
-		var file = swfu.getFile();
-		$.ajax({
-			url:"/api/upload/token",
-			dataType:"json",
-			success:function(json){
-				swfu.addPostParam("token", json.token);
-				// filename
-				swfu.addPostParam("key", "pic/" + json.fileName + file.type);
-				swfu.startUpload();
-			}
-		});
-	}
+function init(selector){
+	var u = new Uploader(selector, {
+    multipleLen:10,
+    action:"http://up.qiniu.com",
+    name:"file",
+    queueTarget:".pic-row",
+    theme:require('./uploader-template'),
+    autoUpload:false,
+    swf_config:{
+    	flash_url : "/static/swfupload/swfupload.swf"
+    }
+	}).on("select",function(e){
+    uploadFile.call(this,e.files[0]);
+	}).on("success",function(e){
+	    console.log("success",e);
+	}).on("error",function(e){
+	    console.log("error",e);
+	}).on("complete",function(e){
+	    console.log("complete",e);
+      uploadFile.call(this,e.file);
+	}).on("remove",function(e){
+	    console.log("remove",e);
+	}).on("load",function(){
+	    $("#uploader_wrap .text").text("上传");
+	});
 
-};
 
-function init(selector,options){
-	var holder = $("<div id='swfu_wrapper'><div id='swfu_holder' /></div>");
-	var offset = $(selector).offset();
-	holder.appendTo($("body"));
-	holder.css({
-		position:"absolute",
-		top:offset.top,
-		left:offset.left,
-		height: 24,
-		width: 24
-	})
-	return new Uploader("swfu_holder",options);
+	return u;
 }
 
 module.exports = {
 	init:init
+}
+}, {
+    entries:entries,
+    map:mix(globalMap,{"./uploader-template":_11})
+});
+
+define(_11, [_6,_12,_13], function(require, exports, module, __filename, __dirname) {
+var $ = require("jquery");
+var _ = require('underscore');
+var attributes = require('attributes');
+var EMPTY='';
+
+module.exports = Template;
+
+function Template(container){
+    this.container = $(container);
+
+    var self = this;
+
+     var tpl = '<div id="J_upload_item_<%=id%>" class="pic-wrapper">'
+        +'<div class="pic"><div class="percent"></div></div>'
+        +'<div class="icon-delete" />'
+    +'</div>';
+
+    this.set('tpl',tpl);
+}
+
+attributes.patch(Template,{
+    uploader:{value:{}},
+    tpl:{value:EMPTY}
+});
+
+
+Template.prototype._createItem = function(event){
+    var self = this;
+    var container = this.container;
+    var file = event.file;
+    var item = $(_.template(this.get('tpl'),file));
+    item.find(".icon-delete").on("click",function(){
+        var uploader = self.get("uploader");
+        uploader.get("queue").remove(file.id);
+    });
+    file.block = item;
+    item.appendTo(container);
+};
+
+Template.prototype._removeHandler = function(e){
+    var file = e.file;
+    file.block && file.block.remove();
+}
+
+Template.prototype._progressHandler = function(e){
+    // var file = e.file;
+    // var elem = $("#J_upload_item_" + file.id);
+    // elem.find(".percent").css("width",e.uploaded/e.total*100 + "%");
+}
+
+Template.prototype._successHandler = function(e){
+    var file = e.file;
+    var data = e.data
+    var self = this;
+    var elem = $("#J_upload_item_" + file.id);
+    var imgSrc = "http://huixiang.qiniudn.com/" + data.key + "?imageView/1/w/90/h/90";
+    var img = $("<img />").attr("src",imgSrc);
+
+    if(!elem){return;}
+    img.load(function(){
+        elem.find(".percent").remove();
+        elem.find(".pic").append(img);
+        elem.data("key",data.key);
+        img.css("display","none");
+        img.fadeIn();
+    });
+}
+
+Template.prototype._completeHandler = function(e){
+}
+
+
+Template.prototype._errorHandler = function(e){
+    var file = e.file;
+    var data = e.data;
+    var elem = $("#J_upload_item_" + file.id);
+    // alert([e.code]);
 }
 }, {
     entries:entries,

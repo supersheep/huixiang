@@ -1,17 +1,12 @@
 var $ = require('jquery');
 var uploader = require('../mod/uploader');
-
 var share_btns = $(".toweibo,.todouban");
 var private_el = $("#private");
 var toggle_private = false;
 
-var uploadInstance = uploader.init(".icon-image",{
-    limit:2
-});
+var uploadInstance = uploader.init(".icon-image");
 var uploading = {};
-uploadInstance.on({
-    "start":function(e){
-    },
+var handlers = {
     "success":function(e){
         var self = this;
         var imgSrc = "http://huixiang.qiniudn.com/" + e.data.key + "?imageView/1/w/90/h/90";
@@ -27,42 +22,17 @@ uploadInstance.on({
             img.fadeIn();
         });
     },
-    "progress":function(e){
-        var percent = (e.uploaded/e.total * 100).toFixed(0);
-        var block = uploading[e.file.id] && uploading[e.file.id].block;
-    },
-    "queued":function(e){
-        uploading[e.file.id] = {};
-        $(".pic-row").show();
-        var block = uploading[e.file.id].block = $('<div class="pic-wrapper"><div class="pic"><div class="percent"></div></div></div>');
-        block.appendTo($(".pic-row"));
-        var close = $("<div class='icon-delete' />");
-        close.on("click",function(){
-            if(!uploading[e.file.id]){
-                uploadInstance.file_removed++;
-            }
-            uploadInstance.swfu.cancelUpload(e.file.id);
-            block.remove();
-        });
-        block.append(close);
-    },
     "error":function(e){
         var errors = {
             "-100":"一次最多上传四张"
         }
-        e.file && uploadInstance.swfu.cancelUpload(e.file.id);
         errors[e.code] && alert(errors[e.code]);
-    },
-    "complete":function(e){
-        delete uploading[e.file.id];
-    },
-    "queueError":function(e){
-        console && console.error("queueError",e);
-    },
-    "queueComplete":function(e){
-        console && console.log("queueComplete",e);
     }
-});
+};
+
+for(var k in handlers){
+    uploadInstance.on(k,handlers[k]);
+}
 
 share_btns.on("click",function(e){
     if(private_el.prop("checked")){return;}
