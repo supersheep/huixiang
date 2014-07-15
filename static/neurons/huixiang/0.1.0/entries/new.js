@@ -12,8 +12,6 @@ var _8 = "uploader@^0.1.0";
 var _9 = "events@^1.0.5";
 var _10 = "util@^1.0.4";
 var _11 = "huixiang@0.1.0/mod/uploader-template.js";
-var _12 = "underscore@^1.6.0";
-var _13 = "attributes@^1.4.0";
 var entries = [_0,_1,_2,_3,_4,_5];
 var asyncDepsToMix = {};
 var globalMap = asyncDepsToMix;
@@ -148,85 +146,30 @@ module.exports = {
     map:mix(globalMap,{"./uploader-template":_11})
 });
 
-define(_11, [_6,_12,_13], function(require, exports, module, __filename, __dirname) {
-var $ = require("jquery");
-var _ = require('underscore');
-var attributes = require('attributes');
-var EMPTY='';
-
-module.exports = Template;
-
-function Template(container){
-    this.container = $(container);
-
-    var self = this;
-
-     var tpl = '<div id="J_upload_item_<%=id%>" class="pic-wrapper">'
+define(_11, [], function(require, exports, module, __filename, __dirname) {
+module.exports = {
+    template: '<div id="J_upload_item_<%=id%>" class="pic-wrapper">'
         +'<div class="pic"><div class="percent"></div></div>'
-        +'<div class="icon-delete" />'
-    +'</div>';
-
-    this.set('tpl',tpl);
-}
-
-attributes.patch(Template,{
-    uploader:{value:{}},
-    tpl:{value:EMPTY}
-});
-
-
-Template.prototype._createItem = function(event){
-    var self = this;
-    var container = this.container;
-    var file = event.file;
-    var item = $(_.template(this.get('tpl'),file));
-    item.find(".icon-delete").on("click",function(){
-        var uploader = self.get("uploader");
-        uploader.get("queue").remove(file.id);
-    });
-    file.block = item;
-    item.appendTo(container);
+        +'<div class="icon-delete J_upload_remove" />'
+    +'</div>',
+    success: function(e){
+        var elem = e.elem;
+        var data = e.data;
+        var imgSrc = "http://huixiang.qiniudn.com/" + data.key + "?imageView/1/w/90/h/90";
+        var img = $("<img />").attr("src",imgSrc);
+        if(!elem){return;}
+        img.load(function(){
+            elem.find(".percent").remove();
+            elem.find(".pic").append(img);
+            elem.data("key",data.key);
+            img.css("display","none");
+            img.fadeIn();
+        });
+    },
+    error: function(e){
+        console && console.log("e")
+    }
 };
-
-Template.prototype._removeHandler = function(e){
-    var file = e.file;
-    file.block && file.block.remove();
-}
-
-Template.prototype._progressHandler = function(e){
-    // var file = e.file;
-    // var elem = $("#J_upload_item_" + file.id);
-    // elem.find(".percent").css("width",e.uploaded/e.total*100 + "%");
-}
-
-Template.prototype._successHandler = function(e){
-    var file = e.file;
-    var data = e.data
-    var self = this;
-    var elem = $("#J_upload_item_" + file.id);
-    var imgSrc = "http://huixiang.qiniudn.com/" + data.key + "?imageView/1/w/90/h/90";
-    var img = $("<img />").attr("src",imgSrc);
-
-    if(!elem){return;}
-    img.load(function(){
-        elem.find(".percent").remove();
-        elem.find(".pic").append(img);
-        elem.data("key",data.key);
-        img.css("display","none");
-        img.fadeIn();
-    });
-}
-
-Template.prototype._completeHandler = function(e){
-}
-
-
-Template.prototype._errorHandler = function(e){
-    var file = e.file;
-    var data = e.data;
-    var elem = $("#J_upload_item_" + file.id);
-    // alert([e.code]);
-}
 }, {
     entries:entries,
     map:globalMap
