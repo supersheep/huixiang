@@ -1,0 +1,4 @@
+virtualenv .
+source ./bin/activate
+pip install -r requirements.txt
+cp config.yml.sample config.yml

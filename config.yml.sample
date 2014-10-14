@@ -1,18 +1,21 @@
-db:
-  name: 'mysql'
-  user: 'user'
-  pwd: 'pwd'
-  db: 'huixiang'
-auth:
-  douban:
-    key: 'doubankey'
-    secret: 'doubansecret'
-    callback: 'doubancallback'
-  weibo:
-    key: 'weibokey'
-    secret: 'weibosecret'
-    callback: 'weibocallback'
-salt: 'salt'
+db_name: 'mysql'
+db_user: 'root'
+db_pwd: ''
+db_database: 'huixiang'
+
+auth_douban_key: ''
+auth_douban_secret: ''
+auth_douban_callback: 'http://huixiang.im/auth/douban'
+
+auth_weibo_key: ''
+auth_weibo_secret: ''
+auth_weibo_callback: 'http://huixiang.im/auth/weibo'
+
+qiniu_key: ''
+qiniu_secret: ''
+qiniu_upload_callback: 'http://huixiang.im/api/upload/callback'
+
+salt: ''
 debug: True
 sitename: '茴香'
 slogan: '记下值得珍藏的话语'
