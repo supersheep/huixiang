@@ -3,6 +3,7 @@
 import web
 from config import setting
 import hashlib
+import os
 from datetime import datetime
 
 config = setting.config
@@ -14,8 +15,19 @@ def sha1(str):
     m.update(str)
     return m.hexdigest()
 
+def get_user(id):
+    users = db.select("user",what="id,name,avatar,douban_id,weibo_id,douban_access_token,weibo_access_token",where="id=$id",vars={"id":id})
+    user = users[0]
+    if user:
+        return user
+    else:
+        return False
 
 def logged():
+    # 开发模式下直接登录
+    if os.environ['DEBUG'] == 'true':
+        return get_user(1)
+
     # 1. 去除cookie cu
     hash = web.cookies().get("cu")
     if not hash:
@@ -39,14 +51,14 @@ def logged():
         logout()
         return False
 
+    return first
     # 3.2 匹配后寻找用户，未找到视为未登录
-    user = db.select("user",what="id,name,avatar,douban_id,weibo_id,douban_access_token,weibo_access_token",where="id=$id",vars={"id":session["userid"]})
+    user = get_user(session["userid"])
+
     if not user:
         logout()
-        return False
 
-    # 4. 否则返回该用户
-    return user[0]
+    return user
 
     
 def login(userid):
