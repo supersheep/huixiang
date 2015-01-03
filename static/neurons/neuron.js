@@ -1,1 +1,0 @@
-/Users/spud/Product/huixiang/web/static/neurons/neuron/6.2.0/neuron.js
