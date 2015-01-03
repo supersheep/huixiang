@@ -1,4 +1,5 @@
 node_modules
+neurons
 config_migrant.py
 .anvil
 .DS_Store

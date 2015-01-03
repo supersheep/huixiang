@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "dependencies": {
     "jquery": "^1.9.1",
-    "uploader": "^0.1.0",
-    "swfuploader": "^0.1.0",
+    "uploader": "~0.1.4",
     "util": "^1.0.4",
     "events": "^1.0.5",
     "underscore": "^1.6.0",

@@ -252,7 +252,7 @@ class uploadtoken:
         qiniu.conf.SECRET_KEY = config["qiniu_secret"]
         policy = qiniu.rs.PutPolicy("huixiang")
         policy.expires = 30
-        policy.returnUrl = config["qiniu_upload_callback"]
+        # policy.returnUrl = config["qiniu_upload_callback"]
         uptoken = policy.token()
         fileName = md5("_".join([str(ctx["user"]["id"]),str(datetime.now())]))[:8];
         return {"token":uptoken,"fileName":fileName}

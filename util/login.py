@@ -25,7 +25,7 @@ def get_user(id):
 
 def logged():
     # 开发模式下直接登录
-    if os.environ['DEBUG'] == 'true':
+    if 'DEBUG' in os.environ:
         return get_user(1)
 
     # 1. 去除cookie cu
